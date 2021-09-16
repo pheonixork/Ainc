@@ -8,7 +8,7 @@ import AppBar from '@mui/material/AppBar';
 
 import Container from 'components/Container';
 import { Topbar, Sidebar, Footer } from './components';
-import pages from '../navigation--docs';
+import pages from '../navigation-manager';
 
 const Fixed = ({ children }) => {
   const theme = useTheme();
@@ -29,7 +29,8 @@ const Fixed = ({ children }) => {
   const open = isMd ? false : openSidebar;
 
   return (
-    <Box>
+    <Box className='manager'>
+      {!isMd && 
       <AppBar
         position={'fixed'}
         sx={{
@@ -42,6 +43,7 @@ const Fixed = ({ children }) => {
           <Topbar onSidebarOpen={handleSidebarOpen} />
         </Container>
       </AppBar>
+      }
       <Sidebar
         onClose={handleSidebarClose}
         open={open}
@@ -49,7 +51,7 @@ const Fixed = ({ children }) => {
         pages={pages}
       />
       <main>
-        <Box height={{ xs: 58, sm: 66 }} />
+        <Box height={{ xs: 58, sm: 66, md: 0 }} />
         <Box
           display="flex"
           flex="1 1 auto"

@@ -2,14 +2,15 @@ import React from 'react';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
-import Main from 'layouts/Main';
+import Fixed from 'layouts/Fixed';
+
 import Container from 'components/Container';
 import { PageReferences, Hero } from './components';
 
 const Home = () => {
   const theme = useTheme();
   return (
-    <Main>
+    <Fixed>
       <Container
         sx={{
           position: 'relative',
@@ -58,7 +59,7 @@ const Home = () => {
           ></path>
         </Box>
       </Box>
-    </Main>
+    </Fixed>
   );
 };
 

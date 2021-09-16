@@ -38,7 +38,7 @@ const NavItem = ({ title, id, items }) => {
         sx={{ cursor: 'pointer' }}
         onClick={(e) => handleClick(e, id)}
       >
-        <Typography color={openedPopoverId === id ? 'primary' : 'text.primary'}>
+        <Typography color={openedPopoverId === id ? 'primary' : 'text.primary'} className='menuItem' >
           {title}
         </Typography>
         <ExpandMoreIcon
@@ -69,50 +69,39 @@ const NavItem = ({ title, id, items }) => {
         }}
         sx={{
           '.MuiPaper-root': {
-            maxWidth: 600,
+            maxWidth: 450,
             padding: 4,
             marginTop: 2,
             borderRadius: 2,
+            boxShadow: '0px 0px 6px #0000008f'
           },
         }}
       >
         <Grid container spacing={2}>
-          {items.map((item, i) => (
-            <Grid item key={i} xs={6}>
-              <Typography
-                variant="caption"
-                color="primary"
+          {items.map((p, i) => (
+            <Grid item key={i} xs={12}>
+              <Link
+                variant="body"
+                component={'a'}
+                href={p.href}
+                color={activeLink === p.href ? 'text.primary' : 'text.primary'}
+                className='menuItem'
                 sx={{
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  display: 'block',
+                  fontWeight: activeLink === p.href ? 600 : 400,
+                  '&:hover': {
+                    textDecoration: 'none',
+                    color: theme.palette.primary.dark,
+                  },
+                  textDecoration: 'none',
                 }}
               >
-                {item.groupTitle}
+                {p.title}
+              </Link>
+              <Typography color={'text.primary'} className='menuItemDetails' >
+                {p.detail}
               </Typography>
-              <Grid container>
-                {item.pages.map((p, i) => (
-                  <Grid item xs={6} key={i}>
-                    <Link
-                      variant="body2"
-                      component={'a'}
-                      href={p.href}
-                      color={activeLink === p.href ? 'primary' : 'text.primary'}
-                      sx={{
-                        fontWeight: activeLink === p.href ? 600 : 400,
-                        '&:hover': {
-                          textDecoration: 'none',
-                          color: theme.palette.primary.dark,
-                        },
-                        textDecoration: 'none',
-                      }}
-                    >
-                      {p.title}
-                    </Link>
-                  </Grid>
-                ))}
-              </Grid>
             </Grid>
+            
           ))}
         </Grid>
       </Popover>

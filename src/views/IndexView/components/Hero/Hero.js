@@ -9,74 +9,13 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import Container from 'components/Container';
 
-const images = [
-  {
-    group: [
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img2.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img2--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img3.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img3--dark.png',
-      },
-    ],
-  },
-  {
-    group: [
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img13.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img13--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img10.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img10--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img9.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img9--dark.png',
-      },
-    ],
-  },
-  {
-    group: [
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img6.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img6--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img24.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img24--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img17.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img17--dark.png',
-      },
-      {
-        cover:
-          'https://assets.maccarianagency.com/screenshots/the-front/img12.png',
-        coverDark:
-          'https://assets.maccarianagency.com/screenshots/the-front/img12--dark.png',
-      },
-    ],
-  },
-];
+const image = "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f211d6ebae5e42c12dff046_web_illustration_hero2.svg";
+const logos = [
+  "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/601a976004900713f6f9f1df_google_b%26w_logo.svg",
+  "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e9b1448848185f58658eb_bolt_logo.svg",
+  "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e9b15a5d4076a14fd49f5_busuu_logo.svg",
+  "	https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e9b17b8968a8030967a8d_class101_logo.svg"
+]
 
 const Hero = () => {
   const theme = useTheme();
@@ -87,15 +26,12 @@ const Hero = () => {
   return (
     <Box
       sx={{
-        backgroundImage: `linear-gradient(to bottom, ${alpha(
-          theme.palette.background.paper,
-          0,
-        )}, ${alpha(theme.palette.alternate.main, 1)} 100%)`,
+        backgroundColor: theme.palette.mode === 'light' ? '#d6daff' : '#3b4972',
         backgroundRepeat: 'repeat-x',
         position: 'relative',
       }}
     >
-      <Box paddingY={{ xs: 0, sm: '4rem', md: '8rem' }}>
+      <Box paddingY={'1rem'}>
         <Container>
           <Box maxWidth={{ xs: 1, sm: '50%' }}>
             <Typography
@@ -106,35 +42,25 @@ const Hero = () => {
                 fontWeight: 700,
               }}
             >
-              Turn your ideas
-              <br />
-              into a{' '}
-              <Typography
-                color={'primary'}
-                component={'span'}
-                variant={'inherit'}
-              >
-                <Typed
-                  strings={['startup.', 'future.', 'success.']}
-                  typeSpeed={80}
-                  loop={true}
-                />
-              </Typography>
+              Convert customers<br/>
+              with high performance<br/>
+              influencer marketing
             </Typography>
             <Typography
               variant="h6"
               component="p"
-              color="text.secondary"
-              sx={{ fontWeight: 400 }}
+              color="text.primary"
+              sx={{ fontWeight: 600 }}
+              marginTop={5}
             >
-              theFront will make your product look modern and professional while
-              saving you precious time.
+              Influencer discovery, audience analysis and monitoring<br/>
+              trusted by more than 300 B2C brands
             </Typography>
             <Box
               display="flex"
               flexDirection={{ xs: 'column', sm: 'row' }}
               alignItems={{ xs: 'stretched', sm: 'flex-start' }}
-              marginTop={4}
+              marginTop={5}
             >
               <Button
                 component={'a'}
@@ -142,9 +68,9 @@ const Hero = () => {
                 color="primary"
                 size="large"
                 fullWidth={isMd ? false : true}
-                href={'/home'}
+                href={'/'}
               >
-                View pages
+                Get Started
               </Button>
               <Box
                 marginTop={{ xs: 2, sm: 0 }}
@@ -153,76 +79,81 @@ const Hero = () => {
               >
                 <Button
                   component={'a'}
-                  href={'/docs/introduction'}
+                  href={'/'}
                   variant="outlined"
                   color="primary"
                   size="large"
                   fullWidth={isMd ? false : true}
                 >
-                  Documentation
+                  Book a Demo
                 </Button>
               </Box>
+            </Box>
+            <Typography
+              component="p"
+              color="text.secondary"
+              sx={{ fontWeight: 600 }}
+              marginTop={4}
+            >
+              Improving creator partnerships at brands like:
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              alignItems={'center'}
+              marginTop={2}
+              height={120}
+              style={{ filter: 'grayscale(100%)'}}
+            >
+              {logos.map((logo, i) => (
+                <Box
+                  key={i}
+                  component={LazyLoadImage}
+                  effect="blur "
+                  src={
+                    logo
+                  }
+                  marginLeft={i > 0 ? 2 : 0}
+                  maxHeight={i === 1 ? 80 : 120}
+                  width={'auto'}
+                />
+              ))}
             </Box>
           </Box>
         </Container>
         <Box
           sx={{
-            transform: 'rotate(-20deg)',
             display: { xs: 'none', sm: 'block' },
           }}
         >
           <Box
             display={'flex'}
-            width={'50rem'}
+            justifyContent={'flex-start'}
+            alignItems={'center'}
+            width={'50%'}
+            height={'100%'}
             left={'50%'}
-            top={0}
+            top={'-4rem'}
             position={'absolute'}
-            sx={{ transform: 'translate3d(20%, -50%, 0)' }}
           >
-            {images.map((item, i) => (
-              <Box key={i} marginTop={{ sm: -(i * 16) }} marginX={1}>
-                {item.group.map((g, j) => (
-                  <Box
-                    key={j}
-                    padding={1}
-                    bgcolor={'background.paper'}
-                    borderRadius={3}
-                    boxShadow={3}
-                    marginTop={2}
-                  >
-                    <Box
-                      component={LazyLoadImage}
-                      effect="blur"
-                      src={
-                        theme.palette.mode === 'dark' ? g.coverDark : g.cover
-                      }
-                      height={1}
-                      width={1}
-                      maxWidth={320}
-                    />
-                  </Box>
-                ))}
-              </Box>
-            ))}
+            <Box
+              padding={1}
+              marginTop={2}
+              maxHeight={'500px'}
+              maxWidth={'500px'}
+            >
+              <Box
+                component={LazyLoadImage}
+                effect="blur"
+                src={
+                  image
+                }
+                height={1}
+                width={1}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box
-        component={'svg'}
-        preserveAspectRatio="none"
-        xmlns="http://www.w3.org/2000/svg"
-        x="0px"
-        y="0px"
-        viewBox="0 0 1920 100.1"
-        sx={{
-          width: '100%',
-          marginBottom: theme.spacing(-1),
-        }}
-      >
-        <path
-          fill={theme.palette.background.paper}
-          d="M0,0c0,0,934.4,93.4,1920,0v100.1H0L0,0z"
-        ></path>
       </Box>
     </Box>
   );

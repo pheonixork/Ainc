@@ -15,14 +15,14 @@ const Sidebar = ({ pages, open, variant, onClose }) => {
         '& .MuiPaper-root': {
           width: '100%',
           maxWidth: 256,
-          top: { xs: 0, md: 67 },
-          height: { xs: '100%', md: 'calc(100% - 67px)' },
+          top: { xs: 0, md: 0 },
+          height: { xs: '100%', md: 'calc(100%)' },
         },
       }}
     >
       <Box
+        className='sidebar'
         sx={{
-          height: '100%',
           padding: 1,
           paddingTop: { xs: 2, sm: 3 },
         }}
@@ -37,7 +37,7 @@ Sidebar.propTypes = {
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired,
-  pages: PropTypes.array.isRequired,
+  pages: PropTypes.object.isRequired,
 };
 
 export default Sidebar;

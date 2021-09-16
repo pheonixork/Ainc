@@ -12,9 +12,7 @@ const Topbar = ({ onSidebarOpen, pages }) => {
   const theme = useTheme();
   const { mode } = theme.palette;
   const {
-    landings: landingPages,
-    secondary: secondaryPages,
-    account: accountPages,
+    features: features,
   } = pages;
 
   return (
@@ -35,8 +33,8 @@ const Topbar = ({ onSidebarOpen, pages }) => {
           component={'img'}
           src={
             mode === 'light'
-              ? 'https://assets.maccarianagency.com/the-front/logos/logo.svg'
-              : 'https://assets.maccarianagency.com/the-front/logos/logo-negative.svg'
+              ? 'https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e97bda30ead14b24c69f2_Modash_logo_horizontal%20lockup_color-neutral.svg'
+              : 'https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e97bda30ead14b24c69f2_Modash_logo_horizontal%20lockup_color-neutral.svg'
           }
           height={1}
           width={1}
@@ -44,49 +42,54 @@ const Topbar = ({ onSidebarOpen, pages }) => {
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
         <Box>
-          <NavItem
-            title={'Landings'}
-            id={'landing-pages'}
-            items={landingPages}
-          />
-        </Box>
-        <Box marginLeft={3}>
-          <NavItem
-            title={'Pages'}
-            id={'secondary-pages'}
-            items={secondaryPages}
-          />
-        </Box>
-        <Box marginLeft={3}>
-          <NavItem
-            title={'Account'}
-            id={'account-pages'}
-            items={accountPages}
-          />
-        </Box>
-        <Box marginLeft={3}>
           <Link
             underline="none"
             component="a"
-            href="/docs/introduction"
+            href="/"
             color="text.primary"
+            className='menuItem'
           >
-            Documentation
+            Blog
           </Link>
         </Box>
-        <Box marginLeft={3}>
-          <ThemeModeToggler />
+        <Box marginLeft={5}>
+          <NavItem
+            title={'Features'}
+            id={'features'}
+            items={features}
+          />
         </Box>
-        <Box marginLeft={3}>
+        <Box marginLeft={5}>
+          <Link
+            underline="none"
+            component="a"
+            href="/"
+            color="text.primary"
+            className='menuItem'
+          >
+            Pricing
+          </Link>
+        </Box>
+
+        <Box marginLeft={5}>
+          <Link
+            underline="none"
+            component="a"
+            href="/signin-cover"
+            color="text.primary"
+            className='menuItem'
+          >
+            LOG IN
+          </Link>
+        </Box>
+        <Box marginLeft={5}>
           <Button
             variant="contained"
             color="primary"
-            component="a"
-            target="blank"
-            href="https://material-ui.com/store/items/the-front-landing-page/"
             size="large"
+            fullWidth={true}
           >
-            Purchase now
+            TRY FOR FREE
           </Button>
         </Box>
       </Box>

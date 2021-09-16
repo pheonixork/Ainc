@@ -1,102 +1,159 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+const mock = [
+  [
+    {
+      groupTitle: 'Product',
+      items: [
+        "Fake Follower Check",
+        "Instagram Email Finder",
+        "Influencer Database",
+        "Engagement Rate Calculator"
+      ]
+    }
+  ],
+  [
+    {
+      groupTitle: 'Company',
+      items: [
+        "Blog",
+        "Case Studies"
+      ]
+    },
+    {
+      groupTitle: 'Features',
+      items: [
+        "Influencer Discovery",
+        "Influencer Analytics",
+        "Influencer Compaign Monitoring",
+      ]
+    }
+  ],
+  [
+    {
+      groupTitle: 'Support',
+      items: [
+        "Helpdesk",
+        "Ask a Question",
+        "Book a Call"
+      ]
+    },
+    {
+      groupTitle: 'Legal',
+      items: [
+        "Terms of Service",
+      ]
+    }
+  ],
+]
 
 const Footer = () => {
-  const theme = useTheme();
-  const { mode } = theme.palette;
-
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      {mock.map((column, i) => (
+        <Grid item xs={3} key={i}>
+          {column.map((group, i) => (
+            <Box marginTop={4}>
+              <Typography
+                key={i}
+                color={'#fff'}
+                fontWeight={'600'}
+                marginBottom={3}
+              >
+                {group.groupTitle}
+              </Typography>
+              {group.items.map((item, i) => (
+                <Box key={i} marginTop={2} marginRight={2}>
+                  <Link
+                    component="a"
+                    href="/"
+                    variant={'subtitle2'}
+                    className="footerItem"
+                  >
+                    {item}
+                  </Link>
+                </Box>
+              ))}
+              
+            </Box>
+          ))}          
+        </Grid>
+      ))}
+      <Grid item xs={3}>
+        <Typography
+          color={'#fff'}
+          fontWeight={'600'}
+          marginTop={4}
+        >
+          Reviews
+        </Typography>
+        <Box
+          component={LazyLoadImage}
+          effect="blur"
+          src={
+            "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=161378&theme=light"
+          }
+          height={50}
+          width={'auto'}
+          marginTop={3}
+        />
+        <Box
+          component={LazyLoadImage}
+          effect="blur"
+          src={
+            "https://assets.capterra.com/badge/afc23a2a4755b46287d95f5b328147ae.png?v=2136636&p=195693"
+          }
+          height={50}
+          width={'auto'}
+          marginTop={3}
+        />
+      </Grid>
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        width={'100%'}
+        marginTop={5}
+        marginLeft={2}
+        marginRight={5}
+      >
+        <Typography
+          color={'hsla(0,0%,98%,.4)'}
+          fontWeight={'500'}
+          variant={'subtitle2'}
+        >
+          © 2020 Modash OÜ. All rights reserved.
+        </Typography>
         <Box
           display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          width={1}
-          flexDirection={{ xs: 'column', sm: 'row' }}
+          columnGap={2}
         >
           <Box
-            display={'flex'}
-            component="a"
-            href="/"
-            title="theFront"
-            width={80}
-          >
-            <Box
-              component={'img'}
-              src={
-                mode === 'light'
-                  ? 'https://assets.maccarianagency.com/the-front/logos/logo.svg'
-                  : 'https://assets.maccarianagency.com/the-front/logos/logo-negative.svg'
-              }
-              height={1}
-              width={1}
-            />
-          </Box>
-          <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
-            <Box marginTop={1} marginRight={2}>
-              <Link
-                underline="none"
-                component="a"
-                href="/"
-                color="text.primary"
-                variant={'subtitle2'}
-              >
-                Home
-              </Link>
-            </Box>
-            <Box marginTop={1} marginRight={2}>
-              <Link
-                underline="none"
-                component="a"
-                href="/docs/introduction"
-                color="text.primary"
-                variant={'subtitle2'}
-              >
-                Documentation
-              </Link>
-            </Box>
-            <Box marginTop={1}>
-              <Button
-                variant="outlined"
-                color="primary"
-                component="a"
-                target="blank"
-                href="https://material-ui.com/store/items/the-front-landing-page/"
-                size="small"
-              >
-                Purchase now
-              </Button>
-            </Box>
-          </Box>
+            component={LazyLoadImage}
+            effect="blur"
+            src={
+              "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e96c581048618fd168cc4_linkedin_white.svg"
+            }
+            height={24}
+            width={24}
+            opacity={'0.5'}
+          />
+          <Box
+            component={LazyLoadImage}
+            effect="blur"
+            src={
+              "https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e96c60ba49a0720c8e97e_twitter.svg"
+            }
+            height={24}
+            width={24}
+            opacity={'0.5'}
+          />
         </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography
-          align={'center'}
-          variant={'subtitle2'}
-          color="text.secondary"
-          gutterBottom
-        >
-          &copy; theFront. 2021, Maccarian. All rights reserved
-        </Typography>
-        <Typography
-          align={'center'}
-          variant={'caption'}
-          color="text.secondary"
-          component={'p'}
-        >
-          When you visit or interact with our sites, services or tools, we or
-          our authorised service providers may use cookies for storing
-          information to help provide you with a better, faster and safer
-          experience and for marketing purposes.
-        </Typography>
-      </Grid>
+      </Box>
     </Grid>
   );
 };

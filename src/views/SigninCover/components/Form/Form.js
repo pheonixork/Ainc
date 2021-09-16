@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Box from '@mui/material/Box';
@@ -8,6 +9,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+
+import { userService } from 'services';
 
 const validationSchema = yup.object({
   email: yup
@@ -22,13 +25,25 @@ const validationSchema = yup.object({
 });
 
 const Form = () => {
+  const router = useRouter();
+  const [errors, setError] = useState({message:''});
+
   const initialValues = {
     email: '',
     password: '',
   };
 
   const onSubmit = (values) => {
-    return values;
+    return userService.login(values.email, values.password)
+      .then(() => {
+          // get return url from query parameters or default to '/'
+          // const returnUrl = router.query.returnUrl || '/home';
+          const returnUrl = '/home';
+          router.push(returnUrl);
+      })
+      .catch(error => {
+          setError({ message: error });
+      });
   };
 
   const formik = useFormik({
@@ -116,6 +131,13 @@ const Form = () => {
               helperText={formik.touched.password && formik.errors.password}
             />
           </Grid>
+          {errors.message && 
+          <Grid item xs={12}>
+            <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+              {errors.message}
+            </Typography>
+          </Grid>
+          }
           <Grid item container xs={12}>
             <Box
               display="flex"

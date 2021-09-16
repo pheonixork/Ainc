@@ -46,19 +46,17 @@ const Main = ({ children }) => {
 
   return (
     <Box>
-      <HideOnScroll>
-        <AppBar
-          position={'fixed'}
-          sx={{
-            backgroundColor: theme.palette.background.paper,
-          }}
-          elevation={1}
-        >
-          <Container paddingY={{ xs: 1, sm: 1.5 }}>
-            <Topbar onSidebarOpen={handleSidebarOpen} pages={pages} />
-          </Container>
-        </AppBar>
-      </HideOnScroll>
+      <AppBar
+        position={'fixed'}
+        sx={{
+          backgroundColor: theme.palette.mode === 'light' ? '#d6daff' : '#3b4972',
+        }}
+        elevation={1}
+      >
+        <Container paddingY={{ xs: 1, sm: 1.5 }}>
+          <Topbar onSidebarOpen={handleSidebarOpen} pages={pages} />
+        </Container>
+      </AppBar>
       <Sidebar
         onClose={handleSidebarClose}
         open={open}
@@ -70,9 +68,14 @@ const Main = ({ children }) => {
         {children}
         <Divider />
       </main>
-      <Container paddingY={4}>
-        <Footer />
-      </Container>
+      <Box
+        backgroundColor={'#00053d'}
+        padding={'0px 0px 40px'}
+      >
+        <Container paddingY={4} >
+          <Footer />
+        </Container>
+      </Box>
     </Box>
   );
 };

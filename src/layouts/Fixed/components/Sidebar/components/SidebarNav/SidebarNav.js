@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import PropTypes from 'prop-types';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -14,7 +14,25 @@ const SidebarNav = ({ pages, onClose }) => {
   }, []);
 
   return (
-    <Box paddingBottom={2}>
+    <Box 
+      className='sidebar-nav'
+      paddingBottom={2}
+      >
+      <Box
+        component="a"
+        href="/"
+        title="Modash"
+        marginLeft={2.5}
+        width={{ xs: 100, md: 120 }}
+        height={ 42 }
+      >
+        <Image
+          priority
+          src={'/images/logo/logo-negative.svg'}
+          width={100}
+          height={34}
+        />
+      </Box>
       <Box
         justifyContent={'flex-end'}
         onClick={() => onClose()}
@@ -22,72 +40,75 @@ const SidebarNav = ({ pages, onClose }) => {
       >
         <CloseIcon fontSize="small" />
       </Box>
-      <Box paddingX={2}>
-        {pages.map((item, i) => (
-          <Box key={i} marginBottom={3}>
-            <Typography
-              variant="caption"
+      <Box marginTop={4}>
+        {pages.navigation.map((item, i) => (
+          <Box key={i} 
+            paddingTop={1}
+            paddingBottom={1}>
+            <Button
+              component={'a'}
+              href={item.href}
+              target={item.target}
+              fullWidth
               sx={{
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                marginBottom: 1,
-                display: 'block',
+                justifyContent: 'flex-start',
+                color: 'white',
+                backgroundColor: 'transparent',
+                fontWeight: activeLink === item.href ? 600 : 400,
               }}
             >
-              {item.groupTtitle}
-            </Typography>
-            <Box>
-              {item.pages.map((p, i) => (
-                <Box marginBottom={1 / 2} key={i}>
-                  <Button
-                    component={'a'}
-                    href={p.href}
-                    target={p.target}
-                    fullWidth
-                    sx={{
-                      justifyContent: 'flex-start',
-                      color:
-                        activeLink === p.href
-                          ? theme.palette.primary.main
-                          : theme.palette.text.primary,
-                      backgroundColor:
-                        activeLink === p.href
-                          ? alpha(theme.palette.primary.main, 0.1)
-                          : 'transparent',
-                      fontWeight: activeLink === p.href ? 600 : 400,
-                    }}
-                  >
-                    {p.title}
-                  </Button>
-                </Box>
-              ))}
-            </Box>
+              <Box
+                component={'img'}
+                src={item.icon}
+                height={24}
+                width={50}
+                paddingRight={1}
+                paddingLeft={0.5}
+              />
+              {item.title}
+            </Button>
           </Box>
         ))}
       </Box>
-      <Box>
-        <Button variant="outlined" fullWidth component="a" href="/">
-          Browse pages
-        </Button>
-      </Box>
-      <Box marginTop={1}>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          component="a"
-          target="blank"
-          href="https://material-ui.com/store/items/the-front-landing-page/"
-        >
-          Purchase now
-        </Button>
+      <Box 
+        sx={{
+          marginTop: 'auto'
+        }} >
+        {pages.settings.map((item, i) => (
+          <Box key={i} 
+            paddingTop={1}
+            paddingBottom={1}>
+            <Button
+              component={'a'}
+              href={item.href}
+              target={item.target}
+              fullWidth
+              sx={{
+                justifyContent: 'flex-start',
+                color: 'white',
+                backgroundColor: 'transparent',
+                fontWeight: activeLink === item.href ? 600 : 400,
+              }}
+            >
+              <Box
+                component={'img'}
+                src={item.icon}
+                height={24}
+                width={50}
+                paddingRight={1}
+                paddingLeft={0.5}
+              />
+              {item.title}
+            </Button>
+          </Box>
+        ))}  
       </Box>
     </Box>
   );
 };
 
 SidebarNav.propTypes = {
-  pages: PropTypes.array.isRequired,
+  pages: PropTypes.object.isRequired,
   onClose: PropTypes.func,
 };
 

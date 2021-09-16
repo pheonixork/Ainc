@@ -1,0 +1,12 @@
+.manager {
+  .sidebar {
+    height: 100%;
+    background-color: rgb(17, 75, 95);
+    
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+}

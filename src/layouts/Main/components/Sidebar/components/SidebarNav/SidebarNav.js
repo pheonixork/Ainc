@@ -10,9 +10,7 @@ import NavItem from './components/NavItem';
 
 const SidebarNav = ({ pages, onClose }) => {
   const {
-    landings: landingPages,
-    secondary: secondaryPages,
-    account: accountPages,
+    features: features
   } = pages;
 
   return (
@@ -28,15 +26,29 @@ const SidebarNav = ({ pages, onClose }) => {
       </Box>
       <Box paddingX={2} paddingBottom={2}>
         <Box>
-          <NavItem title={'Landings'} items={landingPages} />
+          <Button
+            variant="outlined"
+            fullWidth
+            component="a"
+            href="/"
+          >
+            Blog
+          </Button>
         </Box>
         <Divider sx={{ marginBottom: 2 }} />
         <Box>
-          <NavItem title={'Pages'} items={secondaryPages} />
-        </Box>
+          <NavItem title={'Features'} items={features} />
+        </Box>        
         <Divider sx={{ marginBottom: 2 }} />
         <Box>
-          <NavItem title={'Account'} items={accountPages} />
+          <Button
+            variant="outlined"
+            fullWidth
+            component="a"
+            href="/"
+          >
+            Pricing
+          </Button>
         </Box>
         <Divider sx={{ marginBottom: 2 }} />
         <Box marginTop={1}>
@@ -44,9 +56,9 @@ const SidebarNav = ({ pages, onClose }) => {
             variant="outlined"
             fullWidth
             component="a"
-            href="/docs/introduction"
+            href="/signin-cover"
           >
-            Documentation
+            LOG IN
           </Button>
         </Box>
         <Box marginTop={1}>
@@ -56,9 +68,9 @@ const SidebarNav = ({ pages, onClose }) => {
             fullWidth
             component="a"
             target="blank"
-            href="https://material-ui.com/store/items/the-front-landing-page/"
+            href="/"
           >
-            Purchase now
+            TRY FOR FREE
           </Button>
         </Box>
       </Box>
