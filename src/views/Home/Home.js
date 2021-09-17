@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 import Fixed from 'layouts/Fixed';
 
-import Container from 'components/Container';
+import Container from 'layouts/Fixed/components/Container';
 import { PageReferences, Hero } from './components';
 
 const Home = () => {

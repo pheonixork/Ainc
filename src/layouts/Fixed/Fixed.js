@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 
-import Container from 'components/Container';
+import Container from './components/Container';
 import { Topbar, Sidebar, Footer } from './components';
 import pages from '../navigation-manager';
 
@@ -16,6 +16,7 @@ const Fixed = ({ children }) => {
     defaultMatches: true,
   });
 
+  const [collapsed, setCollapse] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const handleSidebarOpen = () => {
@@ -29,7 +30,7 @@ const Fixed = ({ children }) => {
   const open = isMd ? false : openSidebar;
 
   return (
-    <Box className='manager'>
+    <Box>
       {!isMd && 
       <AppBar
         position={'fixed'}
@@ -45,10 +46,12 @@ const Fixed = ({ children }) => {
       </AppBar>
       }
       <Sidebar
+        setCollapse={setCollapse}
         onClose={handleSidebarClose}
         open={open}
         variant={isMd ? 'permanent' : 'temporary'}
         pages={pages}
+        collapsed={collapsed}
       />
       <main>
         <Box height={{ xs: 58, sm: 66, md: 0 }} />
@@ -56,14 +59,14 @@ const Fixed = ({ children }) => {
           display="flex"
           flex="1 1 auto"
           overflow="hidden"
-          paddingLeft={{ md: '256px' }}
+          paddingLeft={{ md: collapsed ? '50px' : '256px' }}
         >
           <Box display="flex" flex="1 1 auto" overflow="hidden">
             <Box flex="1 1 auto" height="100%" overflow="auto">
               {children}
               <Divider />
               <Container paddingY={4}>
-                <Footer />
+                {/* <Footer /> */}
               </Container>
             </Box>
           </Box>

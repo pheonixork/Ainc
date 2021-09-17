@@ -4,7 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import { SidebarNav } from './components';
 
-const Sidebar = ({ pages, open, variant, onClose }) => {
+const Sidebar = ({ collapsed, pages, open, variant, setCollapse, onClose }) => {
   return (
     <Drawer
       anchor="left"
@@ -14,20 +14,20 @@ const Sidebar = ({ pages, open, variant, onClose }) => {
       sx={{
         '& .MuiPaper-root': {
           width: '100%',
-          maxWidth: 256,
+          maxWidth: variant === 'permanent' && collapsed ? 50 : 256,
           top: { xs: 0, md: 0 },
           height: { xs: '100%', md: 'calc(100%)' },
+          transition: 'all .2s ease-out'
         },
       }}
     >
       <Box
         className='sidebar'
         sx={{
-          padding: 1,
           paddingTop: { xs: 2, sm: 3 },
         }}
       >
-        <SidebarNav pages={pages} onClose={onClose} />
+        <SidebarNav pages={pages} variant={variant} collapsed={collapsed} onClose={onClose} setCollapse={setCollapse} />
       </Box>
     </Drawer>
   );
@@ -35,9 +35,11 @@ const Sidebar = ({ pages, open, variant, onClose }) => {
 
 Sidebar.propTypes = {
   onClose: PropTypes.func,
+  setCollapse: PropTypes.func,
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
+  collapsed: PropTypes.bool.isRequired
 };
 
 export default Sidebar;

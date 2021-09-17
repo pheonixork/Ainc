@@ -5,8 +5,8 @@
   "version": "4.0.0",
   "private": true,
   "scripts": {
-    "dev": "set PORT=3005 && set NODE_OPTIONS=--inspect && next dev",
-    "build": "next build && next export",
+    "dev": "set NODE_OPTIONS=--inspect && next dev",
+    "build": "next build",
     "start": "next start",
     "prettier:fix": "prettier './src/**/*.js' --write",
     "eslint:fix": "eslint ./src --fix",

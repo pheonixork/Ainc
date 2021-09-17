@@ -9,25 +9,25 @@ body {
 }
 
 .menuItem {
-  font-weight: bold;
-  transition: all .2s ease-in-out;
+  font-weight: bold !important;
+  transition: all .2s ease-in-out !important;
 
   &:hover {
-    color: #1976d2;
+    color: #1976d2 !important;
   }
 
   .menuItemDetails {
-    font-weight: 500;
+    font-weight: 500 !important;
   }
 }
 
 .footerItem {
-  color: hsla(0,0%,98%,.4);
-  font-weight: bold;
-  text-decoration: underline;
-  font-size: 16px;
-  transition: all .2s ease-in-out;
+  color: hsla(0,0%,98%,.4) !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  font-size: 16px !important;
+  transition: all .2s ease-in-out !important;
   &:hover {
-    color: hsla(0,0%,98%,.8);
+    color: hsla(0,0%,98%,.8) !important;
   }
 }

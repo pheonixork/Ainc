@@ -50,7 +50,6 @@ const Recruiting = () => {
                 color="primary"
                 size="large"
                 href={'/'}
-                marginTop={5}
               >
                 START GROWING
               </Button>

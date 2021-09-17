@@ -1,12 +1,28 @@
-.manager {
-  .sidebar {
+$collapseSidebar: 50px;
+$uncollapseSidebar: 256px;
+
+.sidebar {
+  height: 100%;
+  background-color: rgb(17, 75, 95);
+  
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    background-color: rgb(17, 75, 95);
-    
-    .sidebar-nav {
+
+    .logo {
       display: flex;
-      flex-direction: column;
-      height: 100%;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 40px;
+    }
+
+    .nav-itm {
+      justify-content: flex-start;
+      color: white;
+      padding-left: 12px;
+      min-width: 48px !important;
     }
   }
 }

@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { ThemeModeToggler } from './components';
+// import { ThemeModeToggler } from './components';
 
 const Topbar = ({ onSidebarOpen }) => {
   const theme = useTheme();
@@ -28,9 +28,7 @@ const Topbar = ({ onSidebarOpen }) => {
         <Box
           component={'img'}
           src={
-            mode === 'light'
-              ? '/images/logo/logo.svg'
-              : '/images/logo/logo-negative.svg'
+            '/images/logo/logo.svg'
           }
           height={1}
           width={1}

@@ -54,65 +54,65 @@ const mock = [
 
 const Footer = () => {
   return (
-    <Grid container spacing={2}>
-      {mock.map((column, i) => (
-        <Grid item xs={3} key={i}>
-          {column.map((group, i) => (
-            <Box marginTop={4}>
-              <Typography
-                key={i}
-                color={'#fff'}
-                fontWeight={'600'}
-                marginBottom={3}
-              >
-                {group.groupTitle}
-              </Typography>
-              {group.items.map((item, i) => (
-                <Box key={i} marginTop={2} marginRight={2}>
-                  <Link
-                    component="a"
-                    href="/"
-                    variant={'subtitle2'}
-                    className="footerItem"
-                  >
-                    {item}
-                  </Link>
-                </Box>
-              ))}
+    // <Grid container spacing={2}>
+    //   {mock.map((column, i) => (
+      //   <Grid item xs={3} key={i}>
+      //     {column.map((group, i) => (
+      //       <Box marginTop={4}>
+      //         <Typography
+      //           key={i}
+      //           color={'#fff'}
+      //           fontWeight={'600'}
+      //           marginBottom={3}
+      //         >
+      //           {group.groupTitle}
+      //         </Typography>
+      //         {group.items.map((item, i) => (
+      //           <Box key={i} marginTop={2} marginRight={2}>
+      //             <Link
+      //               component="a"
+      //               href="/"
+      //               variant={'subtitle2'}
+      //               className="footerItem"
+      //             >
+      //               {item}
+      //             </Link>
+      //           </Box>
+      //         ))}
               
-            </Box>
-          ))}          
-        </Grid>
-      ))}
-      <Grid item xs={3}>
-        <Typography
-          color={'#fff'}
-          fontWeight={'600'}
-          marginTop={4}
-        >
-          Reviews
-        </Typography>
-        <Box
-          component={LazyLoadImage}
-          effect="blur"
-          src={
-            "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=161378&theme=light"
-          }
-          height={50}
-          width={'auto'}
-          marginTop={3}
-        />
-        <Box
-          component={LazyLoadImage}
-          effect="blur"
-          src={
-            "https://assets.capterra.com/badge/afc23a2a4755b46287d95f5b328147ae.png?v=2136636&p=195693"
-          }
-          height={50}
-          width={'auto'}
-          marginTop={3}
-        />
-      </Grid>
+      //       </Box>
+      //     ))}          
+      //   </Grid>
+      // ))}
+      // <Grid item xs={3}>
+      //   <Typography
+      //     color={'#fff'}
+      //     fontWeight={'600'}
+      //     marginTop={4}
+      //   >
+      //     Reviews
+      //   </Typography>
+      //   <Box
+      //     component={LazyLoadImage}
+      //     effect="blur"
+      //     src={
+      //       "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=161378&theme=light"
+      //     }
+      //     height={50}
+      //     width={'auto'}
+      //     marginTop={3}
+      //   />
+      //   <Box
+      //     component={LazyLoadImage}
+      //     effect="blur"
+      //     src={
+      //       "https://assets.capterra.com/badge/afc23a2a4755b46287d95f5b328147ae.png?v=2136636&p=195693"
+      //     }
+      //     height={50}
+      //     width={'auto'}
+      //     marginTop={3}
+      //   />
+      // </Grid>
       <Box
         display={'flex'}
         justifyContent={'space-between'}
@@ -154,7 +154,7 @@ const Footer = () => {
           />
         </Box>
       </Box>
-    </Grid>
+    // </Grid>
   );
 };
 
