@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
+import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 import { userService } from 'services';
+const { publicRuntimeConfig } = getConfig();
 
 const validationSchema = yup.object({
   email: yup
@@ -37,8 +39,8 @@ const Form = () => {
     return userService.login(values.email, values.password)
       .then(() => {
           // get return url from query parameters or default to '/'
-          // const returnUrl = router.query.returnUrl || '/home';
-          const returnUrl = '/home';
+          // const returnUrl = router.query.returnUrl || publicRuntimeConfig.managerUrl;
+          const returnUrl = publicRuntimeConfig.managerUrl;
           router.push(returnUrl);
       })
       .catch(error => {

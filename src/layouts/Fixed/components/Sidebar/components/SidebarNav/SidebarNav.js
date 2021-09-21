@@ -8,7 +8,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 const SidebarNav = ({ pages, variant, collapsed, onClose, setCollapse }) => {
   const [activeLink, setActiveLink] = useState('');
   useEffect(() => {
-    setActiveLink(window && window.location ? window.location.pathname : '');
+    let pathname = window && window.location ? window.location.pathname : '';
+    let splitPath = pathname.split('/');
+
+    setActiveLink(splitPath.length > 1 ? splitPath[1] : '');
   }, []);
 
   return (
@@ -42,9 +45,9 @@ const SidebarNav = ({ pages, variant, collapsed, onClose, setCollapse }) => {
               padding: 1,
               border: '1px solid transparent',
               marginRight: '12px',
-              color: 'white',
+              color: '#C48BFF',
               '&:hover': {
-                borderColor: 'white'
+                borderColor: '#C48BFF'
               }
             }}
             onClick={evt=>variant === 'permanent' ? setCollapse(!collapsed) : onClose()}
@@ -72,10 +75,10 @@ const SidebarNav = ({ pages, variant, collapsed, onClose, setCollapse }) => {
               fullWidth
               className='nav-itm'
               sx={{
-                fontWeight: activeLink === item.href ? 600 : 400,
-                backgroundColor: activeLink === item.href ? '#ffffff35' : 'transparent',
+                fontWeight: item.href.startsWith('/' + activeLink) ? 600 : 400,
+                backgroundColor: item.href.startsWith('/' + activeLink) ? '#816BF7' : 'transparent',
                 '&:Hover': {
-                  backgroundColor: '#ffffff35'
+                  backgroundColor: '#6883E4'
                 }
               }}
             >

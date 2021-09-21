@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { alpha, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 
 import Container from './components/Container';
-import { Topbar, Sidebar, Footer } from './components';
+import { Topbar, Sidebar } from './components';
 import pages from '../navigation-manager';
 
 const Fixed = ({ children }) => {
@@ -53,7 +52,7 @@ const Fixed = ({ children }) => {
         pages={pages}
         collapsed={collapsed}
       />
-      <main>
+      <main className='manager'>
         <Box height={{ xs: 58, sm: 66, md: 0 }} />
         <Box
           display="flex"
@@ -64,10 +63,6 @@ const Fixed = ({ children }) => {
           <Box display="flex" flex="1 1 auto" overflow="hidden">
             <Box flex="1 1 auto" height="100%" overflow="auto">
               {children}
-              <Divider />
-              <Container paddingY={4}>
-                {/* <Footer /> */}
-              </Container>
             </Box>
           </Box>
         </Box>
