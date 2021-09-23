@@ -23,16 +23,15 @@ const SidebarNav = ({ pages, variant, collapsed, onClose, setCollapse }) => {
         <Box className='logo'>
           {(variant !== 'permanent' || !collapsed) && 
           <Box
-            marginLeft={2}
             component="a"
             href="/"
             title="Modash"
           >
             <Box
               component={'img'}
-              src={'/images/logo/logo.svg'}
+              src={'/images/logo/logo.png'}
               height={34}
-              width={100}
+              width={180}
             />
           </Box>
           }

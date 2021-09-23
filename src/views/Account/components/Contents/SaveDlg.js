@@ -25,7 +25,9 @@ const campaigns = [{id:1, name:'tudfsasd', mem:6},
 
 export default function SaveDlg({closeDlg}) {
   return (
-    <section className="saveDlg">
+    <section className="saveDlg"
+      onClick={e=>e.stopPropagation()}
+      >
       <Box className="up-triangle"></Box>
       <Box>
         <Typography variant="h6">キャンペンリストに保存する</Typography>

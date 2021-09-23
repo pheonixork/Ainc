@@ -27,15 +27,11 @@ const Topbar = ({ onSidebarOpen, pages }) => {
         component="a"
         href="/"
         title="theFront"
-        width={{ xs: 100, md: 120 }}
+        width={{ xs: 180, md: 220 }}
       >
         <Box
           component={'img'}
-          src={
-            mode === 'light'
-              ? 'https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e97bda30ead14b24c69f2_Modash_logo_horizontal%20lockup_color-neutral.svg'
-              : 'https://uploads-ssl.webflow.com/5ef4691542433bca43839ceb/5f1e97bda30ead14b24c69f2_Modash_logo_horizontal%20lockup_color-neutral.svg'
-          }
+          src={'/images/logo/logo.png'}
           height={1}
           width={1}
         />

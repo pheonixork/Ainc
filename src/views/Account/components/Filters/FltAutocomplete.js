@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import RoundInfo from 'components/RoundInfo';
 
 export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr }) {
   const [itemValue, setItemValue] = useState({title:'', year:''});
@@ -25,15 +26,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
       <Box className='search-item-wrapper'>
         <Box className='search-item-header'>
           <span>{tip}</span>
-          {icon === true &&
-          <Box marginLeft={1} className='search-item-icon'>
-            <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg" className="tooltip-comp_icon_37Hup">
-              <circle cx="8" cy="8" r="8" className="circle"></circle>
-              <path d="M7.2 11.2c0 .44.36.8.8.8a.8.8 0 0 0 .8-.8V8a.8.8 0 0 0-.8-.8.8.8 0 0 0-.8.8v3.2zM8.8 4H7.2v1.6h1.6V4z" className="i"></path>
-              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 1.6a6.4 6.4 0 1 1 0 12.8A6.4 6.4 0 0 1 8 1.6z" className="outline"></path>
-            </svg>
-          </Box>
-          }
+          {icon === true && <RoundInfo marginLeft={1}/>}
         </Box>
         {itemValue && itemValue.title !== '' && 
           <Button onClick={e=>setItemValue({title:'', year:''})}>Clear</Button>

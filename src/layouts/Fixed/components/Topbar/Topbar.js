@@ -23,12 +23,12 @@ const Topbar = ({ onSidebarOpen }) => {
         component="a"
         href="/"
         title="Modash"
-        width={{ xs: 100, md: 120 }}
+        width={{ xs: 180, md: 220 }}
       >
         <Box
           component={'img'}
           src={
-            '/images/logo/logo.svg'
+            '/images/logo/logo.png'
           }
           height={1}
           width={1}

@@ -1,14 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-
+import { useRightSideContext } from 'context/rightsideshow';
 import SaveDlg from './SaveDlg';
 
 export default function SearchItem({itm, idx}) {
   const [showDlg, setShow] = useState(false);
+
+  const {selectShowItem} = useRightSideContext();
 
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
@@ -25,7 +27,9 @@ export default function SearchItem({itm, idx}) {
 
   return (
     <Box 
-      className='research-content-item'>
+      className='research-content-item box-wrapper-shadow'
+      onClick={e=>selectShowItem(true, idx)}
+      >
       <Box
         component={LazyLoadImage}
         effect="blur"
@@ -53,7 +57,7 @@ export default function SearchItem({itm, idx}) {
       <Box className='action'>
         <Box>
           <Box className='relative-action'>
-            <Button onClick={e=>setShow(true)}>
+            <Button onClick={e=>{e.stopPropagation();setShow(true)}}>
               <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
                 <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
               </svg>

@@ -6,9 +6,18 @@ module.exports = {
     managerUrl: '/account/research',
     apiUrl: process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000/api' // development api
-      : 'http://Ain.vercel.app:3000/api' // production api
+      : 'https://ainc.vercel.app/api' // production api
   },
   images: {
     domains: ['assets.maccarianagency.com', 'imgigp.modash.io'],
   },
+  env: {
+    mongodb: {
+      srv: "localhost",
+      port: "27017",
+      db: "ainc_db",
+      usr: "",
+      pwd: ""
+    }
+  }
 }

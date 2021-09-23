@@ -1,6 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
 import getConfig from 'next/config';
-import Router from 'next/router'
 
 import { fetchWrapper } from 'helpers';
 

@@ -31,3 +31,70 @@ body {
     color: hsla(0,0%,98%,.8) !important;
   }
 }
+
+.mgr5 {
+  margin-right: 5px;
+}
+
+.mgr10 {
+  margin-right: 10px;
+}
+
+.mgt5 {
+  margin-top: 5px;
+}
+
+.mgt10 {
+  margin-top: 10px;
+}
+
+.mgt15 {
+  margin-top: 15px;
+}
+
+.mgt20 {
+  margin-top: 20px;
+}
+
+.mgl5 {
+  margin-left: 5px;
+}
+
+.mgl10 {
+  margin-left: 10px;
+}
+
+.mgb5 {
+  margin-bottom: 5px;
+}
+
+.mgb10 {
+  margin-bottom: 10px;
+}
+
+button {
+  border-radius: 1px !important;
+}
+
+.round-info {
+  line-height: 0;
+  svg {
+    circle {
+      fill: white;
+    }
+
+    .i, .outline {
+      fill: #333;
+    }
+
+    &:Hover {
+      circle {
+        fill: #333
+      }
+
+      .i {
+        fill: white
+      }
+    }
+  }
+}

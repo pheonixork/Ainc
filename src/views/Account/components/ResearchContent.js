@@ -6,31 +6,18 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {SearchItem} from './Contents';
+import faker from 'faker';
 
-const mocks = [{'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':422504930, 'engage':515432, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2DDgAk%2BlFE0f8CghKo5%2FCKHnrwHpFJsVwOsLT2HHY58qvvB2REevWri5e5dDWGq%2BUrC4M4BvvnB6Aeuo02N6AJw%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':22504930, 'engage':615432, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDbrEEwrWumIvR20xZeZXa0LDeIrcniqZeG9S%2F1a5s2Rx3FZdXrWpY%2BmSBJp1l%2FmBGon3rcHA4EfuatZqMhVBzAT', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':222504930, 'engage':15432, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':122504930, 'engage':81432, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':52504930, 'engage':5432, 'per':'0.02'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':504930, 'engage':25432, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':504930, 'engage':5943, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':4930, 'engage':547, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':904930, 'engage':2344, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':402504, 'engage':65245, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':12250493, 'engage':127, 'per':'0.12'},
-              {'avatar':'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D', 
-              'name':'Instagram', 'url':'https://www.instagram.com/instagram', 'followers':8220430, 'engage':864, 'per':'0.12'}];
+const names = ['Instagram', 'Cristiano Ronaldo', 'William', 'Hiroto'];
+
+const mocks = [...Array(5)].map((_, index) => ({
+  avatar: 'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D',
+  name: names[faker.datatype.number() % 4],
+  url: 'https://www.instagram.com/instagram',
+  followers: faker.datatype.number(100000000) % 100000000,
+  engage: faker.datatype.number() % 1000000,
+  per: (faker.datatype.number() % 100) / 100,
+}));
 
 const ResearchContent = () => {
   const [sortOrder, setSort] = useState(0);
@@ -68,7 +55,6 @@ const ResearchContent = () => {
           <Button className='active'>Load next page</Button>
         </Box>
       </Box>
-      
     </Box>
   );
 };
