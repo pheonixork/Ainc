@@ -1,51 +1,51 @@
 import { SystemSecurityUpdateWarningSharp } from "@mui/icons-material";
-
+import Keyword from 'constants/lang';
 const pages = {
   navigation: [
     {
-      title: 'アカウントリサーチ',
+      title: Keyword.nav.accountresearch,
       href: '/account/research',
       icon: '/images/svgs/search.svg'
     },
     {
-      title: 'インサイトリスト',
+      title: Keyword.nav.insightlist,
       href: '/insight/list',
       icon: '/images/svgs/bookmark.svg'
     },
     {
-      title: 'キャンペーンリスト',
+      title: Keyword.nav.campaignlist,
       href: '/campaign/list',
       icon: '/images/svgs/payment.svg'
     },
     {
-      title: 'キーアカウント調整',
+      title: Keyword.nav.keyaccount,
       href: '/docs/quick-start-gatsbyjs',
       icon: '/images/svgs/record.svg'
     },
     {
-      title: 'アカデミー',
+      title: Keyword.nav.accademy,
       href: '/accademy',
       icon: '/images/svgs/trending-up.svg'
     }
   ],
   settings: [
     {
-      title: '利用プラン',
+      title: Keyword.nav.plan,
       href: '/manager/setting',
       icon: '/images/svgs/gear.svg'
     },
     {
-      title: 'よくある質問',
+      title: Keyword.nav.support,
       href: '/manager/support',
       icon: '/images/svgs/support.svg'
     },
     {
-      title: 'お問合せ',
+      title: Keyword.nav.question,
       href: '/manager/question',
-      icon: '/images/svgs/logout.svg'
+      icon: '/images/svgs/question.svg'
     },
     {
-      title: 'ログアウト',
+      title: Keyword.nav.logout,
       href: '/logout',
       icon: '/images/svgs/logout.svg'
     }

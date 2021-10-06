@@ -1,16 +1,25 @@
+import clsx from 'clsx';
 import React from 'react';
+import Link from 'next/Link';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { NavItem, ThemeModeToggler } from './components';
+import { NavItem } from './components';
+
+const useStyles = makeStyles({
+  nodecoration: {
+    color: '#2d3748',
+    textDecoration: 'none'
+  },
+});
 
 const Topbar = ({ onSidebarOpen, pages }) => {
   const theme = useTheme();
-  const { mode } = theme.palette;
+  const classes = useStyles();
   const {
     features: features,
   } = pages;
@@ -22,30 +31,21 @@ const Topbar = ({ onSidebarOpen, pages }) => {
       alignItems={'center'}
       width={1}
     >
-      <Box
-        display={'flex'}
-        component="a"
-        href="/"
-        title="theFront"
-        width={{ xs: 180, md: 220 }}
-      >
-        <Box
-          component={'img'}
-          src={'/images/logo/logo.png'}
-          height={1}
-          width={1}
-        />
-      </Box>
+      <Link href="/" replace >
+        <a>
+          <Box
+            display={'flex'} 
+            component={'img'}
+            src={'/images/logo/logo.png'}
+            width={{ xs: 180, md: 220 }}
+            height={1}
+          />
+        </a>
+      </Link>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
         <Box>
-          <Link
-            underline="none"
-            component="a"
-            href="/"
-            color="text.primary"
-            className='menuItem'
-          >
-            Blog
+          <Link href="/" replace >
+            <a className={clsx(classes.nodecoration, 'menuItem')} >Blog</a>
           </Link>
         </Box>
         <Box marginLeft={5}>
@@ -56,26 +56,14 @@ const Topbar = ({ onSidebarOpen, pages }) => {
           />
         </Box>
         <Box marginLeft={5}>
-          <Link
-            underline="none"
-            component="a"
-            href="/"
-            color="text.primary"
-            className='menuItem'
-          >
-            Pricing
+          <Link href="/" replace >
+            <a className={clsx(classes.nodecoration, 'menuItem')} >Pricing</a>
           </Link>
         </Box>
 
         <Box marginLeft={5}>
-          <Link
-            underline="none"
-            component="a"
-            href="/signin-cover"
-            color="text.primary"
-            className='menuItem'
-          >
-            LOG IN
+          <Link href="/signin-cover" replace >
+            <a className={clsx(classes.nodecoration, 'menuItem')} >LOG IN</a>
           </Link>
         </Box>
         <Box marginLeft={5}>
@@ -90,9 +78,6 @@ const Topbar = ({ onSidebarOpen, pages }) => {
         </Box>
       </Box>
       <Box sx={{ display: { xs: 'flex', md: 'none' } }} alignItems={'center'}>
-        <Box marginRight={2}>
-          <ThemeModeToggler />
-        </Box>
         <Button
           onClick={() => onSidebarOpen()}
           aria-label="Menu"

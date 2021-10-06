@@ -13,7 +13,7 @@ const SigninCoverPage = () => {
   useEffect(() => {
     // redirect to home if already logged in
     if (userService.userValue) {
-      router.push(publicRuntimeConfig.managerUrl);
+      router.push(`${publicRuntimeConfig.managerUrl}`);//?id=${userService.userValue.id}`);
     }
 }, []);
 

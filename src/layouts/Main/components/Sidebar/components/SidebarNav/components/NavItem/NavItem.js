@@ -54,7 +54,6 @@ const NavItem = ({ title, items }) => {
 NavItem.propTypes = {
   items: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
-  onClose: PropTypes.func,
 };
 
 export default NavItem;

@@ -37,10 +37,10 @@ const Form = () => {
 
   const onSubmit = (values) => {
     return userService.login(values.email, values.password)
-      .then(() => {
+      .then((user) => {
           // get return url from query parameters or default to '/'
           // const returnUrl = router.query.returnUrl || publicRuntimeConfig.managerUrl;
-          const returnUrl = publicRuntimeConfig.managerUrl;
+          const returnUrl = `${publicRuntimeConfig.managerUrl}`; //?id=${user.id}`;
           router.push(returnUrl);
       })
       .catch(error => {

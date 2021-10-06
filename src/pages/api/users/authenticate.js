@@ -1,38 +1,42 @@
 const jwt = require('jsonwebtoken');
 import getConfig from 'next/config';
+import { apiHandler } from 'middlewares';
 
-import { apiHandler } from 'helpers/api';
+import dbConnect from 'middlewares/mongodb-handler';
+import Lang from 'constants/lang';
+import Constants from 'constants/constants';
+import UserRepo from 'repositories/user.repo';
 
 const { serverRuntimeConfig } = getConfig();
 
-// users in JSON file for simplicity, store in a db for production applications
-const users = require('data/users.json');
-
 export default apiHandler(handler);
 
-function handler(req, res) {
-  switch (req.method) {
-    case 'POST':
-      return authenticate();
-    default:
-      return res.status(405).end(`Method ${req.method} Not Allowed`)
+async function handler(req, res) {
+  let isDBConnect = await dbConnect();
+  if (!isDBConnect) {
+    throw {status: Constants.errors.forbidden, message: Lang.communcation_errs.e005};
   }
 
-  function authenticate() {
-    const { username, password } = req.body;
-    const user = users.find(u => u.username === username && u.password === password);
+  switch (req.method) {
+    case 'POST':
+      return await authenticate();
+    default:
+      throw {status: Constants.errors.badrequest, message: Lang.communcation_errs.e009};
+  }
 
-    if (!user) throw 'Username or password is incorrect';
+  async function authenticate() {
+    const { username, password } = req.body;
+    
+    const userInfo = await UserRepo.getUserByEmail(username);
+    if (!userInfo) throw {status: Constants.errors.badrequest, message: Lang.communcation_errs.e001};
   
-    // create a jwt token that is valid for 7 days
-    const token = jwt.sign({ sub: user.id }, serverRuntimeConfig.secret, { expiresIn: '7d' });
+    // create a jwt token that is valid for 1 day
+    const token = jwt.sign({ sub: userInfo._id.toString() }, serverRuntimeConfig.secret, { expiresIn: '1d' });
   
     // return basic user details and token
     return res.status(200).json({
-      id: user.id,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      id: userInfo._id.toString(),
+      username: userInfo.name,
       token
     });
   }

@@ -12,12 +12,7 @@ module.exports = {
     domains: ['assets.maccarianagency.com', 'imgigp.modash.io'],
   },
   env: {
-    mongodb: {
-      srv: "localhost",
-      port: "27017",
-      db: "ainc_db",
-      usr: "",
-      pwd: ""
-    }
+    MONGODB_URI:  "mongodb://192.168.113.127:27017/",
+    DB_NAME: "ainc_db"
   }
 }

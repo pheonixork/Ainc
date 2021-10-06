@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {SearchItem} from './Contents';
 import faker from 'faker';
+import Keyword from 'constants/lang';
 
 const names = ['Instagram', 'Cristiano Ronaldo', 'William', 'Hiroto'];
 
@@ -29,30 +30,30 @@ const ResearchContent = () => {
           <path d="M0 0h24v24H0V0z" fill="none"></path>
           <path d="M4 18h4c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1zm1 6h10c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1z"></path>
         </svg>
-        <span>整列:</span>
+        <span>{Keyword.caption.sort}:</span>
         <Select 
           value={sortOrder}
           onChange={e=>setSort(e.target.value)}
           size="small"
           sx={{width:'200px', marginLeft:'5px'}}
         >
-          <MenuItem value={1}>Follower range</MenuItem>
-          <MenuItem value={2}>Engagements</MenuItem>
+          <MenuItem value={1}>{Keyword.caption.followers}</MenuItem>
+          <MenuItem value={2}>{Keyword.caption.engagement}</MenuItem>
         </Select>
       </Box>  
       <Box className='research-content'>
-        <Box className='research-content-header'>
-          <div>64 940 480 influencers found</div>
-          <div>Follower range</div>
-          <div>Engagement (Engagement rate)</div>
+        <Box className='research-content-header research-content-account-grid'>
+          <div>64 940 480 アカウント</div>
+          <div>{Keyword.caption.followers}</div>
+          <div>{Keyword.caption.engagement}</div>
           <div></div>
-          <div style={{textAlign:'end'}}>Save to list</div>
+          <div style={{textAlign:'end'}}>リストへ保存</div>
         </Box>
         {_.map(_.orderBy(mocks, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
           <SearchItem itm={itm} idx={idx} key={idx}/>
         ))}
         <Box className='load-more'>
-          <Button className='active'>Load next page</Button>
+          <Button className='active'>{Keyword.caption.nextpage}</Button>
         </Box>
       </Box>
     </Box>

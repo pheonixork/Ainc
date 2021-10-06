@@ -14,7 +14,7 @@ const Sidebar = ({ collapsed, pages, open, variant, setCollapse, onClose }) => {
       sx={{
         '& .MuiPaper-root': {
           width: '100%',
-          maxWidth: variant === 'permanent' && collapsed ? 50 : 256,
+          maxWidth: variant === 'permanent' && collapsed ? 50 : 240,
           top: { xs: 0, md: 0 },
           height: { xs: '100%', md: 'calc(100%)' },
           transition: 'all .2s ease-out'

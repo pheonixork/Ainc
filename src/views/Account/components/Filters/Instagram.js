@@ -7,11 +7,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import FltAutocomplete from './FltAutocomplete';
-import FltSingleSelect from './FltSingleSelect';
-import FltMultiSelect from './FltMultiSelect';
-import FltTextField from './FltTextField';
-import FltRangeSelect from './FltRangeSelect';
+import {FltAutocomplete, FltSingleSelect, FltMultiSelect, FltTextField, FltRangeSelect} from '../../../common/SearchFilters';
+import Keyword from 'constants/lang';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -108,23 +105,22 @@ export default function Instagram({...rest}) {
         <Typography
           variant="body1"
         >
-          Influencer filters • <span style={{fontSize:'0.8rem'}}>Try starting with number of followers and audience filters narrowing your search</span>
+          インフルエンサーフィルター • <span style={{fontSize:'0.8rem'}}>検察するインフルエンサーフィルターを選択</span>
         </Typography>
-
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
-          <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
+          <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'200px !important'}}>
             <FltAutocomplete 
               clearFlag={clearFlag}
-              tip='Influencer location' 
-              phstr='Where are your influencers?' 
+              tip={Keyword.caption.influencerlocation}
+              phstr='インフルエンサーはどこにありますか？'
               icon={false} 
               values={top100Films} />
           </Box>
           <Box>
             <FltRangeSelect
               clearFlag={clearFlag}
-              tip='Followers'
+              tip={Keyword.caption.followers}
               icon={false}
               fromValues={followers}
               fromStyle={{width:'8rem'}}
@@ -135,32 +131,31 @@ export default function Instagram({...rest}) {
           <Box>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Gender' 
+              tip={Keyword.caption.gender}
               icon={false} 
               values={['Male', 'Female']}
               style={{width:'8rem'}}/>
           </Box>
-          <Box>
+          <Box sx={{minWidth: '11.0108433735rem!important', maxWidth: '12.4285714286rem!important'}}>
             <FltMultiSelect 
               clearFlag={clearFlag}
-              tip='Interests' 
+              tip={Keyword.caption.interest}
               icon={false}
               values={names}
-              sx={{width:'14rem'}}
             />
           </Box>
           <Box sx={{minWidth:'150px', flex:1}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Language' 
+              tip={Keyword.caption.language}
               icon={false} 
               values={languages}
-              style={{width: '100% !important'}}/>
+              />
           </Box>
           <Box >
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Last post' 
+              tip={Keyword.caption.post}
               icon={false} 
               values={['30 days', '3 Months', '6 Months']}
               style={{width:'12rem'}}/>
@@ -168,7 +163,7 @@ export default function Instagram({...rest}) {
           <Box>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Engagement rate' 
+              tip={Keyword.caption.engagement}
               icon={true} 
               values={engages}
               style={{width:'12rem'}}/>
@@ -176,19 +171,19 @@ export default function Instagram({...rest}) {
           <Box>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Contract information' 
+              tip={Keyword.caption.contractinfo}
               icon={false} 
               values={['Email available']}
-              style={{width:'13rem'}}/>
+              style={{width:'12rem'}}/>
           </Box>
           <Box sx={{flex:1, minWidth:'220px !important'}}>
             <FltTextField clearFlag={clearFlag} tip='Bio' icon={true} phstr='Any' />
           </Box>
           <Box sx={{width:'300px'}}>
-            <FltTextField clearFlag={clearFlag} tip='Keyword Topics' icon={true} phstr='Any' />
+            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.keyword} icon={true} phstr='Any' />
           </Box>
           <Box sx={{width:'250px'}}>
-            <FltTextField clearFlag={clearFlag} tip='Hash tag' icon={false} phstr='Any' />
+            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.hashtag} icon={false} phstr='Any' />
           </Box>
         </Box>
       </Box>
@@ -196,23 +191,22 @@ export default function Instagram({...rest}) {
         <Typography
           variant="body1"
         >
-          Audience filters • <span style={{fontSize:'0.8rem'}}>For best results, start with location, gender and age before adding more filters</span>
+          観客フィルター • <span style={{fontSize:'0.8rem'}}>性別・地域など選択</span>
         </Typography>
-
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
             <FltAutocomplete 
               clearFlag={clearFlag}
-              tip='Audience location' 
-              phstr='Where are your audience?' 
+              tip={Keyword.caption.audiencelocation}
+              phstr='観客がどこにありますか？' 
               icon={true} 
               values={top100Films} />
           </Box>
           <Box>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Gender' 
+              tip={Keyword.caption.gender}
               icon={true} 
               values={['Male', 'Female']}
               style={{width:'8rem'}}/>
@@ -220,7 +214,7 @@ export default function Instagram({...rest}) {
           <Box>
             <FltMultiSelect 
               clearFlag={clearFlag}
-              tip='Age' 
+              tip={Keyword.caption.age}
               icon={true}
               values={ages}
               sx={{width:'8rem'}}
@@ -229,7 +223,7 @@ export default function Instagram({...rest}) {
           <Box>
             <FltMultiSelect 
               clearFlag={clearFlag}
-              tip='Interests' 
+              tip={Keyword.caption.interest}
               icon={true}
               values={names}
               sx={{width:'14rem'}}
@@ -238,7 +232,7 @@ export default function Instagram({...rest}) {
           <Box sx={{minWidth:'150px', flex:1}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
-              tip='Language' 
+              tip={Keyword.caption.language}
               icon={false} 
               values={languages}
               style={{width: '100% !important'}}/>
@@ -249,7 +243,7 @@ export default function Instagram({...rest}) {
         <Typography
           variant="body1"
         >
-          Search by Username • <span style={{fontSize:'0.8rem'}}>Successful users often use this to check specific accounts and find similar influencers</span>
+          名前検察 • <span style={{fontSize:'0.8rem'}}>アカウント・インフルエンサー検察</span>
         </Typography>
         <Box sx={{marginTop:'10px'}}>
           <TextField 
@@ -264,14 +258,14 @@ export default function Instagram({...rest}) {
             variant={'outlined'}
             onClick={clearFilterClicked}
           >
-            Clear all filters
+            {Keyword.caption.clearall}
           </Button>
           <Button
             className="active"
             variant={'outlined'}
             sx={{marginLeft:'15px'}}
           >
-            Find influencers
+            {Keyword.caption.search}
           </Button>
         </Box>
       </Box>

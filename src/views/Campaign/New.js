@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { alpha, useTheme } from '@mui/material/styles';
 import { Box, Typography, Button, Paper, TextField, MenuItem } from '@mui/material';
 
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
 
-const snsValues = ['Instagram', 'Youtube', 'TikTok'];
-const genreValues = ['ファッション', 'ビューティー', 'グルメ', 'インテリア', '電化製品', '不動産', '動物', '旅行', '日用品', 'エンタメ', '旅行・ホテル', 'ゲーム', 'キッズ', '乗り物', 'アート(音楽・映画)', 'ビジネス', 'スポーツ・アクティブ', 'その他'];
+import Lang from 'constants/lang';
+import Constants from 'constants/constants';
 
 const New = () => {
   const [sns, setSNS] = useState();
@@ -19,6 +18,10 @@ const New = () => {
   const handleGenreChange = (event) => {
     setGenre(event.target.value);
   };
+
+  const campaignCreate = (e) => {
+
+  }
 
   return (
     <Fixed>
@@ -80,9 +83,9 @@ const New = () => {
               value={sns}
               onClick={handleSNSChange}
             >
-              {snsValues.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
+              {Constants.snsTypes.map((option, index) => (
+                <MenuItem key={index} value={option.key}>
+                  {option.val}
                 </MenuItem>
               ))}
             </TextField>
@@ -96,7 +99,7 @@ const New = () => {
           >
             <TextField
               select
-              label="ジャンル"
+              label={Lang.caption.type}
               variant="outlined" 
               sx={{
                 width: '100%'
@@ -104,7 +107,7 @@ const New = () => {
               value={genre}
               onClick={handleGenreChange}
             >
-              {genreValues.map((option, index) => (
+              {Constants.campaignTypes.map((option, index) => (
                 <MenuItem key={index} value={option}>
                   {option}
                 </MenuItem>
@@ -119,16 +122,15 @@ const New = () => {
             }}
           >
             <Button
-              component={'a'}
               variant="contained"
               color="primary"
               size="large"
-              href={'/campaign/detail'}
               sx={{
                 width: '100%'
               }}
+              onClick={campaignCreate}
             >
-              作成
+              {Lang.btn.create}
             </Button>
           </Box>
         </Paper>

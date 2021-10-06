@@ -61,16 +61,19 @@ export default function App({ Component, pageProps }) {
     const publicPaths = ['/signin-cover', '/password-reset-cover', '/signup-cover', '/register', '/blog', '/features', '/pricing'];
     const path = url.split('?')[0];
 
-    if (!userService.userValue && 
+    if (path === '/') {
+      setAuthorized(true);
+    } else if (!userService.userValue && 
       _.findIndex(publicPaths, itm => path.startsWith(itm) === true) === -1) {
       setAuthorized(false);
-      if (url === '/logout')
-        router.push({pathname: '/signin-cover'});
-      else
-        router.push({
-          pathname: '/signin-cover',
-          query: { returnUrl: router.asPath }
-        });
+      // if (url === '/logout')
+      //   router.push({pathname: '/signin-cover'});
+      // else
+      //   router.push({
+      //     pathname: '/signin-cover',
+      //     query: { returnUrl: router.asPath }
+      //   });
+      router.push({pathname: '/signin-cover'});
     } else {
       setAuthorized(true);
     }
