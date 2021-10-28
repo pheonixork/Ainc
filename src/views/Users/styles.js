@@ -11,8 +11,12 @@ const styles = theme => ({
     '-webkitBoxOrient': 'vertical',
     '-webkitLineClamp': 4,
   },
-  switchCell: {
-    display: 'flex'
+  settingInput: {
+    padding: '0',
+    width: '90px'
+  },
+  settingCellNoPadding: {
+    padding: '.3rem',
   }
 });
 

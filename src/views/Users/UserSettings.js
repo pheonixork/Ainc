@@ -1,14 +1,17 @@
 import _ from 'lodash';
 import React, {useEffect, useState, useMemo} from 'react';
+import toast from 'react-hot-toast';
 import {useTheme} from '@mui/material/styles';
 import {makeStyles} from '@mui/styles'; 
-import {Table, TableHead, TableBody, TableRow, TableCell, TextField, Typography, Switch} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import RadioButtonIcon from '@mui/icons-material/RadioButtonUnchecked';
+import {Box, Table, TableHead, TableBody, TableRow, TableCell, Button} from '@mui/material';
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
+import SettingInput from './components/SettingInput';
+import SettingSwitch from './components/SettingSwitch';
 import {planService} from 'services';
 import styles from './styles';
+import Lang from 'constants/lang';
+
 
 const amountFields = ['monthval', 'yearval', 'isfree', 'pages', 'profies', 'reports', 'csv'];
 const amountLabels = ['金額/月', '金額/年', 'Free設定', 'ページ検察', 'プロフィール表示', 'フルレポート', 'CSV'];
@@ -27,6 +30,19 @@ const UserSettings = () => {
     return makeStyles(styles, {defaultTheme: theme});
   }, [theme]);
   const classes = useStyles();
+
+  const savePlan = () => {
+    planService.savePlans(enterprise, advanced, performance, essentials, trial)
+      .then((response) => {
+        if (response.status !== 'ok') {
+          toast.error(response.message);
+          return;
+        }
+        toast.success('プラン設定を保存しました。');
+      }).catch(err => {
+        toast.error('プラン設定保存に失敗しました。');
+      });
+  }
 
   useEffect(() => {
     planService.getAllPlans()
@@ -49,63 +65,134 @@ const UserSettings = () => {
       });
   }, []);
 
+  const updateMembers = (type, field, val) => {
+    if (type === 'enterprise')
+      _.set(enterprise, field, val);
+    else if (type === 'advanced')
+      _.set(advanced, field, val);
+    else if (type === 'performance')
+      _.set(performance, field, val);
+    else if (type === 'essentials')
+      _.set(essentials, field, val);
+    else
+      _.set(trial, field, val);
+  }
+
   return (
     <Fixed>
       <Container>
         <Table style={{width: '900px'}}>
           <TableHead>
             <TableRow>
-              <TableCell ></TableCell>
-              <TableCell style={{width:'150px'}}>Enterprise</TableCell>
-              <TableCell style={{width:'150px'}}>Advanced</TableCell>
-              <TableCell style={{width:'150px'}}>Performance</TableCell>
-              <TableCell style={{width:'150px'}}>Essentials</TableCell>
-              <TableCell style={{width:'100px'}}>Free trial</TableCell>
+              <TableCell className={classes.settingCellNoPadding}></TableCell>
+              <TableCell className={classes.settingCellNoPadding} style={{width:'150px'}}>Enterprise</TableCell>
+              <TableCell className={classes.settingCellNoPadding} style={{width:'150px'}}>Advanced</TableCell>
+              <TableCell className={classes.settingCellNoPadding} style={{width:'150px'}}>Performance</TableCell>
+              <TableCell className={classes.settingCellNoPadding} style={{width:'150px'}}>Essentials</TableCell>
+              <TableCell className={classes.settingCellNoPadding} style={{width:'100px'}}>Free trial</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <>
               {_.map(amountLabels, (itm, idx) => (
                 <TableRow key={idx}>
-                  <TableCell sx={{textAlign:'right'}}>{itm}</TableCell>
-                  <TableCell>ask</TableCell>
-                  <TableCell>
-                    {_.get(advanced, amountFields[idx]) === 0 ? '-' : _.get(advanced, amountFields[idx])}
+                  <TableCell className={classes.settingCellNoPadding} align="right">{itm}</TableCell>
+                  <TableCell className={classes.settingCellNoPadding} align="center">ask</TableCell>
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingInput 
+                      classes={classes} 
+                      initVal={_.get(advanced, amountFields[idx])} 
+                      type='advanced'
+                      field={amountFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                      {_.get(performance, amountFields[idx]) === 0 ? '-' : _.get(performance, amountFields[idx])}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingInput 
+                      classes={classes} 
+                      initVal={_.get(performance, amountFields[idx])} 
+                      type='performance'
+                      field={amountFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                      {_.get(essentials, amountFields[idx]) === 0 ? '-' : _.get(essentials, amountFields[idx])}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingInput 
+                      classes={classes} 
+                      initVal={_.get(essentials, amountFields[idx])} 
+                      type='essentials'
+                      field={amountFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                      {_.get(trial, amountFields[idx]) === 0 ? '-' : _.get(trial, amountFields[idx])}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingInput 
+                      classes={classes} 
+                      initVal={_.get(trial, amountFields[idx])} 
+                      type='trial'
+                      field={amountFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
               {_.map(checkLabels, (itm, idx) => (
                 <TableRow key={idx}>
-                  <TableCell sx={{textAlign:'right'}}>{itm}</TableCell>
-                  <TableCell className={classes.switchCell}>
-                    <Switch value={_.get(enterprise, checkFields[idx]) === 1 ? 'on' : 'off'} />
+                  <TableCell className={classes.settingCellNoPadding} sx={{textAlign:'right'}}>{itm}</TableCell>
+                  <TableCell className={classes.settingCellNoPadding} align="center">
+                    <SettingSwitch
+                      initVal={_.get(enterprise, checkFields[idx])} 
+                      type='enterprise'
+                      field={checkFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                    {_.get(advanced, checkFields[idx]) === 1 ? <RadioButtonIcon /> : <CloseIcon />}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingSwitch
+                      initVal={_.get(advanced, checkFields[idx])} 
+                      type='advanced'
+                      field={checkFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                    {_.get(performance, checkFields[idx]) === 1 ? <RadioButtonIcon /> : <CloseIcon />}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingSwitch
+                      initVal={_.get(performance, checkFields[idx])} 
+                      type='performance'
+                      field={checkFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                    {_.get(essentials, checkFields[idx]) === 1 ? <RadioButtonIcon /> : <CloseIcon />}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingSwitch
+                      initVal={_.get(essentials, checkFields[idx])} 
+                      type='essentials'
+                      field={checkFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
-                  <TableCell>
-                    {_.get(trial, checkFields[idx]) === 1 ? <RadioButtonIcon /> : <CloseIcon />}
+                  <TableCell className={classes.settingCellNoPadding}>
+                    <SettingSwitch
+                      initVal={_.get(trial, checkFields[idx])} 
+                      type='trial'
+                      field={checkFields[idx]}
+                      updateStores={updateMembers}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
             </>
           </TableBody>
         </Table>
+        <Box sx={{textAlign: 'center', width: '900px', marginTop: '20px'}}>
+          <Button
+            className="active"
+            variant={'outlined'}
+            onClick={e => savePlan()}
+          >
+            {Lang.btn.save}
+          </Button>
+        </Box>
       </Container>
     </Fixed>
   );

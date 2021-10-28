@@ -6,14 +6,15 @@ const baseUrl = `${publicRuntimeConfig.apiUrl}/plans`;
 
 export const planService = {
   getAllPlans,
-  savePlan,
+  savePlans,
 };
 
-function savePlan(name, sns, type) {
-  return fetchWrapper.post(`${baseUrl}/save`, { name, sns, type })
-    .then(response => {
-      return response;
-    });
+function savePlans(enterprise, advanced, performance, essentials, trial) {
+  return fetchWrapper.post(`${baseUrl}/update`, {
+    enterprise, advanced, performance, essentials, trial
+  }).then(response => {
+    return response;
+  });
 }
 
 function getAllPlans() {

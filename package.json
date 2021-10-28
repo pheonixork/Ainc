@@ -51,6 +51,7 @@
     "date-fns": "^2.25.0",
     "express-jwt": "^6.1.0",
     "faker": "^5.5.3",
+    "fast-memoize": "^2.5.2",
     "formik": "^2.2.6",
     "jarallax": "^1.12.7",
     "moment": "^2.29.1",
