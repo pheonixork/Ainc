@@ -11,8 +11,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-import { userService } from 'services';
-const { publicRuntimeConfig } = getConfig();
+import {userService} from 'services';
+import Constants from 'constants/constants';
+const {publicRuntimeConfig} = getConfig();
 
 const validationSchema = yup.object({
   email: yup
@@ -40,11 +41,14 @@ const Form = () => {
       .then((user) => {
           // get return url from query parameters or default to '/'
           // const returnUrl = router.query.returnUrl || publicRuntimeConfig.managerUrl;
-          const returnUrl = `${publicRuntimeConfig.managerUrl}`; //?id=${user.id}`;
+          let returnUrl = `${publicRuntimeConfig.managerUrl}`; //?id=${user.id}`;
+          if (user.role === Constants.roleInfo.admin)
+            returnUrl = `${publicRuntimeConfig.adminUrl}`;
+
           router.push(returnUrl);
       })
       .catch(error => {
-          setError({ message: error });
+          setError({ message: error.toString() });
       });
   };
 
@@ -110,7 +114,7 @@ const Form = () => {
                   Enter your password
                 </Typography>
               </Box>
-              <Typography variant={'subtitle2'}>
+              {/* <Typography variant={'subtitle2'}>
                 <Link
                   component={'a'}
                   color={'primary'}
@@ -119,7 +123,7 @@ const Form = () => {
                 >
                   Forgot your password?
                 </Link>
-              </Typography>
+              </Typography> */}
             </Box>
             <TextField
               label="Password *"

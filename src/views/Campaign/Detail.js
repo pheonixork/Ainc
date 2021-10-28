@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Button} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
 import { TabSelect, Tabs } from './components';
 import { CustomInput } from './components/CustomInput';
 
-const Detail = ({ campaignData }) => {
+const Detail = ({cmpId, cmpName, cmpSns}) => {
   const [selType, onSelect] = useState('list');
-  
+
   return (
     <Fixed>
       <Container className='content-wrapper'>
@@ -35,13 +34,13 @@ const Detail = ({ campaignData }) => {
               }}
             />
           </Button>
-          <CustomInput value={campaignData.name}></CustomInput>
+          <CustomInput campTitle={cmpName}></CustomInput>
         </Box>
         <Box marginTop={4}>
           <TabSelect curType={selType} onSelect={onSelect}/>
         </Box>
         <Box marginTop={4}>
-          <Tabs curType={selType} />
+          <Tabs curType={selType} campaignId={cmpId} campaignSNS={cmpSns} />
         </Box>
       </Container>
     </Fixed>

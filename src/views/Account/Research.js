@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import _ from 'lodash';
+import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
-import { FilterSelect, InfluencerBrief } from '../Common';
-import { Filter, ResearchContent} from './components';
+import {FilterSelect, InfluencerBrief} from '../Common';
+import {Filter, ResearchContent} from './components';
 
 import Keyword from 'constants/lang';
 import Constants from 'constants/constants';
 
-const Research = () => {
+const Research = ({campaigns}) => {
   const [selType, onSelect] = useState(Constants.snsInstagram);
+  const [selCampaigns, setCurrentCampaigns] = useState([]);
+
+  useEffect(() => {
+    let results = _.filter(campaigns, itm => itm.sns === selType);
+    setCurrentCampaigns([...results]);
+  }, [campaigns, selType]);
 
   return (
     <Fixed>
@@ -39,12 +47,16 @@ const Research = () => {
           <Filter curType={selType}/>
         </Box>  
         <Box marginTop={2} data-aos={'fade-up'}>
-          <ResearchContent />
+          <ResearchContent selType={selType} campaigns={selCampaigns} />
         </Box> 
         <InfluencerBrief /> 
       </Container>
     </Fixed>
   );
 };
+
+Research.propTypes = {
+  campaigns: PropTypes.array
+}
 
 export default Research;

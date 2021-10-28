@@ -28,6 +28,10 @@ export const light = {
     level2: '#f5f5f5',
     level1: '#ffffff',
   },
+  waiting: {
+    forecolor: '#1377EB',
+    backcolor: '#f3f3f3',
+  }
 };
 
 export const dark = {
@@ -64,4 +68,8 @@ export const dark = {
     level2: '#333',
     level1: '#2D3748',
   },
+  waiting: {
+    forecolor: '#1377EB',
+    backcolor: '#f3f3f3',
+  }
 };

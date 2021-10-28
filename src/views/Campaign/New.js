@@ -1,15 +1,24 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
-import { Box, Typography, Button, Paper, TextField, MenuItem } from '@mui/material';
+import {useRouter} from 'next/router';
 
+import { Box, Typography, Button, Paper, TextField, MenuItem } from '@mui/material';
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
-
 import Lang from 'constants/lang';
 import Constants from 'constants/constants';
+import {campaignService} from 'services';
 
 const New = () => {
+  const router = useRouter();
+  const [err, setError] = useState('');
+  const [title, setTitle] = useState('');
   const [sns, setSNS] = useState();
   const [genre, setGenre] = useState();
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  }
 
   const handleSNSChange = (event) => {
     setSNS(event.target.value);
@@ -19,8 +28,19 @@ const New = () => {
     setGenre(event.target.value);
   };
 
-  const campaignCreate = (e) => {
-
+  const campaignCreate = () => {
+    return campaignService.createCampaign(title, sns, genre)
+      .then((ret) => {
+        if (ret.status === 'ok') {
+          const returnUrl = `/campaign/detail/${ret.id}`;
+          router.push(returnUrl);
+        } else {
+          setError(ret.msg);
+        }
+      })
+      .catch(error => {
+          setError(error);
+      });
   }
 
   return (
@@ -64,6 +84,8 @@ const New = () => {
               sx={{
                 width: '100%'
               }}
+              value={title}
+              onChange={handleTitleChange}
             />
           </Box>
           <Box
@@ -81,11 +103,11 @@ const New = () => {
                 width: '100%'
               }}
               value={sns}
-              onClick={handleSNSChange}
+              onChange={handleSNSChange}
             >
-              {Constants.snsTypes.map((option, index) => (
-                <MenuItem key={index} value={option.key}>
-                  {option.val}
+              {_.map(Constants.snsTypes, (typeVal, typeKey) => (
+                <MenuItem key={typeKey} value={typeKey}>
+                  {typeVal}
                 </MenuItem>
               ))}
             </TextField>
@@ -105,7 +127,7 @@ const New = () => {
                 width: '100%'
               }}
               value={genre}
-              onClick={handleGenreChange}
+              onChange={handleGenreChange}
             >
               {Constants.campaignTypes.map((option, index) => (
                 <MenuItem key={index} value={option}>
@@ -114,21 +136,11 @@ const New = () => {
               ))}
             </TextField>
           </Box>
-          <Box
-            display='block'
-            sx={{
-              width: '30%',
-              margin: '50px auto',
-            }}
-          >
+          <Box sx={{textAlign: 'center'}}>
             <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{
-                width: '100%'
-              }}
-              onClick={campaignCreate}
+              className="active"
+              variant={'outlined'}
+              onClick={e => campaignCreate()}
             >
               {Lang.btn.create}
             </Button>

@@ -1,18 +1,29 @@
-const expressJwt = require('express-jwt');
-const util = require('util');
+const jwt = require('jsonwebtoken');
 import getConfig from 'next/config';
+import Lang from 'constants/lang';
+import Constants from 'constants/constants';
 
-const { serverRuntimeConfig } = getConfig();
+const {serverRuntimeConfig} = getConfig();
 
-export { jwtMiddleware };
+export {jwtMiddleware};
 
 function jwtMiddleware(req, res) {
-    const middleware = expressJwt({ secret: serverRuntimeConfig.secret, algorithms: ['HS256'] }).unless({
-        path: [
-            // public routes that don't require authentication
-            '/api/users/authenticate'
-        ]
-    });
+	if (req.url === '/api/users/authenticate')
+		return true;
 
-    return util.promisify(middleware)(req, res);
+	const authHeader = req.headers.authorization;
+	if (!authHeader)
+		throw {status: Constants.errors.unauthorized, message: Lang.communcation_errs.e010};
+
+	const token = authHeader.split(' ')[1];
+	jwt.verify(token, serverRuntimeConfig.secret, (err, tokenInfo) => {
+		if (err)
+			throw {status: Constants.errors.unauthorized, message: Lang.communcation_errs.e010};
+		if (tokenInfo.exp < tokenInfo.iat)
+			throw {status: Constants.errors.forbidden, message: Lang.communcation_errs.e010};
+
+		req.user = {id:tokenInfo.user, role:tokenInfo.role};
+	});
+
+	return true;
 }

@@ -8,7 +8,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-CustomTableHead.propTypes = {
+ListTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ CustomTableHead.propTypes = {
 };
 
 
-export default function CustomTableHead(props) {
+export default function ListTableHead(props) {
   const { order, orderBy, onRequestSort, headCells } =
     props;
   const createSortHandler = (property) => (event) => {
@@ -30,7 +30,7 @@ export default function CustomTableHead(props) {
           <TableCell
             key={headCell.id}
             // align={headCell.numeric ? 'right' : 'left'}
-            align='center'
+            align={headCell.align}
             padding='normal'
             sortDirection={orderBy === headCell.id ? order : false}
           >

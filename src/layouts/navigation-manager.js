@@ -1,53 +1,72 @@
 import { SystemSecurityUpdateWarningSharp } from "@mui/icons-material";
-import Keyword from 'constants/lang';
+import Lang from 'constants/lang';
 const pages = {
   navigation: [
     {
-      title: Keyword.nav.accountresearch,
+      title: Lang.nav.accountresearch,
       href: '/account/research',
       icon: '/images/svgs/search.svg'
     },
     {
-      title: Keyword.nav.insightlist,
+      title: Lang.nav.insightlist,
       href: '/insight/list',
-      icon: '/images/svgs/bookmark.svg'
+      icon: '/images/svgs/bookmark.svg',
+      isInsight: true,
     },
     {
-      title: Keyword.nav.campaignlist,
+      title: Lang.nav.campaignlist,
       href: '/campaign/list',
-      icon: '/images/svgs/payment.svg'
+      icon: '/images/svgs/payment.svg',
+      isCampaign: true,
     },
     {
-      title: Keyword.nav.keyaccount,
+      title: Lang.nav.keyaccount,
       href: '/docs/quick-start-gatsbyjs',
       icon: '/images/svgs/record.svg'
     },
     {
-      title: Keyword.nav.accademy,
+      title: Lang.nav.accademy,
       href: '/accademy',
       icon: '/images/svgs/trending-up.svg'
     }
   ],
   settings: [
     {
-      title: Keyword.nav.plan,
-      href: '/manager/setting',
+      title: Lang.nav.plan,
+      href: '/setting',
       icon: '/images/svgs/gear.svg'
     },
     {
-      title: Keyword.nav.support,
+      title: Lang.nav.support,
       href: '/manager/support',
       icon: '/images/svgs/support.svg'
     },
     {
-      title: Keyword.nav.question,
+      title: Lang.nav.question,
       href: '/manager/question',
       icon: '/images/svgs/question.svg'
     },
     {
-      title: Keyword.nav.logout,
+      title: Lang.nav.logout,
       href: '/logout',
       icon: '/images/svgs/logout.svg'
+    }
+  ],
+  users: [
+    {
+      title: Lang.nav.user.create,
+      href: '/users/create',
+      icon: '/images/svgs/usercreate.svg'
+    },
+    {
+      title: Lang.nav.user.list,
+      href: '/users/userlist',
+      icon: '/images/svgs/userlist.svg'
+    },
+    {
+      title: Lang.nav.user.setting,
+      href: '/users/plansetting',
+      icon: '/images/svgs/usersettings.svg'
     }
   ]
 };

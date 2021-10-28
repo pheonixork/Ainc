@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
-import React, { useState } from 'react';
+import PropTypes from 'prop-types'
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
@@ -11,17 +12,22 @@ import Keyword from 'constants/lang';
 
 const names = ['Instagram', 'Cristiano Ronaldo', 'William', 'Hiroto'];
 
-const mocks = [...Array(5)].map((_, index) => ({
-  avatar: 'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D',
-  name: names[faker.datatype.number() % 4],
-  url: 'https://www.instagram.com/instagram',
-  followers: faker.datatype.number(100000000) % 100000000,
-  engage: faker.datatype.number() % 1000000,
-  per: (faker.datatype.number() % 100) / 100,
-}));
-
-const ResearchContent = () => {
+const ResearchContent = ({selType, campaigns}) => {
   const [sortOrder, setSort] = useState(0);
+  const [account, setAccounts] = useState([]);
+  useEffect(() => {
+    let mocks = [...Array(5)].map((_, index) => ({
+      id: 'account_' + selType + (faker.datatype.number() % 1000000),
+      avatar: 'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D',
+      name: names[faker.datatype.number() % 4],
+      url: 'https://www.instagram.com/instagram',
+      followers: faker.datatype.number(100000000) % 100000000,
+      engage: faker.datatype.number() % 1000000,
+      per: (faker.datatype.number() % 100) / 100,
+    }));
+
+    setAccounts(mocks);
+  },[selType]);
 
   return (
     <Box>
@@ -43,14 +49,14 @@ const ResearchContent = () => {
       </Box>  
       <Box className='research-content'>
         <Box className='research-content-header research-content-account-grid'>
-          <div>64 940 480 アカウント</div>
+          <div>{account.length} アカウント</div>
           <div>{Keyword.caption.followers}</div>
           <div>{Keyword.caption.engagement}</div>
           <div></div>
           <div style={{textAlign:'end'}}>リストへ保存</div>
         </Box>
-        {_.map(_.orderBy(mocks, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
-          <SearchItem itm={itm} idx={idx} key={idx}/>
+        {_.map(_.orderBy(account, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
+          <SearchItem key={itm.id} itm={itm} cattype={selType} campaigns={campaigns} />
         ))}
         <Box className='load-more'>
           <Button className='active'>{Keyword.caption.nextpage}</Button>
@@ -59,5 +65,10 @@ const ResearchContent = () => {
     </Box>
   );
 };
+
+ResearchContent.propTypes = {
+  selType: PropTypes.string,
+  campaigns: PropTypes.array,
+}
 
 export default ResearchContent;

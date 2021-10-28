@@ -12,11 +12,12 @@ export const userService = {
   get userValue () { return userSubject.value },
   login,
   logout,
+  createUser,
   getAll
 };
 
 function login(username, password) {
-  return fetchWrapper.post(`${baseUrl}/authenticate`, { username, password })
+  return fetchWrapper.post(`${baseUrl}/authenticate`, {username, password})
     .then(user => {
       // publish user to subscribers and store in local storage to stay logged in between page refreshes
       userSubject.next(user);
@@ -27,9 +28,18 @@ function login(username, password) {
 }
 
 function logout() {
-  // remove user from local storage, publish null to user subscribers and redirect to login page
-  localStorage.removeItem('user');
-  userSubject.next(null);
+  return fetchWrapper.get(`${baseUrl}/logout`)
+    .then(response => {
+      localStorage.removeItem('user');
+      userSubject.next(null);
+    });
+}
+
+function createUser(args) {
+ return fetchWrapper.post(`${baseUrl}/create`, {...args})
+  .then(response => {
+    return response;
+  }); 
 }
 
 function getAll() {

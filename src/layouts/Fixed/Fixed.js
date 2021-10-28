@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import {Toaster} from 'react-hot-toast';
 import PropTypes from 'prop-types';
-import { alpha, useTheme } from '@mui/material/styles';
+import {alpha, useTheme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -69,6 +70,17 @@ const Fixed = ({ children }) => {
             </Box>
           </Box>
         </main>
+        <Toaster
+          position="top-right"
+          reverseOrder={true}
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: 'rgb(35, 80, 122)',
+              color: '#fff',
+            },
+          }}
+        />
       </Box>
     </MainContextWrapper>
   );

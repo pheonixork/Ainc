@@ -9,7 +9,7 @@ async function dbConnect() {
     return true;
   }
 
-  let dbConnectUrl = process.env.MONGODB_URI + process.env.DB_NAME;
+  let dbConnectUrl = process.env.MONGODB_URI + process.env.MONGODB_DB;
   /* connecting to our database */
   await mongoose.connect(dbConnectUrl).then(() => {
     global.connection.isConnected = true;

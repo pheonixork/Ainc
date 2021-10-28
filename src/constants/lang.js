@@ -13,6 +13,11 @@ const keywords = {
     support: 'よくある質問',
     question: 'お問合せ',
     logout: 'ログアウト',
+    user: {
+      create: '新規作成',
+      list: 'ユーザーリスト',
+      setting: 'プラン設定',
+    }
   },
   caption: {
     search: '検察',
@@ -43,12 +48,19 @@ const keywords = {
   },
   label: {
     searchfromsite: 'Instagram・YouTube・TikTokからアカウントを探してみます。',
+    influencersaved: 'アクント登録に成功しました。',
   },
   communcation_errs: {
     e001: 'メールとかパスワードが違いです。',
     e002: 'トクンエラー',
     e005: 'データベーズ接続エラー',
     e009: '対応メッソドがありません',
+    e010: '先に登録してください',
+    e011: 'トクン時間が経過しました、再度登録してください',
+    e020: '同じなキャンペンが存在します',
+    e030: 'アカウントがずでに存在します',
+    e039: '処理途中にエラーが発生しました',
+    e040: '同じなユーザーが存在します',
   }
 };
 

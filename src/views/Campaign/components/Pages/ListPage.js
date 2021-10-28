@@ -1,95 +1,62 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
-import { Paper } from '@mui/material';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import campaignList from 'mockup/campain_list';
-import { ListPageTable } from '../Table'
+import React, {useState, useEffect} from 'react';
+import {Box, } from '@mui/material';
+import {ListPageStatic, ListPageTable} from '../Table'
+import {campaignService} from 'services';
+import toast from 'react-hot-toast';
 
-const headCells = [
-  {
-    id: 'star',
-    numeric: true,
-    label: ''
-  },
-  {
-    id: 'id',
-    numeric: true,
-    label: 'ジャンル',
-  },
-  {
-    id: 'followers',
-    numeric: true,
-    label: 'フォロワー数',
-  },
-  {
-    id: 'eg',
-    numeric: true,
-    label: 'EG',
-  },
-  {
-    id: 'action',
-    numeric: true,
-    label: '',
-  },
-  {
-    id: 'status',
-    numeric: true,
-    label: 'ステータス',
-  },
-];
+const ListPage = ({selCampId}) => {
+  
+  const [data, setData] = useState({name: '', members:[]});
+  const [updatedMembers, setUpdatedMembers] = useState([]);
 
-const ListPage = ({...rest}) => {
-  const handleSelectChanged = (index) => {
-    console.log(index);
-  };
+  useEffect(() => {
+    if (!selCampId)
+      return;
+
+    return campaignService.getCampaignDetail(selCampId, 'list')
+      .then((ret) => {
+        if (ret.status !== 'ok') {
+          toast.error('詳しい情報を見つけてないです。');
+          return;
+        }
+
+        if (!ret.data)
+          return;
+
+        setData(ret.data);
+        setUpdatedMembers([...ret.data.members]);
+      })
+      .catch(error => {
+        toast.error(error.toString());
+      });
+
+  }, [selCampId]);
+
+  const saveMemberStatus = (idx, status) => {
+    return campaignService.updateMemberStatus(selCampId, 1, data.members[idx].accountId, status)
+    .then((ret) => {
+      if (ret.status !== 'ok') {
+        toast.error('状態保存に失敗しました。');
+        return;
+      }
+      toast.success('状態保存に成功しました。');
+
+      updatedMembers[idx].status = status;
+      setUpdatedMembers([...updatedMembers]);
+    })
+    .catch(error => {
+      toast.error(error.toString());
+    });
+  }
 
   return (
-    <Box className='list-page' {...rest}>
-      <Paper
-        sx={{
-          padding: '10px 0'
-        }}
-      >
-        <Box className='valueItemContainer'>
-          <Box className='valueItem'>
-            <p className='value'>5</p>
-            <p className='title'>人数</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>500000</p>
-            <p className='title'>リストフォロワー</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>3</p>
-            <p className='title'>OK人数</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>300000</p>
-            <p className='title'>OKフォロワー</p>
-          </Box>
-        </Box>
-        <Box className='valueItemContainer'>
-          <Box className='valueItem'>
-            <p className='value'>1</p>
-            <p className='title'>社内確認中</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>1</p>
-            <p className='title'>インフルエンサー交渉中</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>0</p>
-            <p className='title'>NG</p>
-          </Box>
-          <Box className='valueItem'>
-            <p className='value'>3</p>
-            <p className='title'>OK</p>
-          </Box>
-        </Box>
-      </Paper>
-      <ListPageTable headCells={headCells} data={campaignList} handleSelectChanged={handleSelectChanged}/>
+    <Box className='list-page'>
+      <ListPageStatic isloading={data.name.length < 1} datas={updatedMembers} />
+      <ListPageTable 
+        data={data.members} 
+        handleSaveMember={saveMemberStatus}
+      />
     </Box>
   );
 };

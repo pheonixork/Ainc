@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import {FltTextField} from '../../../common/SearchFilters';
+import {FltTextField} from '../../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 
 const useStyles = makeStyles({
@@ -139,7 +139,7 @@ export default function Instagram({...rest}) {
             variant={'outlined'}
             sx={{marginLeft:'15px'}}
           >
-            {Keyword.btn.save}
+            {Keyword.caption.search}
           </Button>
         </Box>
       </Box>

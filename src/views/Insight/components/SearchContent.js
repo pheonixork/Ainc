@@ -1,28 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import React, { useState } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import {SearchItem} from './Contents';
-import faker from 'faker';
+import PropTypes from 'prop-types'
+import {LazyLoadImage} from 'react-lazy-load-image-component';
+import {Box, Select, Button, MenuItem, Typography} from '@mui/material';
+import {AccountItem} from './Contents';
 import Lang from 'constants/lang';
+import {CP} from 'views/Common/CP';
 
-const names = ['Instagram', 'Cristiano Ronaldo', 'William', 'Hiroto'];
-
-const mocks = [...Array(5)].map((_, index) => ({
-  avatar: 'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D',
-  name: names[faker.datatype.number() % 4],
-  url: 'https://www.instagram.com/instagram',
-  followers: faker.datatype.number(100000000) % 100000000,
-  engage: faker.datatype.number() % 1000000,
-  per: (faker.datatype.number() % 100) / 100,
-}));
-
-const SearchContent = () => {
+const SearchContent = ({accounts}) => {
   const [sortOrder, setSort] = useState(0);
+  const [selId, setAccountId] = useState('');
 
   return (
     <Box>
@@ -44,29 +32,38 @@ const SearchContent = () => {
       </Box>  
       <Box className='research-content'>
         <Box className='research-content-header research-content-insight-grid'>
-          <Box
-            component={LazyLoadImage}
-            effect="blur"
-            src={'/images/svgs/star.svg'}
-            width={'20px'}
-            height={'20px'}
-            sx={{marginLeft:'30px'}}
-          />
+          <Box sx={{textAlign: 'center'}}>
+            <Box
+              component={LazyLoadImage}
+              effect="blur"
+              src={'/images/svgs/star.svg'}
+              width={'20px'}
+              height={'20px'}
+            />
+          </Box>
           <Box>ID</Box>
           <Box>{Lang.caption.followers}</Box>
           <Box>{Lang.caption.engagement}</Box>
           <Box></Box>
           <Box></Box>
         </Box>
-        {_.map(_.orderBy(mocks, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
-          <SearchItem itm={itm} idx={idx} key={idx}/>
-        ))}
+        {accounts.length < 1 ? (
+          <Typography>検察結果がありません</Typography>
+        ) : (
+        _.map(_.orderBy(accounts, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), itm => (
+          <AccountItem itm={itm} key={itm._id} showCPDetail={setAccountId} />
+        )))}
         <Box className='load-more'>
           <Button className='active'>{Lang.caption.nextpage}</Button>
         </Box>
       </Box>
+      <CP accountId={selId} setCollapse={setAccountId}/>
     </Box>
   );
 };
+
+SearchContent.propTypes = {
+  accounts: PropTypes.array
+}
 
 export default SearchContent;

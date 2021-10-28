@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { toJSON, paginate } = require('./plugins');
+const toObjectId = mongoose.Types.ObjectId;
 
 const campaignSchema = mongoose.Schema({
-  userid: {
-    type: mongoose.Types.ObjectId,
+  userId: {
+    type: toObjectId,
     requried: true
   },
   name: {
@@ -20,48 +21,103 @@ const campaignSchema = mongoose.Schema({
     required: true,
   },
   members: [{
-    infId: {
+    accountId: {
+      type: toObjectId,
+      required: true,
+    },
+    name: {
       type: String,
-      required: true, 
+      required: true,
+    },
+    email: {
+      type: String,
+      default: "",
+    },
+    link: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "",
+    },
+    star: {
+      type: Number,
+      default: 0,
+    },
+    postAt: {
+      type: Date,
+    },
+    postLink: {
+      type: String,
+      default: "",
+    },
+    amount: {
+      type: Number,
+      default: 0,
+    },
+    shopping: {
+      type: String,
+      default: "",
+    },
+    followers: {
+      type: Number,
+      default: 0,
+    },
+    engage: {
+      type: Number,
+      default: 0,
+    },
+    rich: {
+      type: Number,
+      default: 0,
+    },
+    saving: {
+      type: Number,
+      default: 0,
+    },
+    oks: {
+      type: Number,
+      default: 0,
+    },
+    comment: {
+      type: Number,
+      default: 0,
+    },
+    normal: {
+      type: Number,
+      default: 0,
+    },
+    prs: {
+      type: Number,
+      default: 0,
+    },
+    sell: {
+      type: Number,
+      default: 0,
+    },
+    roas: {
+      type: Number,
+      default: 0,
+    },
+    memo: {
+      type: String,
     },
     step: {
       type: Number,
       required: true,
+      default: 1,
+    },
+    status: {
+      type: Number,
+      required: true,
       default: 1
     },
-    postDate: {
-      type: Date
-    },
-    postUrl: {
-      type: String
-    },
-    shop: {
-      type: String
-    },
-    rich: {
-      type: Number
-    },
-    saves: {
-      type: Number
-    },
-    no: {
-      type: Number
-    },
-    com: {
-      type: Number
-    },
-    inp: {
-      type: Number
-    },
-    click: {
-      type: Number
-    },
-    staff: {
-      type: Number
-    },
-    sell: {
-      type: Number
-    },
+    pstatus: {
+      type: Number,
+      required: true,
+      default: 1
+    }
   }],
 },
 {
@@ -72,6 +128,7 @@ const campaignSchema = mongoose.Schema({
 // add plugin that converts mongoose to json
 campaignSchema.plugin(toJSON);
 campaignSchema.plugin(paginate);
+campaignSchema.set('timestamps', true);
 
 /**
  * @typedef User

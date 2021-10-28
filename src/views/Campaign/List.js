@@ -1,81 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Box, Typography, Button } from '@mui/material';
 
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
-import { CampaignListTable } from './components/Table'
-import campaignList from 'mockup/campain_list';
+import {CampaignListTable} from './components/Table'
 
-const headCells = [
-  {
-    id: 'name',
-    numeric: false,
-    label: 'キャンペー\r\nン名'
-  },
-  {
-    id: 'genre',
-    numeric: false,
-    label: 'ジャンル',
-  },
-  {
-    id: 'sns',
-    numeric: false,
-    label: 'SNS',
-  },
-  {
-    id: 'price',
-    numeric: true,
-    label: '金額',
-  },
-  {
-    id: 'members',
-    numeric: true,
-    label: '人数',
-  },
-  {
-    id: 'createdDate',
-    numeric: true,
-    label: '作成日',
-  },
-  {
-    id: 'endDate',
-    numeric: true,
-    label: '終了日',
-  },
-  {
-    id: 'numberOfReach',
-    numeric: true,
-    label: 'リーチ数',
-  },
-  {
-    id: 'percentOfReach',
-    numeric: true,
-    label: 'リーチ%',
-  },
-  {
-    id: 'earnings',
-    numeric: true,
-    label: '売上',
-  },
-  {
-    id: 'roas',
-    numeric: true,
-    label: 'ROAS',
-  },
-  {
-    id: 'temp',
-    numeric: true,
-    label: ' ',
-  }
-];
-
-const List = () => {
+const List = ({campaigns}) => {
   const router = useRouter();
-
-  const handleSelectChanged = (index) => {
+  const handleSelectChanged = (rowId) => {
     router.push({
-      pathname: '/campaign/detail/' + (index + 1),
+      pathname: `/campaign/detail/${rowId}`,
     });
   };
 
@@ -93,20 +30,32 @@ const List = () => {
           >
             キャンペーンリスト
           </Typography>
-          <Button
-            component={'a'}
-            variant="contained"
-            color="primary"
-            size="large"
+          <NextLink
             href={'/campaign/new'}
+            passHref
+            replace
           >
-            新規作成
-          </Button>
-          <CampaignListTable headCells={headCells} data={campaignList} handleSelectChanged={handleSelectChanged}/>
+            <Button
+              component={'a'}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              新規作成
+            </Button>
+          </NextLink>
+          <CampaignListTable 
+            data={campaigns} 
+            handleSelectChanged={handleSelectChanged} 
+          />
         </Box>
       </Container>
     </Fixed>
   );
 };
+
+List.propTypes = {
+  campaigns: PropTypes.array,
+}
 
 export default List;

@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Image from 'next/Image';
 import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import RoundInfo from 'components/RoundInfo';
-import Constant from 'constants/constants';
+import RelativeImage from 'components/RelativeImage';
 
 const useStyles = makeStyles({
   lazyBorderRound: {
@@ -18,13 +17,10 @@ const Header = ({data, handleOpen}) => {
   const classes = useStyles();
   return (
     <Box className='header'>
-      <Image
-        className={`${classes.lazyBorderRound} lazyimagenoblur`}
-        src={data.avatar ?? data.avatar}
-        blurDataURL={Constant.blurImage}
-        placeholder="blur"
-        width={'150px'}
-        height={'150px'}
+      <RelativeImage
+        isRound
+        imgSrc={data.avatar}
+        sx={{width: '150px !important', height: '150px !important'}}
       />
       <Box className='mgt10'>
         <span style={{fontSize:'20px', fontWeight:600}}>{data.name ?? data.name}</span>

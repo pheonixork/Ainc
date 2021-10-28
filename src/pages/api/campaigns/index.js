@@ -1,19 +1,21 @@
-import { apiHandler } from 'helpers/api';
+import {apiHandler} from 'middlewares';
 import CampaignRepo from 'repositories/campaign.repo';
 
 export default apiHandler(handler);
 
-function handler(req, res) {
+async function handler(req, res) {
   switch (req.method) {
-    case 'POST':
+    case 'GET':
       return await getCampaigns();
     default:
       return {status: Constants.errors.badrequest, message: Lang.communcation_errs.e009};
   }
 
   async function getCampaigns() {
-    let list = await CampaignRepo.getCampaignList();
+    const userId = req.query.userId;
 
-    return res.status(200).json({list});
+    let list = await CampaignRepo.getCampaignList(userId);
+
+    return res.status(200).json({status:'ok', list:list});
   }
 }

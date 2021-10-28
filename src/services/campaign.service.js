@@ -1,30 +1,37 @@
-import { BehaviorSubject } from 'rxjs';
 import getConfig from 'next/config';
 
-import { fetchWrapper } from 'helpers';
+import {fetchWrapper} from 'helpers';
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/campaigns`;
-const userInfo = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
 
-export const campaingService = {
-  user: userSubject.asObservable(),
-  get userValue () { return userSubject.value },
-  getCampaignList,
+export const campaignService = {
   createCampaign,
+  getCampagin,
+  getCampaignDetail,
+  getCampaignList,
+  updateMemberStatus
 };
 
 function createCampaign(name, sns, type) {
   return fetchWrapper.post(`${baseUrl}/create`, { name, sns, type })
     .then(response => {
-      if (response.status === 'ok') {
-        return response.id;
-      } else {
-        return response.message;
-      }
+      return response;
     });
 }
 
-function getCampaignList() {
-  return fetchWrapper.get(baseUrl);
+function getCampagin(campId) {
+  return fetchWrapper.post(`${baseUrl}/detail`, {campId});
+}
+
+function getCampaignDetail(campId, type) {
+  return fetchWrapper.post(`${baseUrl}/detailInfo`, {campId, type});
+}
+
+function getCampaignList(userId) {
+  return fetchWrapper.get(`${baseUrl}?userId=${userId}`);
+}
+
+function updateMemberStatus(campId, step, accountId, status, amount=0) {
+  return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, accountId, status, amount});
 }

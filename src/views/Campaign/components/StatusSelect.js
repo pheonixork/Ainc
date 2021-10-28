@@ -1,12 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
-import { useState, useEffect } from 'react';
+import {useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import RoundInfo from 'components/RoundInfo';
 
 const MenuProps = {
   PaperProps: {
@@ -16,23 +14,27 @@ const MenuProps = {
   },
 };
 
-export default function FltSingleSelect({ tip, icon, values, ...rest }) {
-  const [itemValue, setItemValue] = useState('');
+export default function StatusSelect({initValue, values, updateStatus, ...rest}) {
+  const [itemValue, setItemValue] = useState(initValue);
+  const handleStatusChange = (val) => {
+    setItemValue(val);
+    updateStatus(val);
+  }
 
   return (
     <Box>
       <Select 
         value={itemValue}
-        onChange={e=>setItemValue(e.target.value)}
+        onChange={e=>handleStatusChange(e.target.value)}
         size="small"
         MenuProps={MenuProps}
         sx={{fontSize:'14px'}}
         {...rest}
       >
-        {_.map(values, itm=> (
+        {_.map(values, (itm, idx) => (
           <MenuItem
             key={itm}
-            value={itm}
+            value={idx + 1}
             sx={{fontSize:'14px'}}
           >
             {itm}
@@ -43,8 +45,8 @@ export default function FltSingleSelect({ tip, icon, values, ...rest }) {
   );
 };
 
-FltSingleSelect.propTypes = {
-  tip: PropTypes.string.isRequired,
-  icon: PropTypes.bool.isRequired,
-  values: PropTypes.array.isRequired
+StatusSelect.propTypes = {
+  initValue: PropTypes.number.isRequired,
+  values: PropTypes.array.isRequired,
+  updateStatus: PropTypes.func
 };

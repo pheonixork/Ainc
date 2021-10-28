@@ -1,17 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState, useContext } from 'react';
+import _ from 'lodash';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useMainContext } from 'context/MainContext';
 import SaveDlg from './SaveDlg';
 import Keyword from 'constants/lang';
+import RelativeImage from 'components/RelativeImage';
+import {accountService} from 'services';
+import Lang from 'constants/lang';
 
-export default function SearchItem({itm, idx}) {
+export default function SearchItem({itm, cattype, campaigns}) {
   const [showDlg, setShow] = useState(false);
-
-  const { setInfluencerCollapsable, setInfluencerIndex } = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerIndex } = useMainContext();
 
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
@@ -25,20 +28,44 @@ export default function SearchItem({itm, idx}) {
   const closeDlg = () => {
     setShow(false);
   }
+  
+  const saveAccount = (selCategories) => {
+    let categories = [];
+    _.each(selCategories, (val, key) => {
+      if (val === false)
+        return;
+
+      categories.push(key);
+    });
+
+    if (categories.length < 1) {
+      toast.error('キャンペンを選択してください');
+      return;
+    }
+
+    accountService.saveAccount(itm.id, cattype, categories)
+      .then((response) => {
+        if (response.status !== 'ok') {
+          toast.error(response.msg);
+          return;
+        }
+        toast.success(Lang.label.influencersaved);
+        closeDlg();
+      }).catch(err => {
+        toast.error(err.toString());
+      });
+  }
 
   return (
     <Box 
       className='research-content-item research-content-account-grid box-wrapper-shadow'
-      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(idx);}}
+      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.id);}}
       >
       <Box className='profile'>
-        <Box
-          component={LazyLoadImage}
-          effect="blur"
-          src={itm.avatar}
-          height={'3.125rem'}
-          width={'3.125rem'}
-          sx={{margin:'1rem', borderRadius:'50%'}}
+        <RelativeImage
+          isRound
+          imgSrc={itm.avatar}
+          sx={{width: '3.125rem !important', height: '3.125rem !important', margin: '1rem'}}
         />
         <Box className='instagram'>
           <Box>{itm.name}</Box>
@@ -60,14 +87,16 @@ export default function SearchItem({itm, idx}) {
       <Box className='action'>
         <Box>
           <Box className='relative-action'>
-            <Button onClick={e=>{e.stopPropagation();setShow(true)}}>
+            <Button 
+              onClick={e=>{e.stopPropagation();setShow(true)}}
+            >
               <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
                 <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
               </svg>
               <span>{Keyword.btn.save}</span>
             </Button>
             {showDlg === true && 
-              <SaveDlg closeDlg={closeDlg} />
+              <SaveDlg saveItem={saveAccount} closeDlg={closeDlg} campaigns={campaigns} />
             }
           </Box>
         </Box>
@@ -78,5 +107,6 @@ export default function SearchItem({itm, idx}) {
 
 SearchItem.propTypes = {
   itm: PropTypes.object.isRequired,
-  idx: PropTypes.number.isRequired,
+  cattype: PropTypes.string,
+  campaigns: PropTypes.array,
 };

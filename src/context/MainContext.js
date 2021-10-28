@@ -4,7 +4,8 @@ const MainContext = createContext();
 
 export function MainContextWrapper({ children }) {
   const [isInfluCollapse, setInfluCollapse] = useState(true);
-  const [influSelectedIndex, setInfluIndex] = useState(-1);
+  const [influSelectedIndex, setInfluIndex] = useState('');
+  const [userInfo, setUserInfo] = useState({id:'', role:''});
 
   const state = {
     /* Influencer Rightside bar */
@@ -15,10 +16,13 @@ export function MainContextWrapper({ children }) {
     influSelectedIndex,
     setInfluencerIndex: (val) => {
       setInfluIndex(val);
+    },
+
+    /* Login user info */
+    userInfo,
+    setLoginUser: (val) => {
+      setUserInfo({id: val.id, role: val.role});
     }
-
-    /* */
-
   }
 
   return (

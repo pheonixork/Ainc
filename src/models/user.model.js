@@ -20,6 +20,40 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  company: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  addr: {
+    type: String,
+    required: true
+  },
+  phone: {
+    type: String,
+    required: true
+  },
+  plantype: {
+    type: String,
+    required: true,
+    default: 'Free trial'
+  },
+  periodtype: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  paytype: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  payend: {
+    type: String
+  },
   perms: {
     type: String,
     required: true, 
@@ -34,6 +68,7 @@ const userSchema = mongoose.Schema({
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
+userSchema.set('timestamps', true);
 
 /**
  * @typedef User

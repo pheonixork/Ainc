@@ -1,36 +1,16 @@
 import React from 'react';
-import campaignList from 'mockup/campain_list';
-import { Detail } from 'views/Campaign';
+import {Detail} from 'views/Campaign';
+import {CampaignRepo} from 'repositories';
 
-const DetailPage = ({ campaignData }) => {
-  return <Detail campaignData={campaignData}/>;
+const DetailPage = ({data}) => {
+  return <Detail cmpId={data.id} cmpName={data.name} cmpSns={data.sns} />;
 };
 
-export async function getStaticPaths() {
-  const paths = [];
-  Array.from({
-      length: campaignList.length
-    }, (_, i) => i + 1
-  ).map(i => {
-    paths.push({
-      params : {
-        id : i.toString()
-      }
-    })
-  });
-
-  return {
-    paths,
-    fallback: false
-  }
-};
-
-export async function getStaticProps({ params }) {
-  return {
-    props: {
-      campaignData : campaignList[params.id - 1]
-    }
-  }
+export async function getServerSideProps(context) {
+  const {id} = context.query;
+  const campInfo = await CampaignRepo.getCampaignBrief(id);
+  const data = {id: id, name: campInfo ? campInfo.name : '', sns: campInfo ? campInfo.sns : ''};
+  return {props: {data}};
 }
 
 export default DetailPage;

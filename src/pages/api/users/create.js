@@ -1,0 +1,32 @@
+import {apiHandler} from 'middlewares';
+
+import Lang from 'constants/lang';
+import Constants from 'constants/constants';
+import {UserRepo} from 'repositories';
+
+export default apiHandler(handler);
+
+async function handler(req, res) {
+  switch (req.method) {
+    case 'POST':
+      return await createUser();
+    default:
+      throw {status: Constants.errors.badrequest, message: Lang.communcation_errs.e009};
+  }
+
+  async function createUser() {
+    const {company, url, name, phone, email, password, addr} = req.body;
+    
+    const usrId = await UserRepo.createUser(company, url, name, phone, email, password, addr);
+    if (usrId === -1)
+      return res.status(200).json({
+        status: 'err',
+        msg: Lang.communcation_errs.e040
+      });   
+  
+    return res.status(200).json({
+      status: 'ok',
+      id: usrId
+    });
+  }
+}

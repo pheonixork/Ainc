@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import Link from 'next/Link';
+import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
@@ -31,7 +31,7 @@ const Topbar = ({ onSidebarOpen, pages }) => {
       alignItems={'center'}
       width={1}
     >
-      <Link href="/" replace >
+      <NextLink href="/" replace >
         <a>
           <Box
             display={'flex'} 
@@ -41,12 +41,12 @@ const Topbar = ({ onSidebarOpen, pages }) => {
             height={1}
           />
         </a>
-      </Link>
+      </NextLink>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
         <Box>
-          <Link href="/" replace >
+          <NextLink href="/" replace >
             <a className={clsx(classes.nodecoration, 'menuItem')} >Blog</a>
-          </Link>
+          </NextLink>
         </Box>
         <Box marginLeft={5}>
           <NavItem
@@ -56,15 +56,15 @@ const Topbar = ({ onSidebarOpen, pages }) => {
           />
         </Box>
         <Box marginLeft={5}>
-          <Link href="/" replace >
+          <NextLink href="/" replace >
             <a className={clsx(classes.nodecoration, 'menuItem')} >Pricing</a>
-          </Link>
+          </NextLink>
         </Box>
 
         <Box marginLeft={5}>
-          <Link href="/signin-cover" replace >
+          <NextLink href="/signin-cover" replace >
             <a className={clsx(classes.nodecoration, 'menuItem')} >LOG IN</a>
-          </Link>
+          </NextLink>
         </Box>
         <Box marginLeft={5}>
           <Button

@@ -6,7 +6,7 @@ function apiHandler(handler) {
     return async (req, res) => {
         try {
             // global middleware
-            await jwtMiddleware(req, res);
+            jwtMiddleware(req, res);
 
             // route handler
             await handler(req, res);

@@ -122,7 +122,7 @@ $span-bk-clr: #8D6BF7;
 
       &-insight-grid {
         display: grid;
-        grid-template-columns: 15fr 28fr 22fr 22fr 10fr 30fr
+        grid-template-columns: 15fr 28fr 22fr 22fr 10fr 30fr;
       }
 
       &-item {
@@ -264,6 +264,16 @@ $span-bk-clr: #8D6BF7;
         }
       }
 
+      .saveDlgToolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .saveDlgButtons {
+        display: flex;
+      }
+
       h6 {
         margin: 1rem;
         font-weight: 700;
@@ -272,9 +282,7 @@ $span-bk-clr: #8D6BF7;
       }
 
       .closeIcon {
-        position: absolute;
-        top: calc(0.5rem + 7px);
-        right: 2%;
+        margin-right: 5px;
         cursor: pointer;
 
         &:hover {
@@ -335,10 +343,10 @@ $span-bk-clr: #8D6BF7;
 }
 
 .content-wrapper {
-  width: 100%;
-  max-width: 1024px;
+  width: 100% !important;
+  max-width: 1024px !important;
   min-width: 690px;
-  padding: 32px 0px 48px 0px;
+  padding: 32px 0px 48px 0px !important;
   margin: 40px;
 }
 
@@ -546,6 +554,39 @@ $span-bk-clr: #8D6BF7;
   }
 }
 
+.evenoddTable {
+  tr {
+    th {
+      padding: .7rem,
+    }
+  }
+  tbody {
+    tr{
+      &:nth-child(odd) {
+        background-color: #c8c8c836;
+      }
+
+      &:hover {
+        box-shadow: 0px 0px 9px #00000029;
+        &:nth-child(odd) {
+          background-color: #c8c8c836;
+        }
+        &:nth-child(even) {
+          background-color: #fff;
+        }
+      }
+
+      &.Mui-selected {
+        border: 1px solid #1377eb;
+      }
+
+      td {
+        padding: .7rem,
+      }
+    }
+  }
+}
+
 .styledTable {
   padding: 10px;
   th {
@@ -559,7 +600,7 @@ $span-bk-clr: #8D6BF7;
       }
 
       &:hover {
-        box-shadow: 0px 0px 5px #00000054;
+        box-shadow: 0px 0px 9px #00000029;
         &:nth-child(odd) {
           background-color: #c8c8c836;
         }
@@ -570,10 +611,14 @@ $span-bk-clr: #8D6BF7;
 
       td {
         border: unset;
+        cursor: pointer;
+      }
+
+      &.Mui-selected {
+        border: 1px solid #1377eb;
       }
     }
   }
-  
 }
 
 .list-page {
@@ -596,6 +641,54 @@ $span-bk-clr: #8D6BF7;
   }
 }
 
+.post-page {
+  .valueItemContainer {
+    display: flex;
+    justify-content: flex-start;
+    .valueItem {
+      text-align: center;
+      flex: 11% 0 0;
+      .value {
+        font-size: 16px;
+        font-weight: bold;
+        min-width: 130px;
+      }
+      .title {
+        font-size: 14px;
+        color: #969696;
+      }
+    }
+  }
+}
+
+.report-page {
+  .detail-section {
+    padding: 30px 20px;
+    .label-container {
+      display: flex;
+      margin-left: 20px;
+      margin-top: 10px;
+      align-items: center;
+      column-gap: 20px;
+      .text {
+        font-size: 16px;
+        font-weight: 500;
+        width: 80px;
+      }
+    }
+    .label-container-nested {
+      margin-left: 4px !important;
+      margin-top: 0px !important
+    }
+    .value-container {
+      display: flex;
+      margin: 15px 10px 10px 120px;
+      align-items: center;
+      column-gap: 20px;      
+    }
+  }
+}
+
 .ratingContainer {
   display: flex;
   justify-content: center;
@@ -603,4 +696,164 @@ $span-bk-clr: #8D6BF7;
 
 .lazyimagenoblur {
   filter: blur(0px) !important;
+}
+
+.campaign-sidebar {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  button {
+    background-color: white;
+    border-color: $btn-active-bk;
+    color: $btn-active-bk;
+  
+    &.active {
+      background-color: $btn-active-bk;
+      color: $btn-active-clr;
+    }
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+
+    .close {
+      min-width: 40px;
+      height: 40px;
+      padding: 0px;
+      border-radius: 50% !important;
+      background: #B9E5F9;
+
+      &:hover {
+        background: #b4cbd4;
+      }
+    }
+
+    .save {
+      border: 1px solid $btn-active-bk;
+      color: $btn-active-bk;
+      height: 36px;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+
+      svg {
+        margin-right: 5px;
+      }
+      path {
+        fill: $btn-active-bk
+      }
+    }
+  }
+
+  .profile-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .rating-star path{
+      transition: all .2s ease-in-out;
+      &:hover {
+        fill: #FFC80050;
+      }
+    }
+
+    .name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .link {
+      color: $span-bk-clr;
+      font-size: 14px;
+      text-decoration: none;
+    }
+  }
+
+  .profile-detail {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 20px 30px;
+
+    .profile-item {
+      flex: 50% 0 0;
+      display: flex;
+      margin-top: 10px;
+
+      .label {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 500;
+        margin-left: 10px;
+        color: #6f6f6f;
+      }
+    }
+  }
+}
+
+.upgradeWrapper {
+  .upgradeselected {
+    box-shadow: 0 0 8px #4aabed;
+    &::before {
+      position: absolute;
+      top: -34px;
+      left: -16px;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      width: calc(100% + 32px);
+      height: calc(100% + 50px);
+      padding-top: 5px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      background: #92cdf4;
+      border: 1px solid #4aabed;
+      border-radius: 6px;
+      content: "Modash recommends";
+    }
+  }
+  .qaSubWrapper {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: '';
+      width: 94%;
+      left: 3%;
+      border-bottom: 1px solid #999;
+    }
+  }
+}
+
+.nav-itm-wrapper {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  font-weight: 400;
+  background-color: transparent;
+  &:Hover {
+    background-color: #6883E4;
+  }
+}
+
+.nav-item-current {
+  font-weight: 600 !important;
+  background-color: #816BF7 !important; 
 }

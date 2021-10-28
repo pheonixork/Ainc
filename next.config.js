@@ -1,18 +1,16 @@
 module.exports = {
   serverRuntimeConfig: {
-    secret: 'AINC SECRET TOKEN'
+    secret: '2gyZ3GDw3LHZQKDhPmPDL3sjREVRXPr8',
+    cookie: 'AINC SESSION INFO COOKIE',
   },
   publicRuntimeConfig: {
     managerUrl: '/account/research',
+    adminUrl: '/users/create',
     apiUrl: process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000/api' // development api
-      : 'https://ainc.vercel.app/api' // production api
+      : 'http://localhost:3000/api' // production api
   },
   images: {
     domains: ['assets.maccarianagency.com', 'imgigp.modash.io'],
   },
-  env: {
-    MONGODB_URI:  "mongodb://192.168.113.127:27017/",
-    DB_NAME: "ainc_db"
-  }
 }

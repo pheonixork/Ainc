@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 
-import { userService } from 'services';
+import {userService} from 'services';
 
 import Page from '../components/Page';
 

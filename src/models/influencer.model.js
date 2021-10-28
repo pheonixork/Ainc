@@ -1,43 +1,99 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
+const toObjectId = mongoose.Types.ObjectId;
 
 const influencerSchema = mongoose.Schema({
+  userId: {
+    type: toObjectId,
+    required: true,
+  },
   infId: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
   email: {
     type: String,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Invalid email');
-      }
-    },
+    default: "",
   },
   link: {
     type: String,
-    required: true,
+    default: "",
   },
   type: {
+    type: String,
+    default: "",
+  },
+  star: {
     type: Number,
-    required: true, 
-    default: 1
+    default: 0,
+  },
+  postAt: {
+    type: Date,
+  },
+  postLink: {
+    type: String,
+    default: "",
+  },
+  amount: {
+    type: Number,
+    default: 0,
+  },
+  shopping: {
+    type: String,
+    default: "",
   },
   followers: {
     type: Number,
-    required: true,
     default: 0,
   },
   engage: {
     type: Number,
-    required: true,
     default: 0,
   },
-  cmpId: {
-    type: ObjectId,
-    required: true,
+  rich: {
+    type: Number,
+    default: 0,
   },
+  saving: {
+    type: Number,
+    default: 0,
+  },
+  oks: {
+    type: Number,
+    default: 0,
+  },
+  comment: {
+    type: Number,
+    default: 0,
+  },
+  normal: {
+    type: Number,
+    default: 0,
+  },
+  prs: {
+    type: Number,
+    default: 0,
+  },
+  sell: {
+    type: Number,
+    default: 0,
+  },
+  roas: {
+    type: Number,
+    default: 0,
+  },
+  memo: {
+    type: String,
+  },
+  campaigns: [{
+    type: toObjectId,
+  }],
   brief: {
     type: String
   }
@@ -50,10 +106,11 @@ const influencerSchema = mongoose.Schema({
 // add plugin that converts mongoose to json
 influencerSchema.plugin(toJSON);
 influencerSchema.plugin(paginate);
+influencerSchema.set('timestamps', true);
 
 /**
- * @typedef User
+ * @typedef Influencers
  */
-const Influencer = mongoose.models.influencers || mongoose.model('influencers', influencerSchema);
+const Influencers = mongoose.models.influencers || mongoose.model('influencers', influencerSchema);
 
-module.exports = Influencer;
+module.exports = Influencers;
