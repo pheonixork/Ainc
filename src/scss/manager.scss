@@ -1,12 +1,19 @@
 $collapseSidebar: 50px;
 $uncollapseSidebar: 256px;
 $btn-active-clr: #fff;
-$btn-active-bk: #1377EB;
-$btn-inactive-clr: #000;
+$blue-dark-clr: #1377EB;
+$blue-white-clr: #0078C3;
+$cyan-black-clr: #B9E5F9;
+$cyan-white-clr: #DEF2FD;
+
+$black-clr: #000;
 $btn-inactive-bk: #e8e8e8;
 $btn-border-clr: #eee;
 
-$span-bk-clr: #8D6BF7;
+$purple-black-clr: #816BF7;
+$purple-dark-clr: #8D6BF7;
+$purple-white-clr: #C48BFF;
+$purple-deepwhite-clr: #6883E4;
 
 .flex-sub-wrapper {
   display: flex; 
@@ -15,9 +22,21 @@ $span-bk-clr: #8D6BF7;
   margin-top: 1rem;
 }
 
+.side-bar-button {
+  border-radius: 2;
+  min-width: auto;
+  padding: 1;
+  border: 1px solid transparent;
+  margin-right: 12px;
+  color: $purple-white-clr;
+  &:Hover {
+    border-color: $purple-white-clr;
+  }
+}
+
 .sidebar {
   height: 100%;
-  background-color: $btn-active-bk;
+  background-color: $blue-white-clr;
   
   .sidebar-nav {
     display: flex;
@@ -52,18 +71,18 @@ $span-bk-clr: #8D6BF7;
   button {
     height: 33px !important;
     background-color: white;
-    border-color: $btn-active-bk;
-    color: $btn-active-bk;
+    border-color: $blue-dark-clr;
+    color: $blue-dark-clr;
   
     &.active {
-      background-color: $btn-active-bk;
+      background-color: $blue-dark-clr;
       color: $btn-active-clr;
     }
   
     &.inactive {
       background-color: $btn-inactive-bk;
       border-color: $btn-border-clr;
-      color: $btn-inactive-clr;
+      color: $black-clr;
     }
 
     svg.manual {
@@ -98,7 +117,7 @@ $span-bk-clr: #8D6BF7;
         cursor: pointer;
         padding: 0px;
         font-size: 12px;
-        color: $btn-active-bk;
+        color: $blue-dark-clr;
         justify-content: right;
         min-width: auto;
         &:Hover {
@@ -125,6 +144,8 @@ $span-bk-clr: #8D6BF7;
         grid-template-columns: 15fr 28fr 22fr 22fr 10fr 30fr;
       }
 
+
+
       &-item {
         align-items: center;
         justify-content: flex-start;        
@@ -133,6 +154,14 @@ $span-bk-clr: #8D6BF7;
         margin-bottom: 8px;
 
         position: relative;
+
+        &:Hover {
+          background-color: $cyan-black-clr;
+        }
+
+        &-active {
+          background-color: $cyan-white-clr;
+        }
 
         .profile {
           display: flex;
@@ -154,7 +183,7 @@ $span-bk-clr: #8D6BF7;
 
           .instagram-link {
             position: relative;
-            color: $span-bk-clr;
+            color: $purple-dark-clr;
             font-size: 14px;
             text-decoration: none;
   
@@ -202,8 +231,8 @@ $span-bk-clr: #8D6BF7;
             cursor: default;
 
             button {
-              border: 1px solid $btn-active-bk;
-              color: $btn-active-bk;
+              border: 1px solid $blue-dark-clr;
+              color: $blue-dark-clr;
               width: 100%;
               height: 36px;
               padding-right: 1rem;
@@ -212,7 +241,7 @@ $span-bk-clr: #8D6BF7;
               cursor: pointer;
   
               path {
-                fill: $btn-active-bk
+                fill: $blue-dark-clr
               }
             }
           }
@@ -286,7 +315,7 @@ $span-bk-clr: #8D6BF7;
         cursor: pointer;
 
         &:hover {
-          color: $btn-active-bk
+          color: $blue-dark-clr
         }
       }
 
@@ -419,8 +448,26 @@ $span-bk-clr: #8D6BF7;
 }
 
 .ui-bar-progress {
-  background: $span-bk-clr;
+  background: $blue-dark-clr;
   height: 100%;
+}
+
+.ui-pie-male {
+  stroke-width: 35;
+  stroke: $blue-dark-clr; 
+}
+
+.ui-pie-female {
+  stroke-width: 35;
+  stroke: $purple-white-clr; 
+}
+
+.ui-pie-male-bk {
+  background-color: $blue-dark-clr; 
+}
+
+.ui-pie-female-bk {
+  background-color: $purple-white-clr; 
 }
 
 .bar-chat-item {
@@ -440,11 +487,11 @@ $span-bk-clr: #8D6BF7;
       border-radius: 8px;
 
       &.first {
-        background: rgb(239, 83, 80);
+        background: $purple-white-clr;
       }
 
       &.second {
-        background: rgb(75, 0, 130);
+        background: $blue-dark-clr;
       }
     }
 
@@ -457,7 +504,7 @@ $span-bk-clr: #8D6BF7;
 }
 
 .genre-span {
-  background: $span-bk-clr;
+  background: $purple-dark-clr;
   border-radius: 20px;
   margin: .2rem .3rem .2rem .2rem;
   padding: 0 .5rem;
@@ -472,11 +519,15 @@ $span-bk-clr: #8D6BF7;
 
 .alike-btn {
   min-width: 40px;
-  color: $btn-active-bk;
+  color: $blue-dark-clr;
 
   svg {
-    fill: $btn-active-bk;
+    fill: $blue-dark-clr;
   }
+}
+
+.influencer-header-name {
+  color: $purple-dark-clr;
 }
 
 .influencer-brief {
@@ -490,11 +541,11 @@ $span-bk-clr: #8D6BF7;
 
   button {
     background-color: white;
-    border-color: $btn-active-bk;
-    color: $btn-active-bk;
+    border-color: $blue-dark-clr;
+    color: $blue-dark-clr;
   
     &.active {
-      background-color: $btn-active-bk;
+      background-color: $blue-dark-clr;
       color: $btn-active-clr;
     }
   }
@@ -514,7 +565,7 @@ $span-bk-clr: #8D6BF7;
       height: 40px;
       padding: 0px;
       border-radius: 50% !important;
-      background: #B9E5F9;
+      background: $cyan-black-clr;
 
       &:hover {
         background: #b4cbd4;
@@ -522,8 +573,8 @@ $span-bk-clr: #8D6BF7;
     }
 
     .save {
-      border: 1px solid $btn-active-bk;
-      color: $btn-active-bk;
+      border: 1px solid $blue-dark-clr;
+      color: $blue-dark-clr;
       height: 36px;
       padding-right: 1rem;
       padding-left: 1rem;
@@ -534,7 +585,7 @@ $span-bk-clr: #8D6BF7;
         margin-right: 5px;
       }
       path {
-        fill: $btn-active-bk
+        fill: $blue-dark-clr
       }
     }
   }
@@ -568,12 +619,13 @@ $span-bk-clr: #8D6BF7;
 
       &:hover {
         box-shadow: 0px 0px 9px #00000029;
-        &:nth-child(odd) {
-          background-color: #c8c8c836;
-        }
-        &:nth-child(even) {
-          background-color: #fff;
-        }
+        // &:nth-child(odd) {
+        //   background-color: #c8c8c836;
+        // }
+        // &:nth-child(even) {
+        //   background-color: #fff;
+        // }
+        background-color: $cyan-black-clr !important;
       }
 
       &.Mui-selected {
@@ -601,12 +653,13 @@ $span-bk-clr: #8D6BF7;
 
       &:hover {
         box-shadow: 0px 0px 9px #00000029;
-        &:nth-child(odd) {
-          background-color: #c8c8c836;
-        }
-        &:nth-child(even) {
-          background-color: #fff;
-        }
+        // &:nth-child(odd) {
+        //   background-color: #c8c8c836;
+        // }
+        // &:nth-child(even) {
+        //   background-color: #fff;
+        // }
+        background-color: $cyan-black-clr !important;
       }
 
       td {
@@ -709,11 +762,11 @@ $span-bk-clr: #8D6BF7;
 
   button {
     background-color: white;
-    border-color: $btn-active-bk;
-    color: $btn-active-bk;
+    border-color: $blue-dark-clr;
+    color: $blue-dark-clr;
   
     &.active {
-      background-color: $btn-active-bk;
+      background-color: $blue-dark-clr;
       color: $btn-active-clr;
     }
   }
@@ -733,7 +786,7 @@ $span-bk-clr: #8D6BF7;
       height: 40px;
       padding: 0px;
       border-radius: 50% !important;
-      background: #B9E5F9;
+      background: $cyan-black-clr;
 
       &:hover {
         background: #b4cbd4;
@@ -741,8 +794,8 @@ $span-bk-clr: #8D6BF7;
     }
 
     .save {
-      border: 1px solid $btn-active-bk;
-      color: $btn-active-bk;
+      border: 1px solid $blue-dark-clr;
+      color: $blue-dark-clr;
       height: 36px;
       padding-right: 1rem;
       padding-left: 1rem;
@@ -753,7 +806,7 @@ $span-bk-clr: #8D6BF7;
         margin-right: 5px;
       }
       path {
-        fill: $btn-active-bk
+        fill: $blue-dark-clr
       }
     }
   }
@@ -777,7 +830,7 @@ $span-bk-clr: #8D6BF7;
     }
 
     .link {
-      color: $span-bk-clr;
+      color: $purple-dark-clr;
       font-size: 14px;
       text-decoration: none;
     }
@@ -849,11 +902,11 @@ $span-bk-clr: #8D6BF7;
   font-weight: 400;
   background-color: transparent;
   &:Hover {
-    background-color: #6883E4;
+    background-color: $purple-black-clr !important; 
   }
 }
 
 .nav-item-current {
   font-weight: 600 !important;
-  background-color: #816BF7 !important; 
+  background-color: $purple-deepwhite-clr !important;
 }

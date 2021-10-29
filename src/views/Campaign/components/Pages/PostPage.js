@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Box} from '@mui/material';
 import {PostPageTable, PostPageStatic} from '../Table'
 import {campaignService} from 'services';
@@ -8,6 +8,14 @@ import toast from 'react-hot-toast';
 const PostPage = ({selCampId}) => {
   const [data, setData] = useState({name: '', members:[]});
   const [updatedMembers, setUpdatedMembers] = useState([]);
+
+  const getDatas = useCallback(() => {
+    return data.members;
+  }, [data]);
+
+  const getStaticInfos = useCallback(() => {
+    return updatedMembers
+  }, [updatedMembers]);
   
   useEffect(() => {
     if (!selCampId)
@@ -57,9 +65,9 @@ const PostPage = ({selCampId}) => {
 
   return (
     <Box className='post-page'>
-      <PostPageStatic isloading={data.name.length < 1} datas={updatedMembers} />
+      <PostPageStatic isloading={data.name.length < 1} getMembers={getStaticInfos} />
       <PostPageTable 
-        data={data.members} 
+        getMembers={getDatas} 
         handleSaveMember={saveMemberStatus}
       />
     </Box>

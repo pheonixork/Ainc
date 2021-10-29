@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableContainer, Paper } from '@mui/material';
 import { getComparator, stableSort } from 'libs/commonFunc'
@@ -50,9 +50,14 @@ const headCells = [
   },
 ];
 
-export default function ListPageTable({data, handleSaveMember}) {
+export default function ListPageTable({getMembers, handleSaveMember}) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(getMembers());
+  }, [getMembers]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

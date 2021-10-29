@@ -2,10 +2,11 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Paper, Skeleton} from '@mui/material';
 
-const ListPageStatic = ({isloading, datas}) => {
-  const [staticInfo, setStaticInfo] = useState({oks: 0, okfols: 0, memfols: 0, imems: 0, cmems: 0, nmems:0});
+const ListPageStatic = ({isloading, updatedInfos}) => {
+  const [staticInfo, setStaticInfo] = useState({mems:0, oks: 0, okfols: 0, memfols: 0, imems: 0, cmems: 0, nmems:0});
 
   useEffect(() => {
+    let datas = updatedInfos();
     if (!datas || datas.length < 1)
       return;
 
@@ -25,8 +26,8 @@ const ListPageStatic = ({isloading, datas}) => {
       fols += itm.followers;
     });
 
-    setStaticInfo({oks: oks, okfols: okfols, memfols: fols, imems: imems, cmems: cmems, nmems: nmems});
-  }, [datas]);
+    setStaticInfo({mems: datas.length, oks: oks, okfols: okfols, memfols: fols, imems: imems, cmems: cmems, nmems: nmems});
+  }, [updatedInfos]);
 
   return (
     <Paper
@@ -39,7 +40,7 @@ const ListPageStatic = ({isloading, datas}) => {
           {isloading ? (
             <Skeleton width="60%" height={60} sx={{margin:'auto'}}/>
           ) : (
-            <p className='value'>{datas.length}</p>
+            <p className='value'>{staticInfo.mems}</p>
           )}
           <p className='title'>人数</p>
         </Box>

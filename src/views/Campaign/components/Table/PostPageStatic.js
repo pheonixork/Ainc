@@ -2,10 +2,11 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Paper, Skeleton} from '@mui/material';
 
-const PostPageStatic = ({isloading, datas}) => {
-  const [staticInfo, setStaticInfo] = useState({followers: 0, amount:0, stops: 0, sells: 0, writings: 0, posts:0, insights:0, completes:0});
+const PostPageStatic = ({isloading, getMembers}) => {
+  const [staticInfo, setStaticInfo] = useState({mems: 0, followers: 0, amount:0, stops: 0, sells: 0, writings: 0, posts:0, insights:0, completes:0});
 
   useEffect(() => {
+    let datas = getMembers();
     if (!datas || datas.length < 1)
       return;
 
@@ -32,11 +33,12 @@ const PostPageStatic = ({isloading, datas}) => {
     });
 
     setStaticInfo({
+      meme: datas.length,
       followers: followers, amount: amount, 
       stops: stops, sells: sells, writings: writings, 
       posts: posts, insights: insights, completes: completes
     });
-  }, [datas]);
+  }, [getMembers]);
 
   return (
     <Paper
@@ -49,7 +51,7 @@ const PostPageStatic = ({isloading, datas}) => {
             {isloading ? (
               <Skeleton width="60%" height={60} sx={{margin:'auto'}}/>
             ) : (
-              <p className='value'>{datas.length}</p>
+              <p className='value'>{staticInfo.mems}</p>
             )}
             <p className='title'>人数</p>
           </Box>

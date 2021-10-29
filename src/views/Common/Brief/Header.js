@@ -42,7 +42,7 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span>@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.name ?? data.name}</span>
         </a>
       }
       {data.youtube && 
@@ -55,7 +55,7 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span>@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.name ?? data.name}</span>
         </a>
       }
       {data.tiktok && 
@@ -68,7 +68,7 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span>@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.name ?? data.name}</span>
         </a>
       }
       <Button 

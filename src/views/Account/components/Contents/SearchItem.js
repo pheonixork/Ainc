@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
@@ -58,7 +59,7 @@ export default function SearchItem({itm, cattype, campaigns}) {
 
   return (
     <Box 
-      className='research-content-item research-content-account-grid box-wrapper-shadow'
+      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow')}
       onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.id);}}
       >
       <Box className='profile'>

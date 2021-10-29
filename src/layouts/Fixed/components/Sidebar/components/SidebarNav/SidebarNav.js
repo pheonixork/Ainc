@@ -47,17 +47,7 @@ const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
           <Button
             aria-label="Menu"
             variant={'outlined'}
-            sx={{
-              borderRadius: 2,
-              minWidth: 'auto',
-              padding: 1,
-              border: '1px solid transparent',
-              marginRight: '12px',
-              color: '#C48BFF',
-              '&:hover': {
-                borderColor: '#C48BFF'
-              }
-            }}
+            className="side-bar-button"
             onClick={evt=>variant === 'permanent' ? setCollapse(!collapsed) : onClose()}
           >
             {variant === 'permanent' ? <MenuIcon /> : <CloseIcon fontSize="small" />}

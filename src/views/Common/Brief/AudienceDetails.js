@@ -33,19 +33,19 @@ const AudienceDetails = () => {
             </Box>
             <svg viewBox="0 0 160 160" style={{width:'90px', height:'90px'}}>
               <g>
-                <circle style={{strokeWidth: '35', stroke:'rgb(75, 0, 130)'}} cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="112.50131257099349" transform="rotate(-90, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-male" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="112.50131257099349" transform="rotate(-90, 80, 80)" fill="transparent"></circle>
               </g>
               <g>
-                <circle style={{strokeWidth: '35', stroke:'rgb(239, 83, 80)'}} cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="264.48980585978165" transform="rotate(162.56916, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-female" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="264.48980585978165" transform="rotate(162.56916, 80, 80)" fill="transparent"></circle>
               </g>
             </svg>
             <Box sx={{display:'flex', alignItems:'center'}}>
-              <Box sx={{width:'8px', height:'8px', borderRadius:'50%', background:'rgb(75, 0, 130)'}}></Box>
+              <Box className="ui-pie-male-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
               <span style={{marginLeft:'.5rem'}}>Male</span>
               <span style={{marginLeft:'auto'}}>70.16%</span>
             </Box>
             <Box sx={{display:'flex', alignItems:'center'}}>
-              <Box sx={{width:'8px', height:'8px', borderRadius:'50%', background:'rgb(239, 83, 80)'}}></Box>
+              <Box className="ui-pie-female-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
               <span style={{marginLeft:'.5rem'}}>Female</span>
               <span style={{marginLeft:'auto'}}>29.84%</span>
             </Box>
@@ -217,6 +217,7 @@ const AudienceDetails = () => {
               sx={{borderRadius:'50%', marginTop:'.5rem'}}
             />
             <Box 
+              className="influencer-header-name"
               component="a"
               href="https://www.instagram.com/alxsndro12"
             >

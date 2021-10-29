@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Box, } from '@mui/material';
 import {ListPageStatic, ListPageTable} from '../Table'
 import {campaignService} from 'services';
@@ -9,6 +9,14 @@ const ListPage = ({selCampId}) => {
   
   const [data, setData] = useState({name: '', members:[]});
   const [updatedMembers, setUpdatedMembers] = useState([]);
+
+  const getStaticInfos = useCallback(() => {
+    return updatedMembers;
+  }, [updatedMembers]);
+
+  const getMembers = useCallback(() => {
+    return data.members;
+  }, [data])
 
   useEffect(() => {
     if (!selCampId)
@@ -52,9 +60,9 @@ const ListPage = ({selCampId}) => {
 
   return (
     <Box className='list-page'>
-      <ListPageStatic isloading={data.name.length < 1} datas={updatedMembers} />
+      <ListPageStatic isloading={data.name.length < 1} updatedInfos={getStaticInfos} />
       <ListPageTable 
-        data={data.members} 
+        getMembers={getMembers} 
         handleSaveMember={saveMemberStatus}
       />
     </Box>
