@@ -7,6 +7,7 @@ const CampaignRepo = {
   getCampaignList,
   getDetailViaList,
   getDetailViaPost,
+  getDetailViaRport,
   getCampaignDetailList,
   createCampaign,
   updateMemberStatus,
@@ -138,6 +139,32 @@ async function getDetailViaPost(campId) {
   return null;
 }
 
+async function getDetailViaRport(campId) {
+  const campInfo = await Campaign.aggregate([
+    {
+      $match: {_id: toObjectId(campId)}
+    },
+    {
+      $project: 
+      {
+        name: 1,
+        members: {
+          $filter: {
+            input: "$members",
+            as: "item",
+            cond: {$eq: ["$$item.step", 3]},
+          }
+        },
+      }
+    },
+  ]);
+
+  if (campInfo.length > 0)
+    return campInfo[0];
+
+  return null;
+}
+
 async function getCampaignDetailList(userId) {
   let list = await Campaign.aggregate([
     {
@@ -196,7 +223,8 @@ async function updateMemberStatus(campId, step, accountId, status, amount) {
     if (status === 6) {
       await Campaign.updateOne(
         {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
-        {$set: {"members.$.step": 3, "members.$.pstatus": status, "members.$.amount": amount}}
+        {$set: {"members.$.step": 3, "members.$.pstatus": status, 
+              "members.$.amount": amount, "members.$.rtype":0}}
       );
     } else {
       await Campaign.updateOne(

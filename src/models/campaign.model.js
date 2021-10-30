@@ -117,6 +117,11 @@ const campaignSchema = mongoose.Schema({
       type: Number,
       required: true,
       default: 1
+    },
+    rtype: {
+      type: Number,
+      required: true,
+      default: 0
     }
   }],
 },

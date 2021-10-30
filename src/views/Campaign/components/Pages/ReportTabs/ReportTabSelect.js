@@ -29,7 +29,7 @@ export default function ReportTabSelect({ curType, onSelect} ) {
         size='medium'
         onClick={e=>onSelect('rir')}
       >
-        りール
+        リール
       </Button>
     </Box>
   );

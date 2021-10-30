@@ -715,6 +715,9 @@ $purple-deepwhite-clr: #6883E4;
 }
 
 .report-page {
+  .auto-manual-caption {
+    color: $blue-dark-clr
+  }
   .detail-section {
     padding: 30px 20px;
     .label-container {
@@ -910,3 +913,4 @@ $purple-deepwhite-clr: #6883E4;
   font-weight: 600 !important;
   background-color: $purple-deepwhite-clr !important;
 }
+

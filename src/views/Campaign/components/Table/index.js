@@ -8,3 +8,4 @@ export { default as PostPageStatic } from './PostPageStatic';
 export { default as PostPageTable } from './PostPageTable';
 export { default as PostPageTableRow } from './PostPageTableRow';
 export { default as ReportFeedTable } from './ReportFeedTable';
+export { default as ReportCandidateTable } from './ReportCandidateTable';

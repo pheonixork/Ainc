@@ -31,6 +31,17 @@ export const light = {
   waiting: {
     forecolor: '#1377EB',
     backcolor: '#f3f3f3',
+  },
+  clrVariables: {
+    blueDark: '#1377EB',
+    blueWhite: '#0078C3',
+    cyanBlack: '#B9E5F9',
+    cyanWhite: '#DEF2FD',
+
+    purpleBlack: '#816BF7',
+    purpleDark: '#8D6BF7',
+    purpleWhite: '#C48BFF',
+    purpleDeepwhite: '#6883E4'
   }
 };
 
@@ -71,5 +82,16 @@ export const dark = {
   waiting: {
     forecolor: '#1377EB',
     backcolor: '#f3f3f3',
+  },
+  clrVariables: {
+    blueDark: '#1377EB',
+    blueWhite: '#0078C3',
+    cyanBlack: '#B9E5F9',
+    cyanWhite: '#DEF2FD',
+
+    purpleBlack: '#816BF7',
+    purpleDark: '#8D6BF7',
+    purpleWhite: '#C48BFF',
+    purpleDeepwhite: '#6883E4'
   }
 };

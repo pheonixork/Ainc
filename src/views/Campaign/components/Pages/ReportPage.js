@@ -6,7 +6,7 @@ import {InstagramPage, YoutubePage, TiktokPage} from './ReportTabs';
 import toast from 'react-hot-toast';
 
 const ReportPage = ({selCampId, selCampSNS}) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({name:'', members:[]});
   
   useEffect(() => {
     if (!selCampId)
@@ -31,9 +31,11 @@ const ReportPage = ({selCampId, selCampSNS}) => {
 
   return (
     <Box className='report-page'>
-      {selCampSNS === 'instagram' && <InstagramPage selCampId={selCampId} data={data} />}
-      {selCampSNS === 'youtube' && <YoutubePage selCampId={selCampId} data={data} />}
-      {selCampSNS === 'tiktok' && <TiktokPage selCampId={selCampId} data={data} />}
+      {selCampSNS === 'instagram' && 
+        <InstagramPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+      }
+      {selCampSNS === 'youtube' && <YoutubePage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />}
+      {selCampSNS === 'tiktok' && <TiktokPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />}
     </Box>
   );
 };

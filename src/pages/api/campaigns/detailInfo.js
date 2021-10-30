@@ -24,6 +24,8 @@ async function handler(req, res) {
       campInfo = await CampaignRepo.getDetailViaList(campId);
     else if (type === 'post')
       campInfo = await CampaignRepo.getDetailViaPost(campId);
+    else if (type === 'report')
+      campInfo = await CampaignRepo.getDetailViaRport(campId);
 
     return res.status(200).json({
       status: 'ok',
