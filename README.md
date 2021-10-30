@@ -17,6 +17,10 @@ We support every step in your influencer partnerships.
 - Get in depth audience and influencer data. Fake followers, demographics, contact info and performance insights.
 - Be first to know when influencer posts go live and if they match campaign guidelines. Get alerts, export content & more.
 
+<img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/shinagawa-haruko/blob/default/code.gif?raw=true" width="250" height="256" />
+<img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/shinagawa-haruko/blob/default/code.gif?raw=true" width="250" height="256" />
+<img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/shinagawa-haruko/blob/default/code.gif?raw=true" width="250" height="256" />
+
 ## Quick start
 
 - Install dependencies: `yarn install`
