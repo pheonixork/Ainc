@@ -19,9 +19,9 @@ We support every step in your influencer partnerships.
 
 <br><br>
 <div>
-  <img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/Ainc/blob/3fad27d1690d19c3533a812c94b1835323039b27/demo1.svg?raw=true" width="30%" height="256" />
-  <img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/shinagawa-haruko/blob/default/code.gif?raw=true" width="30%" height="256" />
-  <img align="left" alt="GIF" src="https://github.com/shinagawa-haruko/shinagawa-haruko/blob/default/code.gif?raw=true" width="30%" height="256" />
+  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/3fad27d1690d19c3533a812c94b1835323039b27/demo1.svg?raw=true" width="30%" height="256" />
+  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/7c26732bed04d9de4525e472135e90b02d5ba0c5/demo2.svg" width="30%" height="256" />
+  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/7c26732bed04d9de4525e472135e90b02d5ba0c5/demo3.svg" width="30%" height="256" />
 </div>
   
 <br><br><br><br><br><br><br><br><br><br><br><br>
