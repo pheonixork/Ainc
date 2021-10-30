@@ -1,6 +1,6 @@
 # [AINC - Influencer tools for growth focused marketers](https://ainc.vercel.app/)
 
-Convert customers with high performance influencer marketing
+Convert customers with high performance influencer marketing for Japanese
 
 ## Built with
 
