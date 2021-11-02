@@ -1,131 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import toast from 'react-hot-toast';
 import {Box} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import {makeStyles} from '@mui/styles'; 
 import {InstagramStatic, ReportTabSelect} from '.';
-import {ReportFeedTable, ReportCandidateTable} from '../../Table';
+import {ReportFeedTable, ReportStoryTable, ReportRilTable, ReportCandidateTable} from '../../Table';
+import {campaignService} from 'services';
 import styles from '../../Table/styles';
-
-const rirHeadCells = [
-  {
-    id: 'id',
-    label: 'アカウントID'
-  },
-  {
-    id: 'postDate',
-    label: '投稿日',
-  },
-  {
-    id: 'postURL',
-    label: '投稿URL',
-  },
-  {
-    id: 'productName',
-    label: '商品名',
-  },
-  {
-    id: 'price',
-    label: '金額',
-  },
-  {
-    id: 'followers',
-    label: 'フォロワー数',
-  },
-  {
-    id: 'numberOfReach',
-    label: 'リーチ数',
-  },
-  {
-    id: 'percentOfReach',
-    label: 'リーチ%',
-  },
-  {
-    id: 'save',
-    label: '保存',
-  },
-  {
-    id: 'savePercent',
-    label: '保存%',
-  },
-  {
-    id: 'numberOfLikes',
-    label: 'いいね数',
-  },
-  {
-    id: 'numberOfComments',
-    label: 'コメント数',
-  },
-  {
-    id: 'normalEG',
-    label: '通常/EG',
-  },
-  {
-    id: 'prEG',
-    label: 'PR/EG',
-  }
-];
-
-const storyHeadCells = [
-  {
-    id: 'id',
-    label: 'アカウントID'
-  },
-  {
-    id: 'postDate',
-    label: '投稿日',
-  },
-  {
-    id: 'postURL',
-    label: '投稿URL',
-  },
-  {
-    id: 'productName',
-    label: '商品名',
-  },
-  {
-    id: 'budget',
-    label: '予算',
-  },
-  {
-    id: 'followers',
-    label: 'フォロワー数',
-  },
-  {
-    id: 'numberOfImp',
-    label: 'インプ',
-  },
-  {
-    id: 'percentOfImp',
-    label: 'インプ%',
-  },
-  {
-    id: 'numberOfClick',
-    label: 'クリック',
-  },
-  {
-    id: 'percentOfClick',
-    label: 'クリック%',
-  },
-  {
-    id: 'numberOfStamp',
-    label: 'スタンプ',
-  },
-  {
-    id: 'percentOfStamp',
-    label: 'スタンプ%',
-  },
-  {
-    id: 'earning',
-    label: '売上',
-  },
-  {
-    id: 'ROAS',
-    label: 'ROAS',
-  }
-];
-
 
 const InstagramPage = ({selCampId, isLoading, data}) => {
   const theme = useTheme();
@@ -146,9 +29,9 @@ const InstagramPage = ({selCampId, isLoading, data}) => {
     if (data.length < 1)
       return;
 
-    let tFeeds = _.filter(data, itm => !itm.rtype && itm.rtype === 1);
-    let tStories = _.filter(data, itm => !itm.rtype && itm.rtype === 2);
-    let tRils = _.filter(data, itm => !itm.rtype && itm.rtype === 3);
+    let tFeeds = _.filter(data, itm => itm.rtype && itm.rtype === 1);
+    let tStories = _.filter(data, itm => itm.rtype && itm.rtype === 2);
+    let tRils = _.filter(data, itm => itm.rtype && itm.rtype === 3);
     let tCandidates = _.filter(data, itm => !itm.rtype || itm.rtype === 0);
 
     setFeeds([...tFeeds]);
@@ -180,7 +63,7 @@ const InstagramPage = ({selCampId, isLoading, data}) => {
   }, [candidates]);
 
   const changeCandidates = (selId, selType) => {
-    _.map(candidates, itm => {
+    _.map(updatedMembers, itm => {
       if (itm._id !== selId)
         return;
 
@@ -193,6 +76,77 @@ const InstagramPage = ({selCampId, isLoading, data}) => {
     });
 
     setCandidates(_.filter(candidates, itm => itm._id !== selId));
+  }
+
+  const changeFeeds = (accId, type, rtype, detail={}) => {
+    if (type === 'del') {
+      return campaignService.updateReport(selCampId, accId, 0)
+        .then((ret) => {
+          if (ret.status !== 'ok') {
+            toast.error('状態保存に失敗しました。');
+            return;
+          }
+          toast.success('状態保存に成功しました。');
+    
+          if (rtype === 1) {
+            _.map(feeds, itm => {
+              if (itm.accountId !== accId)
+                return;
+              
+              setCandidates([...candidates, itm]);
+            });
+
+            let tFeeds = _.filter(feeds, itm => itm.accountId !== accId);
+            setFeeds(tFeeds);
+          } else if (rtype === 2) {
+            _.map(stories, itm => {
+              if (itm.accountId !== accId)
+                return;
+              
+              setCandidates([...candidates, itm]);
+            });
+            
+            let tStories = _.filter(stories, itm => itm.accountId !== accId);
+            setStories(tStories);
+          } else if (rtype === 3) {
+            _.map(rils, itm => {
+              if (itm.accountId !== accId)
+                return;
+              
+              setCandidates([...candidates, itm]);
+            });
+
+            let tRils = _.filter(rils, itm => itm.accountId !== accId);
+            setRils(tRils);
+          }
+        })
+        .catch(error => {
+          toast.error(error.toString());
+        });
+    }
+
+    if (type === 'update') {
+      return campaignService.updateReport(selCampId, accId, rtype, detail)
+        .then((ret) => {
+          if (ret.status !== 'ok') {
+            toast.error('状態保存に失敗しました。');
+            return;
+          }
+          toast.success('状態保存に成功しました。');
+
+          let tUpdates = _.map(updatedMembers, itm => {
+            if (itm.accountId !== accId)
+              return itm;
+            
+            return {...itm, ...detail, rtype: rtype};
+          });
+    
+          setUpdatedMembers([...tUpdates]);
+        })
+        .catch(error => {
+          toast.error(error.toString());
+        });
+    }
   }
 
   return (
@@ -208,8 +162,21 @@ const InstagramPage = ({selCampId, isLoading, data}) => {
       <Box marginTop={4}>
         <ReportFeedTable 
           getDatas={getFeeds}
+          updateDatas={changeFeeds}
           classes={classes}
           sx={{display: selType === 'feed' ? 'block' : 'none'}}
+        />
+        <ReportStoryTable 
+          getDatas={getStories}
+          updateDatas={changeFeeds}
+          classes={classes}
+          sx={{display: selType === 'story' ? 'block' : 'none'}}
+        />
+        <ReportRilTable 
+          getDatas={getRils}
+          updateDatas={changeFeeds}
+          classes={classes}
+          sx={{display: selType === 'rir' ? 'block' : 'none'}}
         />
       </Box>
       <Box marginTop={4}>

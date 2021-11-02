@@ -11,6 +11,9 @@ const CampaignRepo = {
   getCampaignDetailList,
   createCampaign,
   updateMemberStatus,
+  updateMemberReport,
+  updateMemberYoutube,
+  updateMemberTiktok
 };
 
 async function getCampaignBrief(campId) {
@@ -233,6 +236,101 @@ async function updateMemberStatus(campId, step, accountId, status, amount) {
       );
     }
   }
+}
+
+async function updateMemberReport(campId, accountId, rtype, detail) {
+  if (rtype === 0) {  // move 2 candidate
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {$set: {"members.$.rtype": 0}}
+    );
+
+    return;
+  }
+
+  if (rtype === 1) { // update feed's value}
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {$set: {
+        "members.$.rtype": 1,
+        "members.$.postAt": detail.postAt,
+        "members.$.postLink": detail.postLink,
+        "members.$.shopping": detail.shopping,
+        "members.$.amount": detail.amount,
+        "members.$.rich": detail.rich,
+        "members.$.oks": detail.oks,
+        "members.$.comment": detail.comment,
+        "members.$.sell": detail.sell,
+      }}
+    );
+  } else if (rtype === 2) { // update story's value}
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {$set: {
+        "members.$.rtype": 2,
+        "members.$.postAt": detail.postAt,
+        "members.$.postLink": detail.postLink,
+        "members.$.shopping": detail.shopping,
+        "members.$.inp": detail.inp,
+        "members.$.click": detail.click,
+        "members.$.amount": detail.amount,
+        "members.$.stamp": detail.stamp,
+        "members.$.sell": detail.sell,
+      }}
+    );
+  } else if (rtype === 3) { // update ril's value}
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {$set: {
+        "members.$.rtype": 3,
+        "members.$.postAt": detail.postAt,
+        "members.$.postLink": detail.postLink,
+        "members.$.shopping": detail.shopping,
+        "members.$.amount": detail.amount,
+        "members.$.rich": detail.rich,
+        "members.$.saving": detail.saving,
+        "members.$.oks": detail.oks,
+        "members.$.comment": detail.comment,
+        "members.$.sell": detail.sell,
+      }}
+    );
+  }
+}
+
+async function updateMemberYoutube(campId, accountId, detail) {
+  await Campaign.updateOne(
+    {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+    {$set: {
+      "members.$.postAt": detail.postAt,
+      "members.$.postLink": detail.postLink,
+      "members.$.shopping": detail.shopping,
+      "members.$.amount": detail.amount,
+      "members.$.prs": detail.prs,
+      "members.$.good": detail.good,
+      "members.$.bad": detail.bad,
+      "members.$.comment": detail.comment,
+      "members.$.click": detail.click,
+      "members.$.cv": detail.cv,
+      "members.$.sell": detail.sell,
+    }}
+  );
+}
+
+async function updateMemberTiktok(campId, accountId, detail) {
+  await Campaign.updateOne(
+    {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+    {$set: {
+      "members.$.postAt": detail.postAt,
+      "members.$.postLink": detail.postLink,
+      "members.$.shopping": detail.shopping,
+      "members.$.amount": detail.amount,
+      "members.$.prs": detail.prs,
+      "members.$.oks": detail.oks,
+      "members.$.comment": detail.comment,
+      "members.$.sell": detail.sell,
+      "members.$.share": detail.share,
+    }}
+  );
 }
 
 export default CampaignRepo;

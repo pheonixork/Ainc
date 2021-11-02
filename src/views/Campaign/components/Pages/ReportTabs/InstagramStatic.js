@@ -1,29 +1,114 @@
 /* eslint-disable react/no-unescaped-entities */
+import moment from 'moment';
 import clsx from 'clsx';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Skeleton, Switch, Box, Button, Typography, Paper, TextField, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-export default function InstagramStatic({isLoading}) {
+export default function InstagramStatic({isLoading, getDatas, classes}) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [staticType, setStaticType] = useState(true);
 
-  const [info, setInfos] = useState({
-    amount:100, sells:0, roas:0, mems:0, followers:0, folvalue:0,
-    feed:{rich:0, richper:0, savings:0, per:0, eg:0},
-    story:{inp:0, inpper:0, clicks:0, clickper:0, staf:0, stafper:0},
-    ril:{rich:0, richper:0, savings:0, per:0, eg:0}
-  });
+  // const [info, setInfos] = useState({
+  //   amount:100, sells:0, roas:0, mems:0, followers:0, folvalue:0,
+  //   feed:{mems: 0, rich:0, richper:0, savings:0, per:0, normal:0},
+  //   story:{mems: 0, inp:0, inpper:0, clicks:0, clickper:0, staf:0, stafper:0},
+  //   ril:{mems: 0, rich:0, richper:0, savings:0, per:0, normal:0}
+  // });
+
+  const amountRef = useRef();
+  const sellRef = useRef();
+  const roasRef = useRef();
+  const memsRef = useRef();
+  const followersRef = useRef();
+  const followerValRef = useRef();
+  const frichRef = useRef();
+  const frichPerRef = useRef();
+  const fsavingRef = useRef();
+  const fsavingPerRef = useRef();
+  const fnormalRef = useRef();
+  const sinpRef = useRef();
+  const sinpPerRef = useRef();
+  const sclickRef = useRef();
+  const sclickPerRef = useRef();
+  const sstampRef = useRef();
+  const sstampPerRef = useRef();
+  const rrichRef = useRef();
+  const rrichPerRef = useRef();
+  const rsavingRef = useRef();
+  const rsavingPerRef = useRef();
+  const rnormalRef = useRef();
 
   useEffect(() => {
-    if (staticType === true) {
+    let tmp = getDatas();
+    if (!tmp || tmp.length < 1)
+      return;
 
+    let amount = 0, sells = 0, roas = 0, followers = 0, folvalue = 0;
+    let feed = {mems:0, rich:0, richper:0, savings:0, per:0, normal:0};
+    let story = {mems:0, inp:0, inpper:0, clicks:0, clickper:0, staf:0, stafper:0};
+    let ril = {mems:0, rich:0, richper:0, savings:0, per:0, normal:0};
+
+    if (staticType === true) {
+      _.map(tmp, itm => {
+        amount += itm.amount ? parseInt(itm.amount) : 0;
+        sells += itm.sell ? parseInt(itm.sell) : 0;
+        roas += (!itm.amount || !itm.sell) ? 0 : parseInt(itm.sell) / parseInt(itm.amount) * 100;
+        followers += itm.followers ? parseInt(itm.followers) : 0;
+
+        if (itm.rtype === 1) {
+          feed.rich += itm.rich ? parseInt(itm.rich) : 0;
+          feed.savings += itm.saving ? parseInt(itm.saving) : 0;
+          feed.normal += itm.normal ? parseInt(itm.normal) : 0;
+          feed.richper += (!itm.rich || !itm.followers) ? 0 : (itm.rich / itm.followers) * 100;
+          feed.per += (!itm.saving || !itm.followers) ? 0 : (itm.saving / itm.followers) * 100;
+          feed.mems ++;
+        } else if (itm.rtype === 2) {
+          story.inp += itm.inp ? parseInt(itm.inp) : 0;
+          story.clicks += itm.click ? parseInt(itm.click) : 0;
+          story.staf += itm.stamp ? parseInt(itm.stamp) : 0;
+          story.inpper += (!itm.inp || !itm.followers) ? 0 : (itm.inp / itm.followers) * 100;
+          story.clickper += (!itm.clicks || !itm.followers) ? 0 : (itm.clicks / itm.followers) * 100;
+          story.stafper += (!itm.staf || !itm.followers) ? 0 : (itm.staf / itm.followers) * 100;
+          story.mems ++;
+        } else if (itm.rtype === 3) {
+          ril.rich += itm.rich ? parseInt(itm.rich) : 0;
+          ril.savings += itm.saving ? parseInt(itm.saving) : 0;
+          ril.normal += itm.normal ? parseInt(itm.normal) : 0;
+          ril.richper += (!itm.rich || !itm.followers) ? 0 : (itm.rich / itm.followers) * 100;
+          ril.per += (!itm.saving || !itm.followers) ? 0 : (itm.saving / itm.followers) * 100;
+          ril.mems ++;
+        }
+      });
+
+      amountRef.current.value = amount;
+      sellRef.current.value = sells;
+      roasRef.current.value = roas.toFixed(1);
+      memsRef.current.value = tmp.length;
+      followersRef.current.value = followers;
+      followerValRef.current.value = folvalue;
+      frichRef.current.value = feed.rich;
+      frichPerRef.current.value = feed.mems > 0 ? (feed.richper / feed.mems).toFixed(1) : 0;
+      fsavingRef.current.value = feed.savings;
+      fsavingPerRef.current.value = feed.mems > 0 ? (feed.per / feed.mems).toFixed(1) : 0;
+      fnormalRef.current.value = feed.normal;
+      sinpRef.current.value = story.inp;
+      sinpPerRef.current.value = story.mems > 0 ? (story.inpper / story.mems).toFixed(1) : 0;
+      sclickRef.current.value = story.clicks;
+      sclickPerRef.current.value = story.mems > 0 ? (story.clickper / story.mems).toFixed(1) : 0;
+      sstampRef.current.value = story.staf;
+      sstampPerRef.current.value = story.mems > 0 ? (story.stafper / story.mems).toFixed(1) : 0;
+      rrichRef.current.value = ril.rich;
+      rrichPerRef.current.value = ril.mems > 0 ? (ril.richper / ril.mems).toFixed(1) : 0;
+      rsavingRef.current.value = ril.savings;
+      rsavingPerRef.current.value = ril.mems > 0 ? (ril.per / ril.mems).toFixed(1) : 0;
+      rnormalRef.current.value = ril.normal;
     }
-  }, [staticType])
+  }, [staticType, getDatas]);
 
   return (
     <Paper
@@ -59,6 +144,7 @@ export default function InstagramStatic({isLoading}) {
             onChange={(newValue) => {
               setStartDate(newValue);
             }}
+            inputFormat={'yyyy/MM/dd'}
             renderInput={(params) => <TextField {...params} />}
           />
           <MobileDatePicker
@@ -67,6 +153,7 @@ export default function InstagramStatic({isLoading}) {
             onChange={(newValue) => {
               setEndDate(newValue);
             }}
+            inputFormat={'yyyy/MM/dd'}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
@@ -75,38 +162,56 @@ export default function InstagramStatic({isLoading}) {
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="金額" variant="standard" size="small" 
-            defaultValue={info.amount} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>金額</Typography>
+            <TextField variant="standard" size="small" 
+              inputProps={{readOnly: staticType}} inputRef={amountRef}/>
+          </Box>
         )}
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="売上" variant="standard" size="small"
-            defaultValue={info.sells} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>売上</Typography>
+            <TextField variant="standard" size="small"
+              inputProps={{readOnly: staticType}} inputRef={sellRef}/>
+          </Box>
         )}
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="ROAS" variant="standard" size="small"
-            defaultValue={info.roas} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>ROAS</Typography>
+            <TextField variant="standard" size="small"
+              inputProps={{readOnly: staticType}} inputRef={roasRef}/>
+          </Box>
         )}
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="人数" variant="standard" size="small"
-            defaultValue={info.mems} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>人数</Typography>
+            <TextField variant="standard" size="small"
+              inputProps={{readOnly: staticType}} inputRef={memsRef}/>
+          </Box>
         )}
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="フォロワー数" variant="standard" size="small"
-            defaultValue={info.followers} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>フォロワー数</Typography>
+            <TextField variant="standard" size="small"
+              inputProps={{readOnly: staticType}} inputRef={followersRef}/>
+          </Box>
         )}
         {isLoading ? (
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
-          <TextField label="フォロワー単価" variant="standard" size="small"
-            defaultValue={info.folvalue} inputProps={{readOnly: staticType}}/>
+          <Box>
+            <Typography className={classes.staticCaption}>フォロワー単価</Typography>
+            <TextField variant="standard" size="small"
+              inputProps={{readOnly: staticType}} inputRef={followerValRef}/>
+          </Box>
         )}
       </Box>
       <Accordion>
@@ -124,32 +229,48 @@ export default function InstagramStatic({isLoading}) {
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計リーチ" variant="standard" size="small"
-                defaultValue={info.feed.rich} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計リーチ</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={frichRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均リーチ%" variant="standard" size="small"
-                defaultValue={info.feed.richper} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均リーチ%</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={frichPerRef}/>
+              </Box>
+            )}
+            
+            {isLoading ? (
+              <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
+            ) : (
+              <Box>
+                <Typography className={classes.staticCaption}>合計保存</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={fsavingRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計保存" variant="standard" size="small"
-                defaultValue={info.feed.savings} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均保存%</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={fsavingPerRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均保存%" variant="standard" size="small"
-                defaultValue={info.feed.per} inputProps={{readOnly: staticType}}/>
-            )}
-            {isLoading ? (
-              <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
-            ) : (
-              <TextField label="EG" variant="standard" size="small"
-                defaultValue={info.feed.eg} inputProps={{readOnly: staticType}}/>
+              <Box>
+            <Typography className={classes.staticCaption}>フォロワー単価</Typography>
+              <TextField variant="standard" size="small"
+                inputProps={{readOnly: staticType}} inputRef={fnormalRef}/>
+                </Box>
             )}
           </Box>
         </AccordionDetails>
@@ -169,38 +290,56 @@ export default function InstagramStatic({isLoading}) {
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計インプ" variant="standard" size="small" 
-                defaultValue={info.story.inp} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計インプ</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sinpRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均インプ%" variant="standard" size="small" 
-              defaultValue={info.story.inpper} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均インプ%</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sinpPerRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計クリック" variant="standard" size="small" 
-              defaultValue={info.story.clicks} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計クリック</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sclickRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均クリック%" variant="standard" size="small" 
-              defaultValue={info.story.clickper} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均クリック%</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sclickPerRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計スタンプ" variant="standard" size="small" 
-              defaultValue={info.story.staf} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計スタンプ</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sstampRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均スタンプ%" variant="standard" size="small" 
-              defaultValue={info.story.stafper} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均スタンプ%</Typography>
+                <TextField variant="standard" size="small" 
+                  inputProps={{readOnly: staticType}} inputRef={sstampPerRef}/>
+              </Box>
             )}
           </Box>
         </AccordionDetails>
@@ -220,32 +359,47 @@ export default function InstagramStatic({isLoading}) {
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計リーチ" variant="standard" size="small"
-                defaultValue={info.ril.rich} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計リーチ</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={rrichRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均リーチ%" variant="standard" size="small"
-              defaultValue={info.ril.richper} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均リーチ%</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={rrichPerRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="合計保存" variant="standard" size="small"
-              defaultValue={info.ril.savings} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>合計保存</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={rsavingRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="平均保存%" variant="standard" size="small"
-              defaultValue={info.ril.per} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>平均保存%</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={rsavingPerRef}/>
+              </Box>
             )}
             {isLoading ? (
               <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
             ) : (
-              <TextField label="EG" variant="standard" size="small"
-                defaultValue={info.ril.eg} inputProps={{readOnly: staticType}}/>
+              <Box>
+                <Typography className={classes.staticCaption}>EG</Typography>
+                <TextField variant="standard" size="small"
+                  inputProps={{readOnly: staticType}} inputRef={rnormalRef}/>
+              </Box>
             )}
           </Box>
         </AccordionDetails>

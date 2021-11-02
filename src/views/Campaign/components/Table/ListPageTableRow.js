@@ -9,7 +9,7 @@ import {CP} from 'views/Common/CP';
 
 const statusValues = [
   '社内確認中',
-  'インフルエンサー交渉中',
+  '交渉中',
   'NG',
   'OK'
 ];

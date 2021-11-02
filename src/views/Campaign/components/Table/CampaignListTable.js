@@ -130,23 +130,18 @@ export default function CampaignListTable({data, handleSelectChanged}) {
                         key={index}
                         selected={selected === row.id}
                       >
-                        <TableCell
-                          //scope="row"
-                          align="left"
-                        >
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="left">{row.genre}</TableCell>
-                        <TableCell align="left">{_.get(Constants.snsTypes, row.sns)}</TableCell>
-                        <TableCell align="right">{row.amount ?? row.amount}</TableCell>
-                        <TableCell align="right">{row.mems ?? row.mems}</TableCell>
-                        <TableCell align="center">{row.cdate ?? row.cdate}</TableCell>
-                        <TableCell align="center">{row.edate ?? row.edate}</TableCell>
-                        <TableCell align="right">{row.rich ?? row.rich}</TableCell>
-                        <TableCell align="right">{row.richper ?? row.richper}</TableCell>
-                        <TableCell align="right">{row.sell ?? row.sell}</TableCell>
-                        <TableCell align="right">{row.roas ?? row.roas}</TableCell>
-                        <TableCell align="right">
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.genre}</TableCell>
+                        <TableCell>{_.get(Constants.snsTypes, row.sns)}</TableCell>
+                        <TableCell>{row.amount ?? row.amount}</TableCell>
+                        <TableCell>{row.mems ?? row.mems}</TableCell>
+                        <TableCell>{row.cdate ?? row.cdate}</TableCell>
+                        <TableCell>{row.edate ?? row.edate}</TableCell>
+                        <TableCell>{row.rich ?? row.rich}</TableCell>
+                        <TableCell>{row.richper ?? row.richper}</TableCell>
+                        <TableCell>{row.sell ?? row.sell}</TableCell>
+                        <TableCell>{row.roas ?? row.roas}</TableCell>
+                        <TableCell>
                           <Button
                             component={'a'}
                             variant="outlined"

@@ -14,7 +14,7 @@ const ListPageStatic = ({isloading, updatedInfos}) => {
     _.map(datas, itm => {
       if (itm.status === 1) { //社内確認中
         cmems ++;
-      } else if (itm.status === 2) { //インフルエンサー交渉中
+      } else if (itm.status === 2) { //交渉中
         imems ++;
       } else if (itm.status === 3) { //NG
         nmems ++;
@@ -84,7 +84,7 @@ const ListPageStatic = ({isloading, updatedInfos}) => {
           ) : (
             <p className='value'>{staticInfo.imems}</p>
           )}
-          <p className='title'>インフルエンサー交渉中</p>
+          <p className='title'>交渉中</p>
         </Box>
         <Box className='valueItem'>
           {isloading ? (

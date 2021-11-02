@@ -8,4 +8,8 @@ export { default as PostPageStatic } from './PostPageStatic';
 export { default as PostPageTable } from './PostPageTable';
 export { default as PostPageTableRow } from './PostPageTableRow';
 export { default as ReportFeedTable } from './ReportFeedTable';
+export { default as ReportStoryTable } from './ReportStoryTable';
+export { default as ReportRilTable } from './ReportRilTable';
 export { default as ReportCandidateTable } from './ReportCandidateTable';
+export { default as ReportYoutubeTable } from './ReportYoutubeTable';
+export { default as ReportTiktokTable } from './ReportTiktokTable';

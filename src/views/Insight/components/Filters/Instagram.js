@@ -3,10 +3,8 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
+import {Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography} from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {FltTextField} from '../../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 
@@ -59,74 +57,84 @@ export default function Instagram({...rest}) {
       </Box>
 
       <Box className='search-box' >
-        <Typography
-          variant="body1"
-        >
-          プィード
-        </Typography>
-
-        <Box 
-          sx={{display: 'flex', flexShrink: 0}}>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='EG' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
-          </Box>
-        </Box>
-
-        <Typography
-          className={classes.typodata}
-          variant="body1"
-        >
-          ストーリ
-        </Typography>
-
-        <Box 
-          sx={{display: 'flex', flexShrink: 0}}>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='インプ%' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='リンククリック%' icon={false} phstr='To' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='スタンプ' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
-          </Box>
-        </Box>
-
-        <Typography
-          className={classes.typodata}
-          variant="body1"
-        >
-          リール
-        </Typography>
-
-        <Box 
-          sx={{display: 'flex', flexShrink: 0}}>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='EG' icon={false} phstr='From' />
-          </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
-          </Box>
-        </Box>
-
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography variant="body1">フィード</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box 
+              sx={{display: 'flex', flexShrink: 0}}>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='EG' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
+              </Box>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls="panel2a-content"
+            id="pane21a-header"
+          >
+            <Typography variant="body1">ストーリ</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box 
+              sx={{display: 'flex', flexShrink: 0}}>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='インプ%' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='リンククリック%' icon={false} phstr='To' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='スタンプ' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
+              </Box>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls="panel3a-content"
+            id="pane31a-header"
+          >
+            <Typography variant="body1">リール</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box 
+              sx={{display: 'flex', flexShrink: 0}}>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='EG' icon={false} phstr='From' />
+              </Box>
+              <Box>
+                <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
+              </Box>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
         <Box sx={{display:'flex', justifyContent:'flex-end', marginTop: '15px'}}>
           <Button
             variant={'outlined'}

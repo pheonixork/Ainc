@@ -10,7 +10,10 @@ export const campaignService = {
   getCampagin,
   getCampaignDetail,
   getCampaignList,
-  updateMemberStatus
+  updateMemberStatus,
+  updateReport,
+  updateReportYoutube,
+  updateReportTiktok
 };
 
 function createCampaign(name, sns, type) {
@@ -34,4 +37,16 @@ function getCampaignList(userId) {
 
 function updateMemberStatus(campId, step, accountId, status, amount=0) {
   return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, accountId, status, amount});
+}
+
+function updateReport(campId, accountId, rtype, detail={}) {
+  return fetchWrapper.post(`${baseUrl}/updateReport`, {campId, accountId, rtype, detail});
+}
+
+function updateReportYoutube(campId, accountId, detail={}) {
+  return fetchWrapper.post(`${baseUrl}/updateReportYoutube`, {campId, accountId, detail});
+}
+
+function updateReportTiktok(campId, accountId, detail={}) {
+  return fetchWrapper.post(`${baseUrl}/updateReportTiktok`, {campId, accountId, detail});
 }

@@ -1,30 +1,69 @@
-# [AINC - Influencer tools for growth focused marketers](https://ainc.vercel.app/)
+# [theFront - Multipurpose Template + UI Kit](https://thefront.maccarianagency.com/)
 
-Convert customers with high performance influencer marketing for Japanese
+Material-UI & ReactJS based Landing Pages Kit made with [Material-UI's](https://material-ui.com/?ref=maccarian-agency) components, [React](https://reactjs.org/?ref=maccarian-agency). It supports [create-react-app](https://facebook.github.io/create-react-app/?ref=maccarian-agency) build-tools (react-scripts), [NextJS](https://nextjs.org/?ref=maccarian-agency), [GatsbyJS](https://www.gatsbyjs.com/?ref=maccarian-agency) and Typescript to boost your app development process!
+A professional React Kit that comes with plenty of ready-to-use Material-UI components that will help you to build faster & beautiful fontend pages. Each component is fully customizable, responsive and easy to integrate.
 
 ## Built with
 
+- React
 - Material-UI
+- React Scripts
 - NextJS
-- MongoDB
+- GatsbyJS
+- Typescript
+- Figma & Sketch
 
 ## Features
 
-We help you grow your business with influencers while reducing your cost per acquisition (CPA).
-We support every step in your influencer partnerships.
+theFront landing page examples can be used out of the box, but since they’re built on flexible components, you can also create new pages all your own with ease. Copy-paste a section here, a component there, switch up a few variables, and you have an entirely new landing!
 
-- 100,000,000+ Influencers across all major platforms — easily filter to find the ones who reach your audience
-- Get in depth audience and influencer data. Fake followers, demographics, contact info and performance insights.
-- Be first to know when influencer posts go live and if they match campaign guidelines. Get alerts, export content & more.
+- More than 45 pages
+- 300+ component reusable compositions
+- create-react-app & react-scripts support
+- NextJS and server side rendering support
+- GatsbyJS and server side rendering support
+- Typescript support
+- Dark mode support
+- Image lazy loading support
+- Animated sections on scroll
+- Swiper support
+- Fully responsive on all modern browsers
+- Figma and Sketch design files (available in Standard Plus & Extended licences)
+- Rich documentation with code samples and parameters/options
+- Free customer support
+- Free updates
 
-<br><br>
-<div>
-  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/3fad27d1690d19c3533a812c94b1835323039b27/demo1.svg?raw=true" width="30%" height="256" />
-  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/7c26732bed04d9de4525e472135e90b02d5ba0c5/demo2.svg" width="30%" height="256" />
-  <img align="left" src="https://github.com/shinagawa-haruko/Ainc/blob/7c26732bed04d9de4525e472135e90b02d5ba0c5/demo3.svg" width="30%" height="256" />
-</div>
-  
-<br><br><br><br><br><br><br><br><br><br><br><br>
+## Learn more
+
+- [Launch a live demo](https://thefront.maccarianagency.com)
+- [Documentation & Quick Start](https://thefront.maccarianagency.com/docs/introduction)
+
+## Design Highlights
+
+theFront was designed as a rich system from the start, which is reflected in both the end result and the original design.
+
+- 15 Figma and Sketch files are available
+- Beautiful, modern style flexible enough to suit most brands
+- All images are included with a free-to-use license
+- Icon set provided by Font Awesome Kit
+
+The following are the pages that have Figma and Sketch design implementation:
+
+- [Job Listing](https://thefront.maccarianagency.com/job-listing)
+- [Rental](https://thefront.maccarianagency.com/rental)
+- [E-commerce](https://thefront.maccarianagency.com/e-commerce)
+- [Cloud Hosting](https://thefront.maccarianagency.com/cloud-hosting)
+- [Logistics](https://thefront.maccarianagency.com/logistics)
+- [Portfolio](https://thefront.maccarianagency.com/portfolio-page)
+- [Career Listing](https://thefront.maccarianagency.com/career-listing-minimal)
+- [Career Opening](https://thefront.maccarianagency.com/career-opening)
+- [Help Center](https://thefront.maccarianagency.com/help-center)
+- [Company About](https://thefront.maccarianagency.com/about)
+- [Company Pricing](https://thefront.maccarianagency.com/pricing)
+- [Blog Newsroom](https://thefront.maccarianagency.com/blog-newsroom)
+- [Blog Article](https://thefront.maccarianagency.com/blog-article)
+- [Company Contact](https://thefront.maccarianagency.com/contact-page)
+- [Account Page](https://thefront.maccarianagency.com/account/general)
 
 ## Quick start
 
@@ -32,6 +71,19 @@ We support every step in your influencer partnerships.
 - Start the server: `yarn run dev`
 - Build on production: `yarn run build`
 
+## MUI Documentation
+
+The full documentation for the React Material Kit can be found [here](https://material-ui.com?ref=maccarian-agency).
+
+## Free Updates and Support
+
+No matter how well documented and built something is, sometimes you just need a little help! That’s why we make ourselves available to help you anytime, just contact our [support](hi@maccarianagency.com) email. We’re also planning tons of updates! In addition to keeping theFront up to date with Material-UI's core and any necessary patches, we’ll be adding new features regularly over the coming months!
+
+- [Contact us via email](hi@maccarianagency.com)
+
 ## Contact Us
 
-- Email Us: beauty.daughter0310@gmail.com
+- Email Us: hi@maccarianagency.com
+- [Follow us on Linkedin](https://www.linkedin.com/company/maccarian)
+- [Follow us on Instagram](https://www.instagram.com/maccarian/)
+- [Follow us on Facebook](https://facebook.com/maccarian.agency/)

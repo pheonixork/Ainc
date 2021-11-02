@@ -29,7 +29,7 @@ export default function CustomTableHead(props) {
           <TableCell
             key={headCell.id}
             // align={headCell.numeric ? 'right' : 'left'}
-            align="center"
+            align="left"
             padding='normal'
             sortDirection={orderBy === headCell.id ? order : false}
           >

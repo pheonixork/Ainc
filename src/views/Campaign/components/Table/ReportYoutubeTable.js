@@ -36,28 +36,24 @@ const feedHeadCells = [
     label: '金額',
   },
   {
-    id: 'followers',
-    label: 'フォロワー数',
+    id: 'registers',
+    label: '登録者数',
   },
   {
-    id: 'rich',
-    label: 'リーチ数',
+    id: 'recycle',
+    label: '平均再生',
   },
   {
-    id: 'percentOfReach',
-    label: 'リーチ%',
+    id: 'prs',
+    label: 'PR再生',
   },
   {
-    id: 'saving',
-    label: '保存',
+    id: 'good',
+    label: 'GOOD',
   },
   {
-    id: 'savePercent',
-    label: '保存%',
-  },
-  {
-    id: 'oks',
-    label: 'いいね数',
+    id: 'bad',
+    label: 'BAD',
   },
   {
     id: 'comment',
@@ -68,8 +64,24 @@ const feedHeadCells = [
     label: '通常/EG',
   },
   {
-    id: 'prs',
+    id: 'prper',
     label: 'PR/EG',
+  },
+  {
+    id: 'click',
+    label: 'クリニック数',
+  },
+  {
+    id: 'clickper',
+    label: 'クリニック率',
+  },
+  {
+    id: 'cv',
+    label: 'CV',
+  },
+  {
+    id: 'cvper',
+    label: 'CV率',
   },
   {
     id: 'sell',
@@ -81,7 +93,7 @@ const feedHeadCells = [
   }
 ];
 
-const ReportFeedRow = ({row, updateDatas, classes}) => {
+const ReportYoutubeRow = ({row, updateDatas, classes}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -91,12 +103,28 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const postAtRef = useRef();
+  const postLinkRef = useRef();
+  const shoppingRef = useRef();
+  const amountRef = useRef();
+  const goodRef = useRef();
+  const badRef = useRef();
+  const prsRef = useRef();
+  const commentRef = useRef();
+  const clickRef = useRef();
+  const cvRef = useRef();
+  const sellRef = useRef();
+  const prPerRef = useRef();
+  const clickPerRef = useRef();
+  const cvPerRef = useRef();
+  const roasRef = useRef();
+
   const handleMenuClose = (type, accId) => {
     switch (type) {
       case 'add':
         break;
       case 'del':
-        updateDatas(accId, 'del', 1);
+        updateDatas(accId);
         break;
       case 'cp':
         setAccountId(accId);
@@ -105,31 +133,18 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
         let detail = {
           postAt: postAtRef.current.value, postLink: postLinkRef.current.value, 
           shopping: shoppingRef.current.value, amount: amountRef.current.value,
-          rich: richRef.current.value, saving: savingRef.current.value, 
-          oks: oksRef.current.value, comment: commentRef.current.value, 
-          sell: sellRef.current.value,
+          prs: prsRef.current.value, good: goodRef.current.value,
+          bad: badRef.current.value, comment: commentRef.current.value,
+          click: clickRef.current.value, cv: cvRef.current.value,
+          sell: sellRef.current.value
         };
-        updateDatas(accId, 'update', 1, detail);
+        updateDatas(accId, detail);
         break;
       default:
         break;
     }
     setAnchorEl(null);
   };
-
-  const postAtRef = useRef();
-  const postLinkRef = useRef();
-  const shoppingRef = useRef();
-  const amountRef = useRef();
-  const richRef = useRef();
-  const richPerRef = useRef();
-  const savingRef = useRef();
-  const savingPerRef = useRef();
-  const oksRef = useRef();
-  const commentRef = useRef();
-  const prsRef = useRef();
-  const sellRef = useRef();
-  const roasRef = useRef();
 
   useEffect(() => {
     if (!row)
@@ -139,44 +154,50 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
     postLinkRef.current.value = row.postLink ? row.postLink : '';
     shoppingRef.current.value = row.shopping ? row.shopping : '';
     amountRef.current.value = row.amount ? row.amount : 0;
-    richRef.current.value = row.rich ? row.rich : 0;
-    savingRef.current.value = row.saving ? row.saving : 0;
-    oksRef.current.value = row.oks ? row.oks : 0;
+    prsRef.current.value = row.prs ? row.prs : 0;
+    goodRef.current.value = row.good ? row.good : 0;
+    badRef.current.value = row.bad ? row.bad : 0;
     commentRef.current.value = row.comment ? row.comment : 0;
+    clickRef.current.value = row.click ? row.click : 0;
+    cvRef.current.value = row.cv ? row.cv : 0;
     sellRef.current.value = row.sell ? row.sell : 0;
-
-    savingPerRef.current.value = (!row.saving || !row.rich) ? 0 : (row.rich / row.saving * 100).toFixed(1);
-    richPerRef.current.value = (!row.rich || !row.followers) ? 0 : (row.rich / row.followers * 100).toFixed(1);
-    prsRef.current.value = (!row.oks || !row.rich) ? 0 : (row.oks / row.rich * 100).toFixed(1);
-    roasRef.current.value = (!row.sell || !row.amount) ? 0 : (row.sell / row.amount * 100).toFixed(1);
+    prPerRef.current.value = (!row.registers || !row.good) ? 0 : (row.good / row.registers * 100).toFixed(1);
+    clickPerRef.current.value = (!row.recycle || !row.click) ? 0 : (row.click / row.recycle * 100).toFixed(1);
+    cvPerRef.current.value = (!row.recycle || !row.cv) ? 0 : (row.cv / row.recycle * 100).toFixed(1);
+    roasRef.current.value = (!row.amount || !row.sell) ? 0 : (row.sell / row.amount * 100).toFixed(1);
   }, [row]);
-
-  const richValueChanged = (evt) => {
-    let oksVal = parseInt(oksRef.current.value);
-    let richVal = parseInt(richRef.current.value);
-    let savingVal = parseInt(savingRef.current.value);
-
-    if (isNaN(richVal))
-      return;
-
-    richPerRef.current.value = (!richVal || !row.followers) ? 0 : (richVal / row.followers * 100).toFixed(1);
-
-    if (!isNaN(oksVal)) {
-      prsRef.current.value = (!oksVal || !richVal) ? 0 : (oksVal / richVal * 100).toFixed(1);
-    }
-
-    if (!isNaN(savingVal)) {
-      savingPerRef.current.value = (!savingVal || !richVal) ? 0 : (richVal / savingVal * 100).toFixed(1);
-    }
-  }
 
   const amountValueChanged = (evt) => {
     let amountVal = parseInt(amountRef.current.value);
     let sellVal = parseInt(sellRef.current.value);
-    if (isNaN(amountVal) || isNaN(sellVal))
+    if (isNaN(sellVal) || isNaN(amountVal))
       return;
 
-    roasRef.current.value = (!amountVal || !sellVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
+    roasRef.current.value = (!sellVal || !amountVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
+  }
+
+  const goodValueChanged = (evt) => {
+    let goodVal = parseInt(evt.target.value);
+    if (!row.registers || isNaN(goodVal))
+      return;
+
+    prPerRef.current.value = (goodVal / row.registers * 100).toFixed(1);
+  }
+
+  const clickValueChanged = (evt) => {
+    let clickVal = parseInt(evt.target.value);
+    if (!row.recycle || isNaN(clickVal))
+      return;
+
+    clickPerRef.current.value = (clickVal / row.recycle * 100).toFixed(1);
+  }
+
+  const cvValueChanged = (evt) => {
+    let cvVal = parseInt(evt.target.value);
+    if (!row.recycle || isNaN(cvVal))
+      return;
+
+    cvPerRef.current.value = (cvVal / row.recycle * 100).toFixed(1);
   }
 
   return (
@@ -195,34 +216,41 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={amountRef } onChange={amountValueChanged} />
         </TableCell>
-        <TableCell className={classes.feedtableCell}>{row.followers}</TableCell>
+        <TableCell className={classes.feedtableCell}>{row.registers}</TableCell>
+        <TableCell className={classes.feedtableCell}>{row.recycle}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={richRef } onChange={richValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={richPerRef} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={goodRef } onChange={goodValueChanged}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={savingRef } onChange={richValueChanged} />
-        </TableCell>
-        <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={savingPerRef} />
-        </TableCell>
-        <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={richValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={badRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell}>{row.normal}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={prPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={clickRef } onChange={clickValueChanged} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={clickPerRef} />
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={cvRef } onChange={cvValueChanged} />
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={cvPerRef} />
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged}/>
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={roasRef} />
         </TableCell>
         <TableCell align="center" className={classes.feedtableCell}>
           <Button aria-haspopup="true" onClick={handleMenuClick} className="active">...</Button>
@@ -235,7 +263,7 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
             }}
           >
             {/* <MenuItem onClick={e=>handleMenuClose('add')}>追加</MenuItem> */}
-            <MenuItem onClick={e=>handleMenuClose('del', row.accountId)}>削除</MenuItem>
+            {/* <MenuItem onClick={e=>handleMenuClose('del', row.accountId)}>削除</MenuItem> */}
             <MenuItem onClick={e=>handleMenuClose('cp', row.accountId)}>CP</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('save', row.accountId)}>SAVE</MenuItem>
           </Menu>
@@ -246,8 +274,9 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
   )
 }
 
-export default function ReportFeedTable({getDatas, updateDatas, classes, ...rest}) {
+export default function ReportYoutubeTable({getDatas, updateDatas, classes, ...rest}) {
   const [data, setData] = useState([]);
+  
 
   useEffect(() => {
     let data = getDatas();
@@ -300,7 +329,7 @@ export default function ReportFeedTable({getDatas, updateDatas, classes, ...rest
             </TableHead>
             <TableBody>
               {data.map((row, index) => (
-                <ReportFeedRow 
+                <ReportYoutubeRow 
                   key={index} 
                   row={row} 
                   updateDatas={updateDatas}

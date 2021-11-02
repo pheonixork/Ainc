@@ -14,7 +14,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import {CP} from 'views/Common/CP';
 
-const feedHeadCells = [
+const rilHeadCells = [
   {
     id: 'name',
     label: 'アカウント名'
@@ -44,7 +44,7 @@ const feedHeadCells = [
     label: 'リーチ数',
   },
   {
-    id: 'percentOfReach',
+    id: 'richper',
     label: 'リーチ%',
   },
   {
@@ -52,7 +52,7 @@ const feedHeadCells = [
     label: '保存',
   },
   {
-    id: 'savePercent',
+    id: 'savingper',
     label: '保存%',
   },
   {
@@ -81,7 +81,7 @@ const feedHeadCells = [
   }
 ];
 
-const ReportFeedRow = ({row, updateDatas, classes}) => {
+const ReportRilRow = ({row, updateDatas, classes}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -91,12 +91,26 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const postAtRef = useRef();
+  const postLinkRef = useRef();
+  const shoppingRef = useRef();
+  const amountRef = useRef();
+  const richRef = useRef();
+  const savingRef = useRef();
+  const oksRef = useRef();
+  const commentRef = useRef();
+  const prsRef = useRef();
+  const richPerRef = useRef();
+  const savingPerRef = useRef();
+  const sellRef = useRef();
+  const roasRef = useRef();
+
   const handleMenuClose = (type, accId) => {
     switch (type) {
       case 'add':
         break;
       case 'del':
-        updateDatas(accId, 'del', 1);
+        updateDatas(accId, 'del');
         break;
       case 'cp':
         setAccountId(accId);
@@ -106,10 +120,10 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
           postAt: postAtRef.current.value, postLink: postLinkRef.current.value, 
           shopping: shoppingRef.current.value, amount: amountRef.current.value,
           rich: richRef.current.value, saving: savingRef.current.value, 
-          oks: oksRef.current.value, comment: commentRef.current.value, 
+          oks: oksRef.current.value, comment: commentRef.current.value,
           sell: sellRef.current.value,
         };
-        updateDatas(accId, 'update', 1, detail);
+        updateDatas(accId, 'update', 3, detail);
         break;
       default:
         break;
@@ -117,19 +131,33 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
     setAnchorEl(null);
   };
 
-  const postAtRef = useRef();
-  const postLinkRef = useRef();
-  const shoppingRef = useRef();
-  const amountRef = useRef();
-  const richRef = useRef();
-  const richPerRef = useRef();
-  const savingRef = useRef();
-  const savingPerRef = useRef();
-  const oksRef = useRef();
-  const commentRef = useRef();
-  const prsRef = useRef();
-  const sellRef = useRef();
-  const roasRef = useRef();
+  const amountValueChanged = (evt) => {
+    let amountVal = parseInt(amountRef.current.value);
+    let sellVal = parseInt(sellRef.current.value);
+    if (isNaN(amountVal) || isNaN(sellVal))
+      return;
+
+    roasRef.current.value = (!amountVal || !sellVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
+  }
+
+  const richValueChanged = (evt) => {
+    let oksVal = parseInt(oksRef.current.value);
+    let richVal = parseInt(richRef.current.value);
+    let savingVal = parseInt(savingRef.current.value);
+
+    if (isNaN(richVal))
+      return;
+
+    richPerRef.current.value = (!richVal || !row.followers) ? 0 : (richVal / row.followers * 100).toFixed(1);
+
+    if (!isNaN(oksVal)) {
+      prsRef.current.value = (!oksVal || !richVal) ? 0 : (oksVal / richVal * 100).toFixed(1);
+    }
+
+    if (!isNaN(savingVal)) {
+      savingPerRef.current.value = (!savingVal || !richVal) ? 0 : (richVal / savingVal * 100).toFixed(1);
+    }
+  }
 
   useEffect(() => {
     if (!row)
@@ -151,34 +179,6 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
     roasRef.current.value = (!row.sell || !row.amount) ? 0 : (row.sell / row.amount * 100).toFixed(1);
   }, [row]);
 
-  const richValueChanged = (evt) => {
-    let oksVal = parseInt(oksRef.current.value);
-    let richVal = parseInt(richRef.current.value);
-    let savingVal = parseInt(savingRef.current.value);
-
-    if (isNaN(richVal))
-      return;
-
-    richPerRef.current.value = (!richVal || !row.followers) ? 0 : (richVal / row.followers * 100).toFixed(1);
-
-    if (!isNaN(oksVal)) {
-      prsRef.current.value = (!oksVal || !richVal) ? 0 : (oksVal / richVal * 100).toFixed(1);
-    }
-
-    if (!isNaN(savingVal)) {
-      savingPerRef.current.value = (!savingVal || !richVal) ? 0 : (richVal / savingVal * 100).toFixed(1);
-    }
-  }
-
-  const amountValueChanged = (evt) => {
-    let amountVal = parseInt(amountRef.current.value);
-    let sellVal = parseInt(sellRef.current.value);
-    if (isNaN(amountVal) || isNaN(sellVal))
-      return;
-
-    roasRef.current.value = (!amountVal || !sellVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
-  }
-
   return (
     <>
       <TableRow>
@@ -193,7 +193,7 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={amountRef } onChange={amountValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={amountRef } onChange={amountValueChanged}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>{row.followers}</TableCell>
         <TableCell className={classes.feedtableCell}>
@@ -209,7 +209,7 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={savingPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={richValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={richValueChanged} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } />
@@ -219,7 +219,7 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } />
@@ -246,9 +246,9 @@ const ReportFeedRow = ({row, updateDatas, classes}) => {
   )
 }
 
-export default function ReportFeedTable({getDatas, updateDatas, classes, ...rest}) {
+export default function ReportRilTable({getDatas, updateDatas, classes, ...rest}) {
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
     let data = getDatas();
     if (!data)
@@ -278,7 +278,7 @@ export default function ReportFeedTable({getDatas, updateDatas, classes, ...rest
           >
             <TableHead>
               <TableRow>
-                {feedHeadCells.map((headCell) => (
+                {rilHeadCells.map((headCell) => (
                   <TableCell
                     key={headCell.id}
                     padding='normal'
@@ -300,7 +300,7 @@ export default function ReportFeedTable({getDatas, updateDatas, classes, ...rest
             </TableHead>
             <TableBody>
               {data.map((row, index) => (
-                <ReportFeedRow 
+                <ReportRilRow 
                   key={index} 
                   row={row} 
                   updateDatas={updateDatas}

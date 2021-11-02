@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import {useTheme} from '@mui/material/styles';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
 
 export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
+  const theme = useTheme();
   const [itemValue, setItemValue] = useState('');
   useEffect(()=>{
     if (clearFlag === true || clearFlag === false)
@@ -30,7 +32,7 @@ export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
         {...rest}
         value={itemValue}
         onChange={e=>setItemValue(e.target.value)}
-        inputProps={{style:{fontSize:'14px'}}}
+        inputProps={{style:{fontSize:'14px', backgroundColor:theme.palette.clrVariables.grayWhite}}}
       />
     </Box>
   );

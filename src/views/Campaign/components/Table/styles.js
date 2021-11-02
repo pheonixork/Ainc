@@ -15,6 +15,9 @@ const styles = theme => ({
     '& input': {
       padding: '4px'
     }
+  },
+  staticCaption: {
+    fontSize: '12px'
   }
 });
 

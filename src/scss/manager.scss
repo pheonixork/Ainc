@@ -905,12 +905,12 @@ $purple-deepwhite-clr: #6883E4;
   font-weight: 400;
   background-color: transparent;
   &:Hover {
-    background-color: $purple-black-clr !important; 
+    background-color: $purple-deepwhite-clr !important; 
   }
 }
 
 .nav-item-current {
   font-weight: 600 !important;
-  background-color: $purple-deepwhite-clr !important;
+  background-color: $purple-black-clr !important;
 }
 

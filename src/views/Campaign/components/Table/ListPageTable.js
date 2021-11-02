@@ -6,7 +6,7 @@ import {ListPageTableHead, ListPageTableRow} from '.';
 
 const statusValues = [
   '社内確認中',
-  'インフルエンサー交渉中',
+  '交渉中',
   'NG',
   'OK'
 ];

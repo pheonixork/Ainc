@@ -27,6 +27,13 @@ export default function PostPageTableRow({data, index, handleSaveMember}) {
     pstatus = val;
   }
 
+  useEffect(() => {
+    if (!data || !data.pstatus)
+      return;
+
+    pstatus = data.pstatus;
+  }, [data]);
+
   return (
     <TableRow
       hover

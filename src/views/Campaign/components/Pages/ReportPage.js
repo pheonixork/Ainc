@@ -34,8 +34,12 @@ const ReportPage = ({selCampId, selCampSNS}) => {
       {selCampSNS === 'instagram' && 
         <InstagramPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
       }
-      {selCampSNS === 'youtube' && <YoutubePage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />}
-      {selCampSNS === 'tiktok' && <TiktokPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />}
+      {selCampSNS === 'youtube' && 
+        <YoutubePage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+      }
+      {selCampSNS === 'tiktok' && 
+        <TiktokPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+      }
     </Box>
   );
 };

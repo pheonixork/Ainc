@@ -64,9 +64,33 @@ const campaignSchema = mongoose.Schema({
       type: Number,
       default: 0,
     },
+    registers: {
+      type: Number,
+      default: 0,
+    },
+    recycle: {
+      type: Number,
+      default: 0,
+    },
     engage: {
       type: Number,
       default: 0,
+    },
+    inp: {
+      type: Number,
+      default: 0,
+    },
+    budget: {
+      type: Number,
+      default: 0,
+    },
+    click: {
+      type: Number,
+      default: 0,
+    },
+    stamp: {
+      type: Number,
+      default: 0
     },
     rich: {
       type: Number,
@@ -92,11 +116,27 @@ const campaignSchema = mongoose.Schema({
       type: Number,
       default: 0,
     },
+    share: {
+      type: Number,
+      default: 0,
+    },
     sell: {
       type: Number,
       default: 0,
     },
     roas: {
+      type: Number,
+      default: 0,
+    },
+    good: {
+      type: Number,
+      default: 0,
+    },
+    bad: {
+      type: Number,
+      default: 0,
+    },
+    cv: {
       type: Number,
       default: 0,
     },
