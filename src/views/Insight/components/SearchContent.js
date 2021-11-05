@@ -1,17 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types'
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import {Box, Select, Button, MenuItem, Typography} from '@mui/material';
 import {AccountItem} from './Contents';
 import Lang from 'constants/lang';
-import {CP} from 'views/Common/CP';
 
 const SearchContent = ({accounts}) => {
   const [sortOrder, setSort] = useState(0);
-  const [selId, setAccountId] = useState('');
-
+  
   return (
     <Box>
       <Box sx={{display:'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
@@ -51,19 +48,14 @@ const SearchContent = ({accounts}) => {
           <Typography>検察結果がありません</Typography>
         ) : (
         _.map(_.orderBy(accounts, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), itm => (
-          <AccountItem itm={itm} key={itm._id} showCPDetail={setAccountId} />
+          <AccountItem itm={itm} key={itm._id}/>
         )))}
         <Box className='load-more'>
           <Button className='active'>{Lang.caption.nextpage}</Button>
         </Box>
       </Box>
-      <CP accountId={selId} setCollapse={setAccountId}/>
     </Box>
   );
 };
-
-SearchContent.propTypes = {
-  accounts: PropTypes.array
-}
 
 export default SearchContent;

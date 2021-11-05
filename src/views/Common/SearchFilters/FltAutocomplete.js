@@ -7,9 +7,10 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
-
+import {useTheme} from '@mui/material/styles';
 export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr }) {
   const [itemValue, setItemValue] = useState({title:'', year:''});
+  const theme = useTheme();
 
   useEffect(()=>{
     if (clearFlag === true || clearFlag === false)
@@ -52,6 +53,9 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
         onChange={(event, newValue) => {
           setItemValue(newValue);
         }}
+        sx={{
+          backgroundColor: theme.palette.clrVariables.grayWhite,
+        }}
         // inputValue={itemValue}
         // onInputChange={(event, newInputValue) => {
         //   setItemValue(newInputValue);
@@ -63,7 +67,9 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
             placeholder={phstr}
             inputProps={{
               ...params.inputProps,
-              style: {fontSize:'14px'},
+              style: {
+                fontSize:'14px',
+              },
             }}
           />
         )}

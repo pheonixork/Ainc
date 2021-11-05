@@ -7,6 +7,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
+import {useTheme} from '@mui/material/styles';
 
 const MenuProps = {
   PaperProps: {
@@ -18,6 +19,7 @@ const MenuProps = {
 
 export default function FltMultiSelect({ clearFlag, tip, icon, values, ...rest }) {
   const [itemValue, setItemValue] = useState([]);
+  const theme = useTheme();
 
   useEffect(()=>{
     if (clearFlag === true || clearFlag === false)
@@ -51,7 +53,15 @@ export default function FltMultiSelect({ clearFlag, tip, icon, values, ...rest }
         onChange={handleChange}
         size="small"
         MenuProps={MenuProps}
-        sx={{fontSize:'14px'}}
+        sx={{
+          fontSize:'14px',
+          '& > .MuiSelect-select': {
+            backgroundColor: theme.palette.clrVariables.grayWhite
+          },
+          '& > svg': {
+            backgroundColor: theme.palette.clrVariables.grayWhite
+          }
+        }}
         {...rest}
       >
         {_.map(values, itm=> (

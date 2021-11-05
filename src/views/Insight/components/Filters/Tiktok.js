@@ -59,7 +59,7 @@ export default function Youtube({...rest}) {
         </Box>
         <Box sx={{display: 'flex', flexShrink: 0}}>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='プリーワード' icon={false} phstr='Any' />
+            <FltTextField clearFlag={clearFlag} tip='フリーワード' icon={false} phstr='Any' />
           </Box>
         </Box>
       </Box>
@@ -71,7 +71,7 @@ export default function Youtube({...rest}) {
             <FltTextField clearFlag={clearFlag} tip='EG率' icon={false} phstr='To' />
           </Box>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='シィア率' icon={false} phstr='From' />
+            <FltTextField clearFlag={clearFlag} tip='シェア率' icon={false} phstr='From' />
           </Box>
           <Box>
             <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />

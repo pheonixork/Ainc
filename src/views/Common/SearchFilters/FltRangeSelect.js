@@ -6,9 +6,11 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
+import {useTheme} from '@mui/material/styles';
 
 export default function FltRangeSelect({ clearFlag, tip, icon, fromValues, fromStyle, toValues, toStyle}) {
   const [itemValue, setItemValue] = useState({from:'', to:''});
+  const theme = useTheme();
 
   useEffect(()=>{
     if (clearFlag === true || clearFlag === false)
@@ -29,7 +31,15 @@ export default function FltRangeSelect({ clearFlag, tip, icon, fromValues, fromS
       <Box sx={{display:'flex', justifyContent:'space-between'}}>
         <Select 
           size="small"
-          sx={{fontSize:'14px'}}
+          sx={{
+            fontSize:'14px',
+            '& > .MuiSelect-select': {
+              backgroundColor: theme.palette.clrVariables.grayWhite
+            },
+            '& > svg': {
+              backgroundColor: theme.palette.clrVariables.grayWhite
+            }
+          }}
           style={fromStyle}
           value={itemValue.from}
           onChange={e=>setItemValue({...itemValue, from:e.target.value})}
@@ -41,7 +51,15 @@ export default function FltRangeSelect({ clearFlag, tip, icon, fromValues, fromS
 
         <Select 
           size="small"
-          sx={{fontSize:'14px'}}
+          sx={{
+            fontSize:'14px',
+            '& > .MuiSelect-select': {
+              backgroundColor: theme.palette.clrVariables.grayWhite
+            },
+            '& > svg': {
+              backgroundColor: theme.palette.clrVariables.grayWhite
+            }
+          }}
           style={toStyle}
           value={itemValue.to}
           onChange={e=>setItemValue({...itemValue, to:e.target.value})}

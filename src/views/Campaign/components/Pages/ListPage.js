@@ -5,7 +5,7 @@ import {ListPageStatic, ListPageTable} from '../Table'
 import {campaignService} from 'services';
 import toast from 'react-hot-toast';
 
-const ListPage = ({selCampId}) => {
+const ListPage = ({selCampId, catType}) => {
   
   const [data, setData] = useState({name: '', members:[]});
   const [updatedMembers, setUpdatedMembers] = useState([]);
@@ -42,7 +42,7 @@ const ListPage = ({selCampId}) => {
   }, [selCampId]);
 
   const saveMemberStatus = (idx, status) => {
-    return campaignService.updateMemberStatus(selCampId, 1, data.members[idx].accountId, status)
+    return campaignService.updateMemberStatus(selCampId, 1, data.members[idx]._id, status)
     .then((ret) => {
       if (ret.status !== 'ok') {
         toast.error('状態保存に失敗しました。');
@@ -62,6 +62,7 @@ const ListPage = ({selCampId}) => {
     <Box className='list-page'>
       <ListPageStatic isloading={data.name.length < 1} updatedInfos={getStaticInfos} />
       <ListPageTable 
+        catType={catType}
         getMembers={getMembers} 
         handleSaveMember={saveMemberStatus}
       />

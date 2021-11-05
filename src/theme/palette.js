@@ -33,7 +33,8 @@ export const light = {
     backcolor: '#f3f3f3',
   },
   clrVariables: {
-    grayWhite: '#eee',
+    sidebarhover: 'hsla(0,0%,100%,.1)',
+    grayWhite: '#FAFAFA',
     blueDark: '#1377EB',
     blueWhite: '#0078C3',
     cyanBlack: '#B9E5F9',
@@ -85,6 +86,7 @@ export const dark = {
     backcolor: '#f3f3f3',
   },
   clrVariables: {
+    sidebarhover: 'hsla(0,0%,100%,.1)',
     grayWhite: '#eee',
     blueDark: '#1377EB',
     blueWhite: '#0078C3',

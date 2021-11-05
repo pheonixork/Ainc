@@ -36,11 +36,11 @@ const pages = {
       href: '/setting',
       icon: '/images/svgs/gear.svg'
     },
-    {
-      title: Lang.nav.support,
-      href: '/manager/support',
-      icon: '/images/svgs/support.svg'
-    },
+    // {
+    //   title: Lang.nav.support,
+    //   href: '/manager/support',
+    //   icon: '/images/svgs/support.svg'
+    // },
     {
       title: Lang.nav.question,
       href: '/manager/question',

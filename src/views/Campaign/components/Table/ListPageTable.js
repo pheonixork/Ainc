@@ -50,7 +50,7 @@ const headCells = [
   },
 ];
 
-export default function ListPageTable({getMembers, handleSaveMember}) {
+export default function ListPageTable({catType, getMembers, handleSaveMember}) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [data, setData] = useState([]);
@@ -90,6 +90,7 @@ export default function ListPageTable({getMembers, handleSaveMember}) {
                       key={index}
                       row={row}
                       index={index}
+                      catType={catType}
                       handleSaveMember={handleSaveMember}
                     />
                   );

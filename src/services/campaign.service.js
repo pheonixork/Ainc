@@ -6,6 +6,9 @@ const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/campaigns`;
 
 export const campaignService = {
+  addNewReport,
+  addNewReportYoutube,
+  addNewReportTiktok,
   createCampaign,
   getCampagin,
   getCampaignDetail,
@@ -15,6 +18,18 @@ export const campaignService = {
   updateReportYoutube,
   updateReportTiktok
 };
+
+function addNewReport(campId, memId, rtype) {
+  return fetchWrapper.post(`${baseUrl}/addnewreport`, {campId, memId, rtype});
+}
+
+function addNewReportYoutube(campId, memId) {
+  return fetchWrapper.post(`${baseUrl}/addnewreportyoutube`, {campId, memId});
+}
+
+function addNewReportTiktok(campId, memId) {
+  return fetchWrapper.post(`${baseUrl}/addnewreporttiktok`, {campId, memId});
+}
 
 function createCampaign(name, sns, type) {
   return fetchWrapper.post(`${baseUrl}/create`, { name, sns, type })
@@ -35,18 +50,18 @@ function getCampaignList(userId) {
   return fetchWrapper.get(`${baseUrl}?userId=${userId}`);
 }
 
-function updateMemberStatus(campId, step, accountId, status, amount=0) {
-  return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, accountId, status, amount});
+function updateMemberStatus(campId, step, memId, status, amount=0) {
+  return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, memId, status, amount});
 }
 
-function updateReport(campId, accountId, rtype, detail={}) {
-  return fetchWrapper.post(`${baseUrl}/updateReport`, {campId, accountId, rtype, detail});
+function updateReport(campId, memId, rtype, detail={}) {
+  return fetchWrapper.post(`${baseUrl}/updateReport`, {campId, memId, rtype, detail});
 }
 
-function updateReportYoutube(campId, accountId, detail={}) {
-  return fetchWrapper.post(`${baseUrl}/updateReportYoutube`, {campId, accountId, detail});
+function updateReportYoutube(campId, memId, detail=undefined) {
+  return fetchWrapper.post(`${baseUrl}/updateReportYoutube`, {campId, memId, detail});
 }
 
-function updateReportTiktok(campId, accountId, detail={}) {
-  return fetchWrapper.post(`${baseUrl}/updateReportTiktok`, {campId, accountId, detail});
+function updateReportTiktok(campId, memId, detail=undefined) {
+  return fetchWrapper.post(`${baseUrl}/updateReportTiktok`, {campId, memId, detail});
 }

@@ -93,6 +93,7 @@ export default function TiktokStatic({isLoading, getDatas, classes}) {
             onChange={(newValue) => {
               setStartDate(newValue);
             }}
+            inputFormat={'yyyy/MM/dd'}
             renderInput={(params) => <TextField {...params} />}
           />
           <MobileDatePicker
@@ -101,6 +102,7 @@ export default function TiktokStatic({isLoading, getDatas, classes}) {
             onChange={(newValue) => {
               setEndDate(newValue);
             }}
+            inputFormat={'yyyy/MM/dd'}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>

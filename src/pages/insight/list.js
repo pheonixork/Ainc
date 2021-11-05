@@ -30,7 +30,7 @@ export const getServerSideProps = withSession(async function ({req, res}) {
 
   return {
     props: {
-      accounts: lists
+      accounts: lists,
     },
   }
 });

@@ -16,9 +16,9 @@ async function handler(req, res) {
   }
 
   async function updateReportYoutube() {
-    const {campId, accountId, detail} = req.body;
+    const {campId, memId, detail} = req.body;
     
-    await CampaignRepo.updateMemberYoutube(campId, accountId, detail);
+    await CampaignRepo.updateMemberYoutube(campId, memId, detail);
 
     return res.status(200).json({status: 'ok'});
   }

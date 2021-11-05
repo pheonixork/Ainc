@@ -1,17 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useMainContext } from 'context/MainContext';
-import SaveDlg from './SaveDlg';
+import {SaveDlg} from 'views/Common';
 import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
-import {accountService} from 'services';
-import Lang from 'constants/lang';
 
 export default function SearchItem({itm, cattype, campaigns}) {
   const [showDlg, setShow] = useState(false);
@@ -30,33 +27,6 @@ export default function SearchItem({itm, cattype, campaigns}) {
     setShow(false);
   }
   
-  const saveAccount = (selCategories) => {
-    let categories = [];
-    _.each(selCategories, (val, key) => {
-      if (val === false)
-        return;
-
-      categories.push(key);
-    });
-
-    if (categories.length < 1) {
-      toast.error('キャンペンを選択してください');
-      return;
-    }
-
-    accountService.saveAccount(itm.id, cattype, categories)
-      .then((response) => {
-        if (response.status !== 'ok') {
-          toast.error(response.msg);
-          return;
-        }
-        toast.success(Lang.label.influencersaved);
-        closeDlg();
-      }).catch(err => {
-        toast.error(err.toString());
-      });
-  }
-
   return (
     <Box 
       className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow')}
@@ -97,7 +67,11 @@ export default function SearchItem({itm, cattype, campaigns}) {
               <span>{Keyword.btn.save}</span>
             </Button>
             {showDlg === true && 
-              <SaveDlg saveItem={saveAccount} closeDlg={closeDlg} campaigns={campaigns} />
+              <SaveDlg 
+                infId={itm.id}
+                catType={cattype}
+                closeDlg={closeDlg} 
+              />
             }
           </Box>
         </Box>

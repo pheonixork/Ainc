@@ -10,13 +10,13 @@ const Tabs = ({curType, campaignId, campaignSNS}) => {
   return (
     <Box>
       {curType === 'list' && (
-        <ListPage selCampId={campaignId} />
+        <ListPage selCampId={campaignId} catType={campaignSNS} />
       )}
       {curType === 'post' && (
-        <PostPage selCampId={campaignId} />
+        <PostPage selCampId={campaignId} catType={campaignSNS} />
       )}
       {curType === 'report' && (
-        <ReportPage selCampId={campaignId} selCampSNS={campaignSNS} />
+        <ReportPage selCampId={campaignId} selCampSNS={campaignSNS}/>
       )}
       <InfluencerBrief />
     </Box>

@@ -10,7 +10,7 @@ import {ReportYoutubeTable} from '../../Table';
 import {campaignService} from 'services';
 import styles from '../../Table/styles';
 
-const YoutubePage = ({selCampId, isLoading, data}) => {
+const YoutubePage = ({selCampId, isLoading, data, catType}) => {
   const theme = useTheme();
   const useStyles = useMemo(() => {
     return makeStyles(styles, {defaultTheme: theme});
@@ -37,27 +37,65 @@ const YoutubePage = ({selCampId, isLoading, data}) => {
     return rows;
   }, [rows]);
 
-  const changeMembers = (accId, detail={}) => {
-    return campaignService.updateReportYoutube(selCampId, accId, detail)
-      .then((ret) => {
-        if (ret.status !== 'ok') {
-          toast.error('状態保存に失敗しました。');
-          return;
-        }
-        toast.success('状態保存に成功しました。');
+  const changeMembers = (type, memId, detail={}) => {
+    if (type === 'add') { // 同じアカウント追加
+      return campaignService.addNewReportYoutube(selCampId, memId)
+        .then((ret) => {
+          if (ret.status !== 'ok') {
+            toast.error('状態保存に失敗しました。');
+            return;
+          }
+    
+          let tmp = _.filter(rows, itm => itm._id === memId);
+          setRows([...rows, {...tmp[0], _id: ret.newId}]);
 
-        let tUpdates = _.map(updatedMembers, itm => {
-          if (itm.accountId !== accId)
-            return itm;
-          
-          return {...itm, ...detail};
+          tmp = _.filter(updatedMembers, itm => itm._id === memId);
+          setUpdatedMembers([...rows, {...updatedMembers[0], _id: ret.newId}]);
+        })
+        .catch(error => {
+          toast.error(error.toString());
         });
-  
-        setUpdatedMembers([...tUpdates]);
-      })
-      .catch(error => {
-        toast.error(error.toString());
-      });
+    }
+
+    if (type === 'del') { //　アカウントを削除
+      return campaignService.updateReportYoutube(selCampId, memId)
+        .then((ret) => {
+          if (ret.status !== 'ok') {
+            toast.error('状態保存に失敗しました。');
+            return;
+          }
+          toast.success('状態保存に成功しました。');
+    
+          setRows(_.filter(rows, itm => itm._id !== memId))
+          setUpdatedMembers(_.filter(updatedMembers, itm => itm._id !== memId));
+        })
+        .catch(error => {
+          toast.error(error.toString());
+        });
+    }
+
+    if (type === 'save') {
+      return campaignService.updateReportYoutube(selCampId, memId, detail)
+        .then((ret) => {
+          if (ret.status !== 'ok') {
+            toast.error('状態保存に失敗しました。');
+            return;
+          }
+          toast.success('状態保存に成功しました。');
+
+          let tUpdates = _.map(updatedMembers, itm => {
+            if (itm._id !== memId)
+              return itm;
+            
+            return {...itm, ...detail};
+          });
+    
+          setUpdatedMembers([...tUpdates]);
+        })
+        .catch(error => {
+          toast.error(error.toString());
+        });
+    }
   }
 
   return (
@@ -69,6 +107,7 @@ const YoutubePage = ({selCampId, isLoading, data}) => {
       />
       <Box marginTop={4}>
         <ReportYoutubeTable 
+          catType={catType}
           getDatas={getRows}
           updateDatas={changeMembers}
           classes={classes}

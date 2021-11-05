@@ -1,7 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react';
-import { TextField, Rating, TableCell, TableRow, Button } from '@mui/material';
+import {Box, TextField, Rating, TableCell, TableRow, Button } from '@mui/material';
 import {useMainContext} from 'context/MainContext';
 import StatusSelect from '../StatusSelect';
+import {SaveDlg} from 'views/Common';
 import RelativeImage from 'components/RelativeImage';
 import Lang from 'constants/lang';
 
@@ -14,25 +15,36 @@ const statusValues = [
   '終了'
 ]
 
-export default function PostPageTableRow({data, index, handleSaveMember}) {
+export default function PostPageTableRow({data, catType, index, handleSaveMember}) {
+  const [showDlg, setShow] = useState(false);
+  const closeDlg = () => {
+    setShow(false);
+  }
+
   const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
   const handleSelectChanged = (index) => {
     setInfluencerCollapsable(false);
     setInfluencerIndex(index);
   };
 
-  const amountRef = useRef();
-  let pstatus = 1;
-  const changeStatus = (val) => {
-    pstatus = val;
-  }
-
+  let pstatus = 0;
   useEffect(() => {
     if (!data || !data.pstatus)
       return;
 
     pstatus = data.pstatus;
   }, [data]);
+
+  const changeStatus = (val) => {
+    pstatus = val;
+    handleSaveMember(index, val, amountRef.current.value)
+  }
+
+  const blurAmount = () => {
+    handleSaveMember(index, pstatus, amountRef.current.value)
+  }
+
+  const amountRef = useRef();
 
   return (
     <TableRow
@@ -63,6 +75,7 @@ export default function PostPageTableRow({data, index, handleSaveMember}) {
             style: {color: '#000'} 
           }}
           onClick={(e) => {e.stopPropagation()}}
+          onBlur={(e) => blurAmount()}
           inputRef={amountRef}
         />
       </TableCell>
@@ -76,13 +89,22 @@ export default function PostPageTableRow({data, index, handleSaveMember}) {
         />
       </TableCell>
       <TableCell align="center">
-        <Button
-          variant={'outlined'}
-          style={{padding: '0 20px', width: '70px'}}
-          onClick={(e) => {e.stopPropagation(), handleSaveMember(index, pstatus, amountRef.current.value)}}
-        >
-          {Lang.btn.save}
-        </Button>
+        <Box className="relative-action">
+          <Button
+            variant={'outlined'}
+            style={{ padding: '0 20px' }}
+            onClick={(e) => {e.stopPropagation(), setShow(true)}}
+          >
+            {Lang.btn.save}
+          </Button>
+          {showDlg === true && 
+            <SaveDlg 
+              infId={data.infId}
+              catType={catType}
+              closeDlg={closeDlg} 
+            />
+          }
+        </Box>
       </TableCell>
     </TableRow>
   );

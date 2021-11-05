@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
+import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,6 +12,7 @@ import {useMainContext} from 'context/MainContext';
 import {userService} from 'services';
 
 const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
+  const theme = useTheme();
   const {userInfo} = useMainContext();
   const [activeLink, setActiveLink] = useState('');
   const [curLink, setCurrentLink] = useState('');
@@ -92,7 +94,7 @@ const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
                     fontWeight: 400,
                     backgroundColor: 'transparent',
                     '&:Hover': {
-                      backgroundColor: '#6883E4'
+                      backgroundColor: theme.palette.clrVariables.sidebarhover
                     }
                   }}
                 >

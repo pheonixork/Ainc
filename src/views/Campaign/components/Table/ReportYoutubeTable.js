@@ -12,6 +12,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {CP} from 'views/Common/CP';
 
 const feedHeadCells = [
@@ -93,11 +96,16 @@ const feedHeadCells = [
   }
 ];
 
-const ReportYoutubeRow = ({row, updateDatas, classes}) => {
+const ReportYoutubeRow = ({row, catType, updateDatas, classes}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
   const [selAccountId, setAccountId] = useState('');
+  const closeCP = (val) => {
+    setAccountId('');
+  }
+
+  const [postDate, setPostDate] = useState();
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -122,9 +130,8 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
   const handleMenuClose = (type, accId) => {
     switch (type) {
       case 'add':
-        break;
       case 'del':
-        updateDatas(accId);
+        updateDatas(type, accId);
         break;
       case 'cp':
         setAccountId(accId);
@@ -138,7 +145,7 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
           click: clickRef.current.value, cv: cvRef.current.value,
           sell: sellRef.current.value
         };
-        updateDatas(accId, detail);
+        updateDatas(type, accId, detail);
         break;
       default:
         break;
@@ -161,10 +168,12 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
     clickRef.current.value = row.click ? row.click : 0;
     cvRef.current.value = row.cv ? row.cv : 0;
     sellRef.current.value = row.sell ? row.sell : 0;
-    prPerRef.current.value = (!row.registers || !row.good) ? 0 : (row.good / row.registers * 100).toFixed(1);
-    clickPerRef.current.value = (!row.recycle || !row.click) ? 0 : (row.click / row.recycle * 100).toFixed(1);
-    cvPerRef.current.value = (!row.recycle || !row.cv) ? 0 : (row.cv / row.recycle * 100).toFixed(1);
-    roasRef.current.value = (!row.amount || !row.sell) ? 0 : (row.sell / row.amount * 100).toFixed(1);
+    prPerRef.current.value = (!row.registers || !row.good || row.registers === 0) ? 0 : (row.good / row.registers * 100).toFixed(1);
+    clickPerRef.current.value = (!row.recycle || !row.click || row.recycle === 0) ? 0 : (row.click / row.recycle * 100).toFixed(1);
+    cvPerRef.current.value = (!row.recycle || !row.cv || row.recycle === 0) ? 0 : (row.cv / row.recycle * 100).toFixed(1);
+    roasRef.current.value = (!row.amount || !row.sell || row.amount === 0) ? 0 : (row.sell / row.amount * 100).toFixed(1);
+
+    setPostDate(row.postAt ? row.postAt : null);
   }, [row]);
 
   const amountValueChanged = (evt) => {
@@ -173,12 +182,12 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
     if (isNaN(sellVal) || isNaN(amountVal))
       return;
 
-    roasRef.current.value = (!sellVal || !amountVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
+    roasRef.current.value = (!sellVal || !amountVal || amountVal === 0) ? 0 : (sellVal / amountVal * 100).toFixed(1);
   }
 
   const goodValueChanged = (evt) => {
     let goodVal = parseInt(evt.target.value);
-    if (!row.registers || isNaN(goodVal))
+    if (!row.registers || isNaN(goodVal) || row.registers === 0)
       return;
 
     prPerRef.current.value = (goodVal / row.registers * 100).toFixed(1);
@@ -186,7 +195,7 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
 
   const clickValueChanged = (evt) => {
     let clickVal = parseInt(evt.target.value);
-    if (!row.recycle || isNaN(clickVal))
+    if (!row.recycle || isNaN(clickVal) || row.recycle === 0)
       return;
 
     clickPerRef.current.value = (clickVal / row.recycle * 100).toFixed(1);
@@ -194,7 +203,7 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
 
   const cvValueChanged = (evt) => {
     let cvVal = parseInt(evt.target.value);
-    if (!row.recycle || isNaN(cvVal))
+    if (!row.recycle || isNaN(cvVal) || row.recycle === 0)
       return;
 
     cvPerRef.current.value = (cvVal / row.recycle * 100).toFixed(1);
@@ -205,7 +214,21 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
       <TableRow>
         <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={postAtRef} />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MobileDatePicker
+              value={postDate}
+              onChange={(newValue) => setPostDate(newValue)}
+              inputFormat={'yyyy/MM/dd'}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  className={classes.feedtableTextField} 
+                  variant="outlined" 
+                  inputRef={postAtRef}
+                />
+              }
+            />
+          </LocalizationProvider>
         </TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '180px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={postLinkRef} />
@@ -262,19 +285,22 @@ const ReportYoutubeRow = ({row, updateDatas, classes}) => {
               boxShadow: '0 3px 6px 0 rgb(140 152 164 / 25%)'
             }}
           >
-            {/* <MenuItem onClick={e=>handleMenuClose('add')}>追加</MenuItem> */}
-            {/* <MenuItem onClick={e=>handleMenuClose('del', row.accountId)}>削除</MenuItem> */}
+            <MenuItem onClick={e=>handleMenuClose('add', row._id)}>追加</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('del', row._id)}>削除</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('cp', row.accountId)}>CP</MenuItem>
-            <MenuItem onClick={e=>handleMenuClose('save', row.accountId)}>SAVE</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('save', row._id)}>SAVE</MenuItem>
           </Menu>
         </TableCell>
       </TableRow>
-      <CP accountId={selAccountId} setCollapse={setAccountId}/>
+      <CP 
+        accountId={selAccountId} 
+        setCollapse={closeCP}
+      />
     </>
   )
 }
 
-export default function ReportYoutubeTable({getDatas, updateDatas, classes, ...rest}) {
+export default function ReportYoutubeTable({catType, getDatas, updateDatas, classes, ...rest}) {
   const [data, setData] = useState([]);
   
 
@@ -332,6 +358,7 @@ export default function ReportYoutubeTable({getDatas, updateDatas, classes, ...r
                 <ReportYoutubeRow 
                   key={index} 
                   row={row} 
+                  catType={catType}
                   updateDatas={updateDatas}
                   classes={classes}
                 />

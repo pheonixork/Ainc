@@ -32,13 +32,28 @@ const ReportPage = ({selCampId, selCampSNS}) => {
   return (
     <Box className='report-page'>
       {selCampSNS === 'instagram' && 
-        <InstagramPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+        <InstagramPage 
+          selCampId={selCampId} 
+          isLoading={data.name === ''} 
+          data={data.members} 
+          catType={selCampSNS}
+        />
       }
       {selCampSNS === 'youtube' && 
-        <YoutubePage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+        <YoutubePage 
+          selCampId={selCampId} 
+          isLoading={data.name === ''} 
+          data={data.members} 
+          catType={selCampSNS}
+        />
       }
       {selCampSNS === 'tiktok' && 
-        <TiktokPage selCampId={selCampId} isLoading={data.name === ''} data={data.members} />
+        <TiktokPage 
+          selCampId={selCampId} 
+          isLoading={data.name === ''} 
+          data={data.members} 
+          catType={selCampSNS}
+        />
       }
     </Box>
   );

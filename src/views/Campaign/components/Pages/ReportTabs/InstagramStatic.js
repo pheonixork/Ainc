@@ -351,7 +351,7 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
           id="panel1a-header"
         >
           <Box className="label-container label-container-nested">
-            <Typography className="text">りール</Typography>
+            <Typography className="text">リール</Typography>
           </Box>
         </AccordionSummary>
         <AccordionDetails>

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useMainContext } from 'context/MainContext';
-import SaveDlg from './SaveDlg';
 import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
 
@@ -62,9 +61,9 @@ export default function SearchItem({itm, idx}) {
               </svg>
               <span>{Keyword.btn.save}</span>
             </Button>
-            {showDlg === true && 
+            {/* {showDlg === true && 
               <SaveDlg closeDlg={closeDlg} />
-            }
+            } */}
           </Box>
         </Box>
       </Box>

@@ -6,18 +6,28 @@ import {LazyLoadImage} from 'react-lazy-load-image-component';
 import {useMainContext} from 'context/MainContext';
 import RelativeImage from 'components/RelativeImage';
 import Keyword from 'constants/lang';
+import {CP} from 'views/Common/CP';
 
-export default function AccountItem({itm, showCPDetail}) {
-  const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
-
-  const itemRowClicked = (e) => {
-    setInfluencerCollapsable(false); 
-    setInfluencerIndex(itm.infId);
+export default function AccountItem({itm}) {
+  const [data, setData] = useState(itm);
+  const [selId, setAccountId] = useState('');
+  const closeCP = (val) => {
+    setData({...itm, star:val});
+    setAccountId('');
   }
 
   const cpBtnClicked = (e) => {
     e.stopPropagation();
-    showCPDetail(itm._id);
+    setAccountId(data._id);
+  }
+
+  const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
+  const itemRowClicked = (e) => {
+    if (selId !== '')
+      return;
+      
+    setInfluencerCollapsable(false); 
+    setInfluencerIndex(data.infId);
   }
 
   const evaluateValue = (val) => {
@@ -49,7 +59,7 @@ export default function AccountItem({itm, showCPDetail}) {
           sx={{margin:'.5rem 1rem 0', borderRadius:'50%'}}
         /> */}
         <Box sx={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
-          {Array.from({length: itm.star}, (_, i) => i).map(starItm => (
+          {Array.from({length: data.star}, (_, i) => i).map(starItm => (
             <Box
               key={starItm}
               component={LazyLoadImage}
@@ -62,16 +72,16 @@ export default function AccountItem({itm, showCPDetail}) {
         </Box>
       </Box>
       <Box className='instagram'>
-        <Box>{itm.name}</Box>
-        <a className='instagram-link' href={itm.url}>@{itm.name}</a>
+        <Box>{data.name}</Box>
+        <a className='instagram-link' href={data.url}>@{data.name}</a>
       </Box>
       <Box className='followers'>
-        <Box className='first'>{evaluateValue(itm.followers)}</Box>
+        <Box className='first'>{evaluateValue(data.followers)}</Box>
         <Box  className='second'>{Keyword.caption.follower}</Box>
       </Box>
       <Box className='followers'>
         <Box className='first'>
-          {evaluateValue(itm.engage)}<span>{`(0%)`}</span>
+          {evaluateValue(data.engage)}<span>{`(0%)`}</span>
         </Box>
         <Box  className='second'>{Keyword.caption.engagement}</Box>
       </Box>
@@ -84,12 +94,15 @@ export default function AccountItem({itm, showCPDetail}) {
           </Button>
         </Box>
       </Box>
-      
+      <CP 
+        accountId={selId} 
+        setCollapse={closeCP}
+      />
     </Box>
   );
 };
 
 AccountItem.propTypes = {
   itm: PropTypes.object.isRequired,
-  showCPDetail: PropTypes.func,
+  campaigns: PropTypes.array
 };

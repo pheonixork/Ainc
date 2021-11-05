@@ -12,14 +12,8 @@ import {Filter, ResearchContent} from './components';
 import Keyword from 'constants/lang';
 import Constants from 'constants/constants';
 
-const Research = ({campaigns}) => {
+const Research = () => {
   const [selType, onSelect] = useState(Constants.snsInstagram);
-  const [selCampaigns, setCurrentCampaigns] = useState([]);
-
-  useEffect(() => {
-    let results = _.filter(campaigns, itm => itm.sns === selType);
-    setCurrentCampaigns([...results]);
-  }, [campaigns, selType]);
 
   return (
     <Fixed>
@@ -47,16 +41,12 @@ const Research = ({campaigns}) => {
           <Filter curType={selType}/>
         </Box>  
         <Box marginTop={2} data-aos={'fade-up'}>
-          <ResearchContent selType={selType} campaigns={selCampaigns} />
+          <ResearchContent selType={selType} />
         </Box> 
         <InfluencerBrief /> 
       </Container>
     </Fixed>
   );
 };
-
-Research.propTypes = {
-  campaigns: PropTypes.array
-}
 
 export default Research;

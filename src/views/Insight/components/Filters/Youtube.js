@@ -59,7 +59,7 @@ export default function Youtube({...rest}) {
         </Box>
         <Box sx={{display: 'flex', flexShrink: 0}}>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='プリーワード' icon={false} phstr='Any' />
+            <FltTextField clearFlag={clearFlag} tip='フリーワード' icon={false} phstr='Any' />
           </Box>
         </Box>
       </Box>

@@ -2,10 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import {Research} from 'views/Account';
 import {withSession} from 'middlewares';
-import {CampaignRepo} from 'repositories';
 
-const ResearchPage = ({campaigns}) => {
-  return <Research campaigns={campaigns} />;
+const ResearchPage = () => {
+  return <Research />;
 };
 
 export const getServerSideProps = withSession(async function ({req, res}) {
@@ -26,14 +25,8 @@ export const getServerSideProps = withSession(async function ({req, res}) {
     }
   }
 
-  const cmpList = await CampaignRepo.getCampaignList(user.id);
-  let results = _.map(cmpList, itm => {
-    return {id: itm._id.toString(), name: itm.name, sns: itm.sns, type: itm.type, mems: itm.mems};
-  });
-
   return {
     props: {
-      campaigns: results
     },
   }
 });

@@ -12,6 +12,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {CP} from 'views/Common/CP';
 
 const storyHeadCells = [
@@ -73,11 +76,16 @@ const storyHeadCells = [
   }
 ];
 
-const ReportStoryRow = ({row, updateDatas, classes}) => {
+const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
   const [selAccountId, setAccountId] = useState('');
+  const closeCP = (val) => {
+    setAccountId('');
+  }
+
+  const [postDate, setPostDate] = useState();
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -86,6 +94,7 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
   const handleMenuClose = (type, accId) => {
     switch (type) {
       case 'add':
+        updateDatas(accId, 'add', 2);
         break;
       case 'del':
         updateDatas(accId, 'del', 2);
@@ -123,7 +132,7 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
 
   const inpValueChanged = (evt) => {
     let inpVal = parseInt(evt.target.value);
-    if (!row.followers || isNaN(inpVal))
+    if (!row.followers || isNaN(inpVal) || row.followers === 0)
       return;
 
     inpPerRef.current.value = (inpVal / row.followers * 100).toFixed(1);
@@ -131,7 +140,7 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
 
   const clickValueChanged = (evt) => {
     let clickVal = parseInt(evt.target.value);
-    if (!row.followers || isNaN(clickVal))
+    if (!row.followers || isNaN(clickVal) || row.followers === 0)
       return;
 
     clickPerRef.current.value = (clickVal / row.followers * 100).toFixed(1);
@@ -139,7 +148,7 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
 
   const stampValueChanged = (evt) => {
     let stampVal = parseInt(evt.target.value);
-    if (!row.followers || isNaN(stampVal))
+    if (!row.followers || isNaN(stampVal) || row.followers === 0)
       return;
 
     stampPerRef.current.value = (stampVal / row.followers * 100).toFixed(1);
@@ -151,7 +160,7 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
     if (isNaN(amountVal) || isNaN(sellVal))
       return;
 
-    roasRef.current.value = (!amountVal || !sellVal) ? 0 : (sellVal / amountVal * 100).toFixed(1);
+    roasRef.current.value = (!amountVal || !sellVal || sellVal === 0) ? 0 : (sellVal / amountVal * 100).toFixed(1);
   }
 
   useEffect(() => {
@@ -167,10 +176,12 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
     stampRef.current.value = row.stamp ? row.stamp : 0;
     sellRef.current.value = row.sell ? row.sell : 0;
 
-    inpPerRef.current.value = (!row.inp || !row.followers) ? 0 : (row.inp / row.followers * 100).toFixed(1);
-    clickPerRef.current.value = (!row.click || !row.followers) ? 0 : (row.click / row.followers * 100).toFixed(1);
-    stampPerRef.current.value = (!row.stamp || !row.followers) ? 0 : (row.stamp / row.followers * 100).toFixed(1);
-    roasRef.current.value = (!row.sell || !row.amount) ? 0 : (row.sell / row.amount * 100).toFixed(1);
+    inpPerRef.current.value = (!row.inp || !row.followers || row.followers === 0) ? 0 : (row.inp / row.followers * 100).toFixed(1);
+    clickPerRef.current.value = (!row.click || !row.followers || row.followers === 0) ? 0 : (row.click / row.followers * 100).toFixed(1);
+    stampPerRef.current.value = (!row.stamp || !row.followers || row.followers === 0) ? 0 : (row.stamp / row.followers * 100).toFixed(1);
+    roasRef.current.value = (!row.sell || !row.amount || row.amount === 0) ? 0 : (row.sell / row.amount * 100).toFixed(1);
+
+    setPostDate(row.postAt ? row.postAt : null);
   }, [row]);
 
   return (
@@ -178,7 +189,21 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
       <TableRow>
         <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={postAtRef} />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MobileDatePicker
+              value={postDate}
+              onChange={(newValue) => setPostDate(newValue)}
+              inputFormat={'yyyy/MM/dd'}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  className={classes.feedtableTextField} 
+                  variant="outlined" 
+                  inputRef={postAtRef}
+                />
+              }
+            />
+          </LocalizationProvider>
         </TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '180px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={postLinkRef} />
@@ -224,19 +249,22 @@ const ReportStoryRow = ({row, updateDatas, classes}) => {
               boxShadow: '0 3px 6px 0 rgb(140 152 164 / 25%)'
             }}
           >
-            {/* <MenuItem onClick={e=>handleMenuClose('add')}>追加</MenuItem> */}
-            <MenuItem onClick={e=>handleMenuClose('del', row.accountId)}>削除</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('add', row._id)}>追加</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('del', row._id)}>削除</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('cp', row.accountId)}>CP</MenuItem>
-            <MenuItem onClick={e=>handleMenuClose('save', row.accountId)}>SAVE</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('save', row._id)}>保存</MenuItem>
           </Menu>
         </TableCell>
       </TableRow>
-      <CP accountId={selAccountId} setCollapse={setAccountId}/>
+      <CP 
+        accountId={selAccountId} 
+        setCollapse={closeCP}
+      />
     </>
   )
 }
 
-export default function ReportStoryTable({getDatas, updateDatas, classes, ...rest}) {
+export default function ReportStoryTable({catType, getDatas, updateDatas, classes, ...rest}) {
   const [data, setData] = useState([]);
   
   useEffect(() => {
@@ -293,6 +321,7 @@ export default function ReportStoryTable({getDatas, updateDatas, classes, ...res
                 <ReportStoryRow 
                   key={index} 
                   row={row} 
+                  catType={catType}
                   updateDatas={updateDatas}
                   classes={classes}
                 />

@@ -10,16 +10,16 @@ export default apiHandler(handler);
 async function handler(req, res) {
   switch (req.method) {
     case 'POST':
-      return await updateReportTiktok();
+      return await addNewReportTiktokMember();
     default:
       throw {status: Constants.errors.badrequest, message: Lang.communcation_errs.e009};
   }
 
-  async function updateReportTiktok() {
-    const {campId, memId, detail} = req.body;
+  async function addNewReportTiktokMember() {
+    const {campId, memId} = req.body;
     
-    await CampaignRepo.updateMemberTiktok(campId, memId, detail);
+    let newId = await CampaignRepo.addNewReportTiktokMember(campId, memId);
 
-    return res.status(200).json({status: 'ok'});
+    return res.status(200).json({status: 'ok', newId: newId});
   }
 }

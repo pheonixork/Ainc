@@ -1,8 +1,13 @@
+import _ from 'lodash';
+import moment from 'moment';
 const mongoose = require('mongoose');
 const { Campaign } = require('models');
 const toObjectId = mongoose.Types.ObjectId;
 
 const CampaignRepo = {
+  addNewReportMember,
+  addNewReportYoutubeMember,
+  addNewReportTiktokMember,
   getCampaignBrief,
   getCampaignList,
   getDetailViaList,
@@ -18,7 +23,7 @@ const CampaignRepo = {
 
 async function getCampaignBrief(campId) {
   let record = await Campaign.findOne({_id: toObjectId(campId)});
-  return {name: record.name || '', sns: record.sns || '', type: record.type || ''};
+  return {name: record.name || '', sns: record.sns || '', type: record.type || '', userId: record.userId.toString() || ''};
 }
 
 async function createCampaign(userId, name, sns, type) {
@@ -209,39 +214,238 @@ async function getCampaignList(userId) {
   return list;
 }
 
-async function updateMemberStatus(campId, step, accountId, status, amount) {
+async function updateMemberStatus(campId, step, memId, status, amount) {
   if (step === 1) {
     if (status === 4) {
       await Campaign.updateOne(
-        {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+        {_id: toObjectId(campId), "members._id": toObjectId(memId)},
         {$set: {"members.$.step": 2, "members.$.status": status, "members.$.pstatus": 1}}
       );
     } else {
       await Campaign.updateOne(
-        {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+        {_id: toObjectId(campId), "members._id": toObjectId(memId)},
         {$set: {"members.$.step": 1, "members.$.status": status}}
       );
     }
   } else if (step === 2) {
     if (status === 6) {
       await Campaign.updateOne(
-        {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+        {_id: toObjectId(campId), "members._id": toObjectId(memId)},
         {$set: {"members.$.step": 3, "members.$.pstatus": status, 
               "members.$.amount": amount, "members.$.rtype":0}}
       );
     } else {
       await Campaign.updateOne(
-        {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+        {_id: toObjectId(campId), "members._id": toObjectId(memId)},
         {$set: {"members.$.step": 2, "members.$.pstatus": status, "members.$.amount": amount}}
       );
     }
   }
 }
 
-async function updateMemberReport(campId, accountId, rtype, detail) {
+async function addNewReportMember(campId, memId, rtype) {
+  let oldMem = await Campaign.aggregate([
+    {
+      $match: {
+        _id: toObjectId(campId),
+      }
+    },
+    {
+      $unwind: {
+        path:"$members"
+      }
+    },
+    {
+      $match: {
+        "members._id": toObjectId(memId)
+      }
+    },
+    {
+      $project: {
+        members: 1
+      }
+    }
+  ]);
+
+  let temp = {};
+  _.map(oldMem[0].members, (val, key) => {
+    if (key === '_id')
+      return;
+
+    if (key === 'accountId')
+      _.set(temp, key, toObjectId(val));
+    else if (key === 'postAt')
+      _.set(temp, key, moment(val).format('YYYY/MM/DD'));
+    else
+      _.set(temp, key, val);
+  });
+  temp.rtype = rtype;
+  let pMemo = temp.memo ? temp.memo : '';
+  temp.memo = memId;
+
+  let result = '';
+  try {
+    result = await Campaign.updateOne(
+      {_id: toObjectId(campId)},
+      {$addToSet: {members: temp}}
+    );
+
+    let newMem = await Campaign.aggregate([
+      {$match: {_id: toObjectId(campId),}},
+      {$unwind: {path:"$members"}},
+      {$match: {"members.memo": memId}},
+      {$project: {members: 1}}
+    ]);
+
+    result = newMem[0]._id.toString();
+
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members._id": newMem._id},
+      {$set: {"members.$.memo": pMemo}}
+    );
+  } catch(ex) {
+    result = '';
+  }
+  
+  return result;
+}
+
+async function addNewReportYoutubeMember(campId, memId) {
+  let oldMem = await Campaign.aggregate([
+    {
+      $match: {
+        _id: toObjectId(campId),
+      }
+    },
+    {
+      $unwind: {
+        path:"$members"
+      }
+    },
+    {
+      $match: {
+        "members._id": toObjectId(memId)
+      }
+    },
+    {
+      $project: {
+        members: 1
+      }
+    }
+  ]);
+
+  let temp = {};
+  _.map(oldMem[0].members, (val, key) => {
+    if (key === '_id')
+      return;
+
+    if (key === 'accountId')
+      _.set(temp, key, toObjectId(val));
+    else if (key === 'postAt')
+      _.set(temp, key, moment(val).format('YYYY/MM/DD'));
+    else
+      _.set(temp, key, val);
+  });
+  let pMemo = temp.memo ? temp.memo : '';
+  temp.memo = memId;
+
+  let result = '';
+  try {
+    result = await Campaign.updateOne(
+      {_id: toObjectId(campId)},
+      {$addToSet: {members: temp}}
+    );
+
+    let newMem = await Campaign.aggregate([
+      {$match: {_id: toObjectId(campId),}},
+      {$unwind: {path:"$members"}},
+      {$match: {"members.memo": memId}},
+      {$project: {members: 1}}
+    ]);
+
+    result = newMem[0]._id.toString();
+
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members._id": newMem._id},
+      {$set: {"members.$.memo": pMemo}}
+    );
+  } catch(ex) {
+    result = '';
+  }
+  
+  return result;
+}
+
+async function addNewReportTiktokMember(campId, memId) {
+  let oldMem = await Campaign.aggregate([
+    {
+      $match: {
+        _id: toObjectId(campId),
+      }
+    },
+    {
+      $unwind: {
+        path:"$members"
+      }
+    },
+    {
+      $match: {
+        "members._id": toObjectId(memId)
+      }
+    },
+    {
+      $project: {
+        members: 1
+      }
+    }
+  ]);
+
+  let temp = {};
+  _.map(oldMem[0].members, (val, key) => {
+    if (key === '_id')
+      return;
+
+    if (key === 'accountId')
+      _.set(temp, key, toObjectId(val));
+    else if (key === 'postAt')
+      _.set(temp, key, moment(val).format('YYYY/MM/DD'));
+    else
+      _.set(temp, key, val);
+  });
+  let pMemo = temp.memo ? temp.memo : '';
+  temp.memo = memId;
+
+  let result = '';
+  try {
+    result = await Campaign.updateOne(
+      {_id: toObjectId(campId)},
+      {$addToSet: {members: temp}}
+    );
+
+    let newMem = await Campaign.aggregate([
+      {$match: {_id: toObjectId(campId),}},
+      {$unwind: {path:"$members"}},
+      {$match: {"members.memo": memId}},
+      {$project: {members: 1}}
+    ]);
+
+    result = newMem[0]._id.toString();
+
+    await Campaign.updateOne(
+      {_id: toObjectId(campId), "members._id": newMem._id},
+      {$set: {"members.$.memo": pMemo}}
+    );
+  } catch(ex) {
+    result = '';
+  }
+  
+  return result;
+}
+
+async function updateMemberReport(campId, memId, rtype, detail) {
   if (rtype === 0) {  // move 2 candidate
     await Campaign.updateOne(
-      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {_id: toObjectId(campId), "members._id": toObjectId(memId)},
       {$set: {"members.$.rtype": 0}}
     );
 
@@ -250,7 +454,7 @@ async function updateMemberReport(campId, accountId, rtype, detail) {
 
   if (rtype === 1) { // update feed's value}
     await Campaign.updateOne(
-      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {_id: toObjectId(campId), "members._id": toObjectId(memId)},
       {$set: {
         "members.$.rtype": 1,
         "members.$.postAt": detail.postAt,
@@ -265,7 +469,7 @@ async function updateMemberReport(campId, accountId, rtype, detail) {
     );
   } else if (rtype === 2) { // update story's value}
     await Campaign.updateOne(
-      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {_id: toObjectId(campId), "members._id": toObjectId(memId)},
       {$set: {
         "members.$.rtype": 2,
         "members.$.postAt": detail.postAt,
@@ -280,7 +484,7 @@ async function updateMemberReport(campId, accountId, rtype, detail) {
     );
   } else if (rtype === 3) { // update ril's value}
     await Campaign.updateOne(
-      {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+      {_id: toObjectId(campId), "members._id": toObjectId(memId)},
       {$set: {
         "members.$.rtype": 3,
         "members.$.postAt": detail.postAt,
@@ -297,9 +501,17 @@ async function updateMemberReport(campId, accountId, rtype, detail) {
   }
 }
 
-async function updateMemberYoutube(campId, accountId, detail) {
+async function updateMemberYoutube(campId, memId, detail) {
+  if (detail === undefined) {
+    await Campaign.updateOne(
+      {_id: toObjectId(campId)},
+      {$pull: {members: {_id: toObjectId(memId)}}}
+    );
+    return;
+  }
+
   await Campaign.updateOne(
-    {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+    {_id: toObjectId(campId), "members._id": toObjectId(memId)},
     {$set: {
       "members.$.postAt": detail.postAt,
       "members.$.postLink": detail.postLink,
@@ -316,9 +528,17 @@ async function updateMemberYoutube(campId, accountId, detail) {
   );
 }
 
-async function updateMemberTiktok(campId, accountId, detail) {
+async function updateMemberTiktok(campId, memId, detail) {
+  if (detail === undefined) {
+    await Campaign.updateOne(
+      {_id: toObjectId(campId)},
+      {$pull: {members: {_id: toObjectId(memId)}}}
+    );
+    return;
+  }
+
   await Campaign.updateOne(
-    {_id: toObjectId(campId), "members.accountId": toObjectId(accountId)},
+    {_id: toObjectId(campId), "members._id": toObjectId(memId)},
     {$set: {
       "members.$.postAt": detail.postAt,
       "members.$.postLink": detail.postLink,

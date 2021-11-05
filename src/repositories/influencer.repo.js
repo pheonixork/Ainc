@@ -3,19 +3,90 @@ import moment from 'moment';
 const mongoose = require('mongoose');
 const {Influencers, Campaign} = require('models');
 const toObjectId = mongoose.Types.ObjectId;
+import {CampaignRepo} from '.';
 import Constants from 'constants/constants';
 import Lang from 'constants/lang';
 
 const InfluencerRepo = {
-  getInfluencer,
+  getUsersCampaings,
   getInfluencers,
+  getCampaignsWithInfId,
   updateInfluencer,
   saveInfluencer,
 };
 
-async function getInfluencer(userId, accountId) {
-  let record = await Influencers.findOne({userId: toObjectId(userId), _id: toObjectId(accountId)});
-  return record;
+async function getUsersCampaings(userId, accountId) {
+  let list = await Influencers.aggregate([
+    {
+      $match: {
+        userId: toObjectId(userId), 
+        _id: toObjectId(accountId)
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        infId: 1, 
+        type: 1,
+        name: 1,
+        email: 1,
+        link: 1,
+        star: 1,
+        memo: 1,
+        campaigns:1
+      }
+    },
+    {
+      $unwind: {
+        path:"$campaigns"
+      }
+    },
+    {
+      $lookup: {
+        from: 'campaigns',
+        localField: 'campaigns',
+        foreignField: '_id',
+        as: 'camp_doc'
+      }
+    },
+    {
+      $unwind: {
+        path: "$camp_doc"
+      }
+    },
+    {
+      $project: {
+        cid: "$campaigns",
+        infId: 1,
+        type: 1,
+        name: 1,
+        email: 1,
+        link: 1,
+        star: 1,
+        memo: 1,
+        cname: "$camp_doc.name",
+        csns: "$camp_doc.sns",
+        ctype: "$camp_doc.type",
+        cmems: {$size:"$camp_doc.members"},
+        cdate: "$camp_doc.createdAt",
+      }
+    }
+  ]);
+
+  return list;
+}
+
+async function getCampaignsWithInfId(userId, infId, catType) {
+  let record = await Influencers.findOne({userId: toObjectId(userId), infId: infId});
+  let selected = record && record.campaigns ? record.campaigns : [];
+
+  const cmpList = await CampaignRepo.getCampaignList(userId);
+  let results = !cmpList ? [] : _.filter(cmpList, itm => itm.sns === catType);
+  results = _.map(results, itm => {
+    return {id: itm._id.toString(), name: itm.name, sns: itm.sns, type: itm.type, mems: itm.mems};
+  });
+
+  return {campaigns: results, selected: selected};
 }
 
 async function getInfluencers(userId, catType='') {
@@ -79,10 +150,11 @@ async function updateInfluencer(userId, id, star, memo) {
 async function saveInfluencer(userId, infId, infName, catType, categories) {
   let oldInflu = await Influencers.findOne({userId: toObjectId(userId), infId: infId, type: catType});
   let differs = categories;
+
   try {
     if (oldInflu) {
       let existsCamps = _.map(oldInflu.campaigns, itm=>{return itm.toString()});
-      let differs = _.difference(existsCamps, categories);
+      differs = _.difference(existsCamps, categories);
       // remove member from omit campaigns
       for (let cmp in differs) {
         await Campaign.updateOne(
@@ -92,6 +164,10 @@ async function saveInfluencer(userId, infId, infName, catType, categories) {
       }
 
       differs = _.difference(categories, existsCamps);
+      await Influencers.updateOne(
+        {_id:oldInflu._id},
+        {$set: {campaigns: _.map(categories, itm => {return toObjectId(itm)})}}
+      );
     } else {
       // add new influencer
       oldInflu =  await Influencers.create({
@@ -109,7 +185,7 @@ async function saveInfluencer(userId, infId, infName, catType, categories) {
     for (let cmp in differs) {
       await Campaign.updateOne(
         {_id: toObjectId(differs[cmp])},
-        {$addToSet: {members: {accountId: oldInflu._id, name: infName}}}
+        {$addToSet: {members: {accountId: oldInflu._id, infId: infId, name: infName}}}
       );
     }
 

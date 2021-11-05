@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import {useTheme} from '@mui/material/styles';
 import {FltAutocomplete, FltSingleSelect, FltMultiSelect, FltTextField, FltRangeSelect} from '../../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 
@@ -94,6 +94,7 @@ const engages = ['>1%', '>2% (average)', '>3%', '>4%', '>5%', '>6%', '>7%', '>8%
 
 export default function Instagram({...rest}) {
   const [clearFlag, setClearFlag] = useState(false);
+  const theme = useTheme();
 
   const clearFilterClicked = (e) => {
     setClearFlag(!clearFlag);
@@ -104,8 +105,10 @@ export default function Instagram({...rest}) {
       <Box className='search-box' >
         <Typography
           variant="body1"
+          style={{fontWeight: '600'}}
         >
-          インフルエンサーフィルター • <span style={{fontSize:'0.8rem'}}>検察するインフルエンサーフィルターを選択</span>
+          インフルエンサーフィルター 
+          {/* • <span style={{fontSize:'0.8rem'}}>検察するインフルエンサーフィルターを選択</span> */}
         </Typography>
 
         <Box 
@@ -140,13 +143,13 @@ export default function Instagram({...rest}) {
               toStyle={{width:'8rem', marginLeft:'10px'}}
               />
           </Box>
-          <Box>
+          <Box style={{width:'8rem'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={false} 
               values={['Male', 'Female']}
-              style={{width:'8rem'}}/>
+            />
           </Box>
           <Box sx={{minWidth:'150px', flex:1}}>
             <FltSingleSelect 
@@ -190,8 +193,10 @@ export default function Instagram({...rest}) {
       <Box className='search-box' >
         <Typography
           variant="body1"
+          style={{fontWeight: '600'}}
         >
-          観客フィルター • <span style={{fontSize:'0.8rem'}}>性別・地域など選択</span>
+          フォロワーフィルター
+          {/* 観客フィルター • <span style={{fontSize:'0.8rem'}}>性別・地域など選択</span> */}
         </Typography>
 
         <Box 
@@ -212,16 +217,15 @@ export default function Instagram({...rest}) {
               values={['Male', 'Female']}
               style={{width:'8rem'}}/>
           </Box>
-          <Box>
+          <Box sx={{width:'8rem'}}>
             <FltMultiSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.age}
               icon={true}
               values={ages}
-              sx={{width:'8rem'}}
             />
           </Box>
-          <Box sx={{minWidth:'150px', flex:1}}>
+          <Box sx={{minWidth:'246px'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
@@ -234,15 +238,20 @@ export default function Instagram({...rest}) {
       <Box className='search-box' >
         <Typography
           variant="body1"
+          style={{fontWeight: '600'}}
         >
-          名前検察 • <span style={{fontSize:'0.8rem'}}>アカウント・インフルエンサー検察</span>
+          ユーザーネーム
+          {/* 名前検察 • <span style={{fontSize:'0.8rem'}}>アカウント・インフルエンサー検察</span> */}
         </Typography>
         <Box sx={{marginTop:'10px'}}>
           <TextField 
             size="small"
             fullWidth
-            placeholder="Youtube profile URL, user or channel ID or channel name"
-            inputProps={{style:{fontSize:'14px'}}}
+            placeholder="@username"
+            inputProps={{style:{
+              fontSize:'14px',
+              backgroundColor: theme.palette.clrVariables.grayWhite,
+            }}}
           />
         </Box>
         <Box sx={{display:'flex', width:'100%', justifyContent:'flex-end', marginTop: '15px'}}>

@@ -16,9 +16,9 @@ async function handler(req, res) {
   }
 
   async function updateReport() {
-    const {campId, accountId, rtype, detail} = req.body;
+    const {campId, memId, rtype, detail} = req.body;
     
-    await CampaignRepo.updateMemberReport(campId, accountId, rtype, detail);
+    await CampaignRepo.updateMemberReport(campId, memId, rtype, detail);
 
     return res.status(200).json({status: 'ok'});
   }

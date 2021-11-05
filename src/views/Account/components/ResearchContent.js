@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
-import PropTypes from 'prop-types'
 import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
@@ -12,7 +11,7 @@ import Keyword from 'constants/lang';
 
 const names = ['Instagram', 'Cristiano Ronaldo', 'William', 'Hiroto'];
 
-const ResearchContent = ({selType, campaigns}) => {
+const ResearchContent = ({selType}) => {
   const [sortOrder, setSort] = useState(0);
   const [account, setAccounts] = useState([]);
   useEffect(() => {
@@ -56,7 +55,7 @@ const ResearchContent = ({selType, campaigns}) => {
           <div style={{textAlign:'end'}}>リストへ保存</div>
         </Box>
         {_.map(_.orderBy(account, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
-          <SearchItem key={itm.id} itm={itm} cattype={selType} campaigns={campaigns} />
+          <SearchItem key={itm.id} itm={itm} cattype={selType} />
         ))}
         <Box className='load-more'>
           <Button className='active'>{Keyword.caption.nextpage}</Button>
@@ -65,10 +64,5 @@ const ResearchContent = ({selType, campaigns}) => {
     </Box>
   );
 };
-
-ResearchContent.propTypes = {
-  selType: PropTypes.string,
-  campaigns: PropTypes.array,
-}
 
 export default ResearchContent;

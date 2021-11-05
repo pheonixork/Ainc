@@ -5,7 +5,7 @@ import {PostPageTable, PostPageStatic} from '../Table'
 import {campaignService} from 'services';
 import toast from 'react-hot-toast';
 
-const PostPage = ({selCampId}) => {
+const PostPage = ({selCampId, catType}) => {
   const [data, setData] = useState({name: '', members:[]});
   const [updatedMembers, setUpdatedMembers] = useState([]);
 
@@ -46,7 +46,7 @@ const PostPage = ({selCampId}) => {
     else
       amount = parseInt(amount);
 
-    return campaignService.updateMemberStatus(selCampId, 2, data.members[idx].accountId, pstatus, amount)
+    return campaignService.updateMemberStatus(selCampId, 2, data.members[idx]._id, pstatus, amount)
     .then((ret) => {
       if (ret.status !== 'ok') {
         toast.error('状態保存に失敗しました。');
@@ -67,6 +67,7 @@ const PostPage = ({selCampId}) => {
     <Box className='post-page'>
       <PostPageStatic isloading={data.name.length < 1} getMembers={getStaticInfos} />
       <PostPageTable 
+        catType={catType}
         getMembers={getDatas} 
         handleSaveMember={saveMemberStatus}
       />

@@ -9,6 +9,7 @@ const DetailPage = ({data}) => {
 export async function getServerSideProps(context) {
   const {id} = context.query;
   const campInfo = await CampaignRepo.getCampaignBrief(id);
+
   const data = {id: id, name: campInfo ? campInfo.name : '', sns: campInfo ? campInfo.sns : ''};
   return {props: {data}};
 }

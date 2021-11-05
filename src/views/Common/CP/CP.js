@@ -1,36 +1,54 @@
 import moment from 'moment';
 import React, {useState, useEffect, useRef} from 'react';
-import toast from 'react-hot-toast';
+import NextLink from 'next/link';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
-import {Box, Button, Typography, Rating, TextField} from '@mui/material';
+import toast from 'react-hot-toast';
+import {TableHead, TableRow, TableContainer, TableCell, TableBody, Table, Box, Button, Typography, Rating, TextField} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import RightSidebar from './RightSidebar';
 import {accountService} from 'services';
 import WaitingLoader from './WaitingLoader';
 import RelativeImage from 'components/RelativeImage';
+import {AlertDlg, SaveDlg} from 'views/Common';
+import Lang from 'constants/lang';
 
 const CP = ({accountId, setCollapse}) => {
   const [ratingValue, setRatingValue] = useState();
   const [data, setData] = useState(null);
+  const [campaigns, setCampaigns] = useState([]);
+  const [showDlg, setDlgState] = useState(false);
+  const [showSaveDlg, setSaveDlgStatus] = useState(false);
   const memoInput = useRef();
 
-  const setRightSidebarClose = () => {
-    setCollapse('');
+  const closeSaveDialog = () => {
+    setSaveDlgStatus(false);
   }
 
-  const saveData = () => {
-    if (memoInput.current.value.trim() === '') {
-      toast.error('メモを入力してください。');
-      return;
-    }
+  const closeAlertDialog = (status) => {
+    setDlgState(false);
 
-    accountService.updateAccount(accountId, ratingValue, memoInput.current.value)
+    if (status === true)
+      setCollapse(!data || !data.star ? 0 : data.star);  
+  }
+
+  const setRightSidebarClose = () => {
+    if (data.star !== ratingValue || (data.memo && data.memo !== memoInput.current.value.trim())) {
+      setDlgState(true);
+      return;
+    } 
+
+    setCollapse(!data || !data.star ? 0 : data.star);
+  }
+
+  const updateData = () => {
+    accountService.updateAccount(accountId, ratingValue, memoInput.current.value.trim())
       .then((response) => {
         if (response.status !== 'ok') {
           toast.error(response.msg);
           return;
         }
         toast.success('アカウント情報更新に成功しました');
+        setData({...data, star: ratingValue, memo: memoInput.current.value.trim()});
       }).catch(err => {
         toast.error('アカウント情報更新に失敗しました');
       });
@@ -41,7 +59,7 @@ const CP = ({accountId, setCollapse}) => {
       return;
     }
 
-    accountService.getDetail(accountId)
+    accountService.getCampaingsDetail(accountId)
       .then((response) => {
         if (response.status !== 'ok') {
           setData(null);
@@ -49,10 +67,26 @@ const CP = ({accountId, setCollapse}) => {
           return;
         }
 
+        let results = response.data;
+        if (results.length < 1)
+          return;
+
         if (memoInput.current)
-          memoInput.current.value = response.data.memo || '';
-        setData(response.data);
-        setRatingValue(response.data.star);
+          memoInput.current.value = results[0].memo || '';
+        
+        setCampaigns(results.map(itm=>{
+          return {cid: itm.cid, cname: itm.cname, csns: itm.csns, ctype: itm.ctype, cdate: itm.cdate};
+        }));
+
+        setData({
+          name: results[0].name, 
+          link: results[0].link, 
+          star: results[0].star, 
+          memo: results[0].memo,
+          infId: results[0].infId,
+          type: results[0].type,
+        });
+        setRatingValue(results[0].star);
       }).catch(err => {
         toast.error(err.toString());
       });
@@ -60,22 +94,40 @@ const CP = ({accountId, setCollapse}) => {
 
   return (
     <RightSidebar extraClass={'campaign-sidebar'} autoClose={false} isCollapse={accountId === ''} setCollapse={setRightSidebarClose}>
-      <Box className='toolbar'>
+      <Box className='toolbar' style={{zIndex:1}}>
         <Button className='close'
           onClick={evt=>setRightSidebarClose()}
         >
           <CloseIcon fontSize="small" />
         </Button>
-        <Button className='save' onClick={e=>saveData()} >
-          <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
-            <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
-          </svg>
-          <span>保存</span>
-        </Button>
+        <Box sx={{display: 'flex'}}>
+          <Button 
+            className='active' 
+            onClick={e=>updateData()} 
+            sx={{marginRight: '.5rem'}}
+          >
+            <span>{Lang.btn.update}</span>
+          </Button>
+          <Box className='relative-action'>
+            <Button 
+              className='save' 
+              onClick={e=>setSaveDlgStatus(true)}
+            >
+              <span>{Lang.btn.save}</span>
+            </Button>
+            {showSaveDlg === true && 
+              <SaveDlg 
+                infId={data.infId} 
+                catType={data.type}
+                closeDlg={closeSaveDialog} 
+              />
+            }
+          </Box>
+        </Box>
       </Box>
       {data === null ? 
         <WaitingLoader /> : 
-        <Box>
+        <Box style={{zIndex:0}}>
           <Box className="profile-container">
             <RelativeImage
               isRound
@@ -111,73 +163,86 @@ const CP = ({accountId, setCollapse}) => {
             />
           </Box>
           <Box className="profile-detail">
-            <Box className="profile-item">
-              <Typography className="label">ジャンル:</Typography>
-              <Typography className="value">{data.type}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">投稿日:</Typography>
-              <Typography className="value">{data.postAt && moment(data.postAt).format('YYYY/M/D')}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">投稿URL:</Typography>
-              <Typography className="value">{data.postLink}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">商品名:</Typography>
-              <Typography className="value">{data.shopping}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">金額:</Typography>
-              <Typography className="value">{data.amount}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">フォロウー数:</Typography>
-              <Typography className="value">{data.followers}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">リーチ数:</Typography>
-              <Typography className="value">{data.rich}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">リーチ％:</Typography>
-              <Typography className="value">0</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">保存:</Typography>
-              <Typography className="value">{data.saving}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">保存％:</Typography>
-              <Typography className="value">0</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">いいね数:</Typography>
-              <Typography className="value">{data.oks}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">コメント数:</Typography>
-              <Typography className="value">{data.comment}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">通常数/EG:</Typography>
-              <Typography className="value">{data.normal}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">PR/EG:</Typography>
-              <Typography className="value">{data.prs}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">売上:</Typography>
-              <Typography className="value">{data.sell}</Typography>
-            </Box>
-            <Box className="profile-item">
-              <Typography className="label">ROAS:</Typography>
-              <Typography className="value">{data.roas}</Typography>
-            </Box>
+          <TableContainer style={{ padding: 1 }}>
+            <Table
+              className="styledTable"
+              aria-labelledby="tableTitle"
+              size='medium'
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>{'キャンペーン名'}</TableCell>
+                  <TableCell>{'ジャンル'}</TableCell>
+                  <TableCell>{'SNS'}</TableCell>
+                  <TableCell>{'作成日'}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {campaigns.length > 0 ? (
+                  campaigns.map((row, index) => {
+                      return (
+                        <NextLink href={`/campaign/detail/${row.cid}`} passHref>
+                          <TableRow
+                            hover
+                            // onClick={() => handleClick(row.cid)}
+                            key={index}
+                          >
+                            <TableCell>{row.cname}</TableCell>
+                            <TableCell>{row.ctype}</TableCell>
+                            <TableCell>
+                              {row.csns === 'instagram' &&
+                                <Box
+                                  component={LazyLoadImage}
+                                  effect="blur"
+                                  src={'/images/svgs/instagram.svg'}
+                                  width={'24px'}
+                                  height={'24px'}
+                                /> 
+                              }
+                              {row.csns === 'youtube' && 
+                                <Box
+                                  component={LazyLoadImage}
+                                  effect="blur"
+                                  src={'/images/svgs/youtube.svg'}
+                                  width={'24px'}
+                                  height={'24px'}
+                                /> 
+                              }
+                              {row.csns === 'tiktok' && 
+                                <Box
+                                  component={LazyLoadImage}
+                                  effect="blur"
+                                  src={'/images/svgs/tiktok.svg'}
+                                  width={'24px'}
+                                  height={'24px'}
+                                /> 
+                              }
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.cdate).format('YYYY/MM/DD')}
+                              <br/>
+                            </TableCell>
+                          </TableRow>
+                        </NextLink>
+                      );
+                    }))
+                  : (
+                    <TableRow>
+                      <TableCell colSpan={4} style={{textAlign: 'center'}}>参加したキャンペーンがありません。</TableCell>
+                    </TableRow>
+                  )}
+              </TableBody>
+            </Table>
+          </TableContainer>
           </Box>
         </Box>
       }
+      <AlertDlg 
+        title={'注意'} 
+        caption={'更新されていません。入力情報が失われますがよろしいでしょうか？'}
+        dlgState={showDlg}
+        closeDlg={closeAlertDialog}
+      />
     </RightSidebar>
   );
 };
