@@ -87,22 +87,10 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
             return;
           }
     
-          if (rtype === 1) {
-            let tmp = _.filter(feeds, itm => itm._id === memId);
-
-            setFeeds([...feeds, {...tmp[0], _id: ret.newId, rtype: rtype}]);
-          } else if (rtype === 2) {
-            let tmp = _.filter(stories, itm => itm._id === memId);
-
-            setStories([...stories, {...tmp[0], _id: ret.newId, rtype: rtype}]);
-          } else if (rtype === 3) {
-            let tmp = _.filter(rils, itm => itm._id === memId);
-
-            setRils([...rils, {...tmp[0], _id: ret.newId, rtype: rtype}]);
-          }
-
           let temp = _.filter(updatedMembers, itm => itm._id === memId);
-          setUpdatedMembers([...updatedMembers, {...temp[0], _id: ret.newId, rtype: rtype}]);
+          setUpdatedMembers([...updatedMembers, {...temp[0], _id: ret.newId, rtype: 0}]);
+
+          setCandidates([...candidates, {...temp[0], _id: ret.newId, rtype: 0}]);
         })
         .catch(error => {
           toast.error(error.toString());
@@ -116,7 +104,7 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('状態保存に成功しました。');
+          toast.success('保存しました。');
     
           if (rtype === 1) {
             _.map(feeds, itm => {
@@ -149,6 +137,15 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
             let tRils = _.filter(rils, itm => itm._id !== memId);
             setRils(tRils);
           }
+
+          let tUpdates = _.map(updatedMembers, itm => {
+            if (itm._id !== memId)
+              return itm;
+            
+            return {...itm, rtype: 0};
+          });
+    
+          setUpdatedMembers([...tUpdates]);
         })
         .catch(error => {
           toast.error(error.toString());
@@ -162,7 +159,7 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('状態保存に成功しました。');
+          toast.success('保存しました。');
 
           let tUpdates = _.map(updatedMembers, itm => {
             if (itm._id !== memId)

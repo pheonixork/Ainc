@@ -15,6 +15,7 @@ const CampaignRepo = {
   getDetailViaRport,
   getCampaignDetailList,
   createCampaign,
+  updateMemberAmount,
   updateMemberStatus,
   updateMemberReport,
   updateMemberYoutube,
@@ -214,7 +215,14 @@ async function getCampaignList(userId) {
   return list;
 }
 
-async function updateMemberStatus(campId, step, memId, status, amount) {
+async function updateMemberAmount(campId, memId, amount) {
+  await Campaign.updateOne(
+    {_id: toObjectId(campId), "members._id": toObjectId(memId)},
+    {$set: {"members.$.amount": amount}}
+  );
+}
+
+async function updateMemberStatus(campId, step, memId, status) {
   if (step === 1) {
     if (status === 4) {
       await Campaign.updateOne(
@@ -231,13 +239,12 @@ async function updateMemberStatus(campId, step, memId, status, amount) {
     if (status === 6) {
       await Campaign.updateOne(
         {_id: toObjectId(campId), "members._id": toObjectId(memId)},
-        {$set: {"members.$.step": 3, "members.$.pstatus": status, 
-              "members.$.amount": amount, "members.$.rtype":0}}
+        {$set: {"members.$.step": 3, "members.$.pstatus": status, "members.$.rtype":0}}
       );
     } else {
       await Campaign.updateOne(
         {_id: toObjectId(campId), "members._id": toObjectId(memId)},
-        {$set: {"members.$.step": 2, "members.$.pstatus": status, "members.$.amount": amount}}
+        {$set: {"members.$.step": 2, "members.$.pstatus": status}}
       );
     }
   }
@@ -279,7 +286,7 @@ async function addNewReportMember(campId, memId, rtype) {
     else
       _.set(temp, key, val);
   });
-  temp.rtype = rtype;
+  temp.rtype = 0;
   let pMemo = temp.memo ? temp.memo : '';
   temp.memo = memId;
 

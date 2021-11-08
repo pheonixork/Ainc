@@ -8,7 +8,11 @@ import {makeStyles} from '@mui/styles';
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
 import {userService} from 'services';
+import Constants from 'constants/constants';
 import styles from './styles';
+
+const strPeriod = ['2週間', '単月', '1年', 'カスタム'];
+const strPay = ['-', 'クレジットカード', 'カスタム'];
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -26,12 +30,22 @@ const UserList = () => {
           return;
 
         let tUsers = _.map(response.users, usr => {
-          return {...usr, cdate: moment(usr.cdate).format('YYYY/M/D')}
+          return {...usr, cdate: moment(usr.cdate).format('YYYY/MM/DD')}
         });
 
         setUsers([...tUsers]);
       });
   }, []);
+
+  const getPayend = (user) => {
+    // if (user.plantype === 'カスタム')
+    //   return 'カスタム';
+
+    if (user.plantype === 'Free trial')
+      return '-';
+     
+    return user.payend;
+  }
 
   return (
     <Fixed>
@@ -63,14 +77,20 @@ const UserList = () => {
                 <TableCell align="left" style={{maxWidth:'100px'}} className={classes.ellipseCaption}>{usr.phone}</TableCell>
                 <TableCell align="left" style={{maxWidth:'100px'}} className={classes.ellipseCaption}>{usr.email}</TableCell>
                 <TableCell align="left" style={{maxWidth:'150px'}} className={classes.ellipseCaption}>{usr.addr}</TableCell>
-                <TableCell align="left" style={{maxWidth:'100px'}} className={classes.ellipseCaption}>{usr.plantype}</TableCell>
-                <TableCell align="left">{usr.periodtype}</TableCell>
-                <TableCell align="left">{usr.paytype}</TableCell>
-                <TableCell align="left">{usr.payend}</TableCell>
+                <TableCell align="left" style={{maxWidth:'100px'}} className={classes.ellipseCaption}>
+                  {usr.plantype}
+                </TableCell>
+                <TableCell align="left">{strPeriod[usr.periodtype]}</TableCell>
+                <TableCell align="left">{strPay[usr.paytype]}</TableCell>
+                <TableCell align="left">
+                  {getPayend(usr)}
+                </TableCell>
                 <TableCell>
-                  <NextLink href={`/users/detail/${usr.id}`} passHref replace>
-                    詳細
-                  </NextLink>
+                  {usr.perms !== Constants.roleInfo.admin && 
+                    <NextLink href={`/users/detail/${usr._id}`} passHref replace>
+                      詳細
+                    </NextLink>
+                  }
                 </TableCell>
               </TableRow>
             ))}

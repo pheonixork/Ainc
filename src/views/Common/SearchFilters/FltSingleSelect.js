@@ -33,7 +33,7 @@ export default function FltSingleSelect({ clearFlag, tip, icon, values, ...rest 
           {icon === true && <RoundInfo marginLeft={1}/>}
         </Box>
         {itemValue !== '' && 
-          <span className='clear' onClick={e=>setItemValue('')}>{Keyword.caption.clear}</span>
+          <span className='clear' onClick={e=>setItemValue('')} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
         }
       </Box>
       <Select 
@@ -44,10 +44,13 @@ export default function FltSingleSelect({ clearFlag, tip, icon, values, ...rest 
         sx={{
           fontSize:'14px',
           '& > .MuiSelect-select': {
-            backgroundColor: theme.palette.clrVariables.grayWhite
+            backgroundColor: `${itemValue !== '' ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
           },
           '& > svg': {
-            backgroundColor: theme.palette.clrVariables.grayWhite
+            backgroundColor: 'inherit'
+          },
+          '& fieldset': {
+            borderColor:`${itemValue !== '' ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
           }
         }}
         {...rest}

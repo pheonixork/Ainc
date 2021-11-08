@@ -29,7 +29,7 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
 
   const [data, setData] = useState(row);
 
-  const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
   const handleSelectChanged = (index) => {
     setInfluencerCollapsable(false);
     setInfluencerIndex(index);
@@ -42,6 +42,7 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
   return (
     <>
       <TableRow
+        className={`${influSelectedIndex === index ? 'influencer-detail-active' : ''}`}
         hover
         onClick={() => handleSelectChanged(index)}
         tabIndex={-1}

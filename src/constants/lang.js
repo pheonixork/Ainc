@@ -8,7 +8,7 @@ const keywords = {
     accountresearch: 'アカウントリサーチ',
     insightlist: 'インサイトリスト',
     campaignlist: 'キャンペーンリスト',
-    keyaccount: 'キーアカウント調整',
+    keyaccount: 'キーアカウント調査',
     accademy: 'アカデミー',
     plan: '利用プラン',
     support: 'よくある質問',
@@ -21,7 +21,7 @@ const keywords = {
     }
   },
   caption: {
-    search: '検察',
+    search: '検索',
     clearall: '削除',
     clear: 'クリア', 
     instagram: 'Instagram',
@@ -31,7 +31,7 @@ const keywords = {
     follower: 'フォロワー',
     influencerlocation: '地域',
     gender: '性別',
-    interestcare: '興味関心',
+    interestcare: '興味',
     interest: '興味',
     language: '言語',
     post: '最終投稿',
@@ -45,7 +45,7 @@ const keywords = {
     subscriber: '加入者',
     averageview: '平均',
     sort: '整列',
-    nextpage: '次のページ',
+    nextpage: 'Load',
     type: 'ジャンル',
   },
   label: {
@@ -63,6 +63,7 @@ const keywords = {
     e030: 'アカウントがずでに存在します',
     e039: '処理途中にエラーが発生しました',
     e040: '同じなユーザーが存在します',
+    e041: 'プランを先に設定してください',
   }
 };
 

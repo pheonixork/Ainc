@@ -23,7 +23,7 @@ export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
           {icon === true && <RoundInfo marginLeft={1}/>}
         </Box>
         {itemValue !== '' && 
-          <span className='clear' onClick={e=>setItemValue('')}>{Keyword.caption.clear}</span>
+          <span className='clear' onClick={e=>setItemValue('')} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
         }
       </Box>
       <TextField 
@@ -32,7 +32,17 @@ export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
         {...rest}
         value={itemValue}
         onChange={e=>setItemValue(e.target.value)}
-        inputProps={{style:{fontSize:'14px', backgroundColor:theme.palette.clrVariables.grayWhite}}}
+        inputProps={{
+          style:{
+            fontSize:'14px', 
+            backgroundColor:`${itemValue !== '' ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
+          }
+        }}
+        sx={{
+          '& fieldset': {
+            borderColor:`${itemValue !== '' ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
+          }
+        }}
       />
     </Box>
   );

@@ -18,7 +18,7 @@ export default function AlertDialog({title, caption, dlgState, closeDlg}) {
         {title}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        <DialogContentText id="alert-dialog-description" sx={{whiteSpace:'pre'}}>
           {caption}
         </DialogContentText>
       </DialogContent>

@@ -56,10 +56,13 @@ export default function FltMultiSelect({ clearFlag, tip, icon, values, ...rest }
         sx={{
           fontSize:'14px',
           '& > .MuiSelect-select': {
-            backgroundColor: theme.palette.clrVariables.grayWhite
+            backgroundColor: `${itemValue.length > 0 ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
           },
           '& > svg': {
-            backgroundColor: theme.palette.clrVariables.grayWhite
+            backgroundColor: 'inherit'
+          },
+          '& fieldset': {
+            borderColor:`${itemValue.length > 0 ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
           }
         }}
         {...rest}

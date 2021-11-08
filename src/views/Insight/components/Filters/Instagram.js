@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import {Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography} from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import {FltTextField} from '../../../Common/SearchFilters';
+import {FltTextField, FltSingleSelect} from '../../../Common/SearchFilters';
 import Keyword from 'constants/lang';
+import Constants from 'constants/constants';
 
 const useStyles = makeStyles({
   typodata: {
@@ -27,6 +28,7 @@ export default function Instagram({...rest}) {
       <Box className='search-box' >
         <Typography
           variant="body1"
+          style={{fontWeight:600}}
         >
           基本情報
         </Typography>
@@ -34,7 +36,7 @@ export default function Instagram({...rest}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0}}>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='フォロウー数' icon={false} phstr='From' />
+            <FltTextField clearFlag={clearFlag} tip='フォロワー数' icon={false} phstr='From' />
           </Box>
           <Box>
             <FltTextField clearFlag={clearFlag} tip='' icon={false} phstr='To' />
@@ -45,8 +47,13 @@ export default function Instagram({...rest}) {
           <Box>
             <FltTextField clearFlag={clearFlag} tip='' icon={false} phstr='To' />
           </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='ジャンル' icon={false} phstr='Any' />
+          <Box sx={{minWidth:'200px'}}>
+            <FltSingleSelect 
+              clearFlag={clearFlag}
+              tip={'ジャンル'}
+              icon={false} 
+              values={Constants.campaignTypes}
+              />
           </Box>
         </Box>
         <Box sx={{display: 'flex', flexShrink: 0}}>
@@ -75,7 +82,7 @@ export default function Instagram({...rest}) {
                 <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
               </Box>
               <Box>
-                <FltTextField clearFlag={clearFlag} tip='EG率' icon={false} phstr='From' />
+                <FltTextField clearFlag={clearFlag} tip='EG%' icon={false} phstr='From' />
               </Box>
               <Box>
                 <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
@@ -89,7 +96,7 @@ export default function Instagram({...rest}) {
             aria-controls="panel2a-content"
             id="pane21a-header"
           >
-            <Typography variant="body1">ストーリ</Typography>
+            <Typography variant="body1">ストーリー</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Box 
@@ -101,7 +108,7 @@ export default function Instagram({...rest}) {
                 <FltTextField clearFlag={clearFlag} tip='リンククリック%' icon={false} phstr='To' />
               </Box>
               <Box>
-                <FltTextField clearFlag={clearFlag} tip='スタンプ' icon={false} phstr='From' />
+                <FltTextField clearFlag={clearFlag} tip='スタンプ%' icon={false} phstr='From' />
               </Box>
               <Box>
                 <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />
@@ -127,7 +134,7 @@ export default function Instagram({...rest}) {
                 <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />
               </Box>
               <Box>
-                <FltTextField clearFlag={clearFlag} tip='EG率' icon={false} phstr='From' />
+                <FltTextField clearFlag={clearFlag} tip='EG%' icon={false} phstr='From' />
               </Box>
               <Box>
                 <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />

@@ -40,22 +40,38 @@ const PostPage = ({selCampId, catType}) => {
 
   }, [selCampId]);
 
-  const saveMemberStatus = (idx, pstatus, amount) => {
+  const saveMemberAmount = (idx, amount) => {
     if (isNaN(parseInt(amount)))
       amount = 0;
     else
       amount = parseInt(amount);
 
-    return campaignService.updateMemberStatus(selCampId, 2, data.members[idx]._id, pstatus, amount)
+    return campaignService.updateMemberAmount(selCampId, data.members[idx]._id, amount)
     .then((ret) => {
       if (ret.status !== 'ok') {
         toast.error('状態保存に失敗しました。');
         return;
       }
-      toast.success('状態保存に成功しました。');
+      toast.success('保存しました。');
+
+      updatedMembers[idx].amount = amount;
+      setUpdatedMembers([...updatedMembers]);
+    })
+    .catch(error => {
+      toast.error(error.toString());
+    });
+  }
+
+  const saveMemberStatus = (idx, pstatus) => {
+    return campaignService.updateMemberStatus(selCampId, 2, data.members[idx]._id, pstatus)
+    .then((ret) => {
+      if (ret.status !== 'ok') {
+        toast.error('状態保存に失敗しました。');
+        return;
+      }
+      toast.success('保存しました。');
 
       updatedMembers[idx].pstatus = pstatus;
-      updatedMembers[idx].amount = amount;
       setUpdatedMembers([...updatedMembers]);
     })
     .catch(error => {
@@ -69,6 +85,7 @@ const PostPage = ({selCampId, catType}) => {
       <PostPageTable 
         catType={catType}
         getMembers={getDatas} 
+        handleSaveAmount={saveMemberAmount}
         handleSaveMember={saveMemberStatus}
       />
     </Box>

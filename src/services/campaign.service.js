@@ -13,6 +13,7 @@ export const campaignService = {
   getCampagin,
   getCampaignDetail,
   getCampaignList,
+  updateMemberAmount,
   updateMemberStatus,
   updateReport,
   updateReportYoutube,
@@ -50,8 +51,12 @@ function getCampaignList(userId) {
   return fetchWrapper.get(`${baseUrl}?userId=${userId}`);
 }
 
-function updateMemberStatus(campId, step, memId, status, amount=0) {
-  return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, memId, status, amount});
+function updateMemberAmount(campId, memId, amount) {
+  return fetchWrapper.post(`${baseUrl}/updatememberamount`, {campId, memId, amount});
+}
+
+function updateMemberStatus(campId, step, memId, status) {
+  return fetchWrapper.post(`${baseUrl}/updatememberstatus`, {campId, step, memId, status});
 }
 
 function updateReport(campId, memId, rtype, detail={}) {

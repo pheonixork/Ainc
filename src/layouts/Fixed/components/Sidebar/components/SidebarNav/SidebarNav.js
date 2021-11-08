@@ -145,8 +145,8 @@ const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
               </Box>
             } 
             <Box>
-              <NextLink href={'/docs/quick-start-gatsbyjs'} passHref replace>
-                <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/docs/quick-start-gatsbyjs'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
+              <NextLink href={'/keyaccount'} passHref replace>
+                <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/keyaccount'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
                   <Box component={'img'} src={'/images/svgs/record.svg'} height={24} width={24} marginRight={1.5} />
                   {(variant !== 'permanent' || !collapsed) && Lang.nav.keyaccount}
                 </Button>

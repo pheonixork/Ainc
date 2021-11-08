@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Drawer from '@mui/material/Drawer';
 import { useMainContext } from 'context/MainContext';
 
-const RightSidebar = ({autoClose, children}) => {
+const RightSidebar = ({children}) => {
 
   const { isInfluCollapse, setInfluencerCollapsable } = useMainContext();
 
@@ -11,13 +11,13 @@ const RightSidebar = ({autoClose, children}) => {
     <Drawer
       className='rightside-wrapper'
       anchor="right"
-      onClose={e=>{if (autoClose) setInfluencerCollapsable(true);}}
-      open={!isInfluCollapse}
-      variant="temporary"
+      // onClose={e=>{if (autoClose) setInfluencerCollapsable(true);}}
+      onClose={e=>setInfluencerCollapsable(true)}
+      // open={!isInfluCollapse}
+      variant="permanent"
       sx={{
         '& .MuiPaper-root': {
-          width: '100%',
-          maxWidth: 400,
+          width: isInfluCollapse === false ? '400px' : '0px',
           top: 0,
           height: '100%',
           transition: 'all .2s ease-out',
@@ -31,7 +31,6 @@ const RightSidebar = ({autoClose, children}) => {
 };
 
 RightSidebar.propTypes = {
-  autoClose: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };
 

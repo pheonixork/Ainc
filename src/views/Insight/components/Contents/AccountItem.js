@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {Box, Button} from '@mui/material';
@@ -21,7 +22,7 @@ export default function AccountItem({itm}) {
     setAccountId(data._id);
   }
 
-  const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
   const itemRowClicked = (e) => {
     if (selId !== '')
       return;
@@ -41,7 +42,7 @@ export default function AccountItem({itm}) {
 
   return (
     <Box 
-      className='research-content-item research-content-insight-grid box-wrapper-shadow'
+      className={clsx('research-content-item', 'research-content-insight-grid', 'box-wrapper-shadow', `${influSelectedIndex === data.infId ? 'influencer-detail-active' : ''}`)}
       onClick={itemRowClicked}
       >
       <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>

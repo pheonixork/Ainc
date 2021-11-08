@@ -47,7 +47,7 @@ const CP = ({accountId, setCollapse}) => {
           toast.error(response.msg);
           return;
         }
-        toast.success('アカウント情報更新に成功しました');
+        toast.success('更新しました');
         setData({...data, star: ratingValue, memo: memoInput.current.value.trim()});
       }).catch(err => {
         toast.error('アカウント情報更新に失敗しました');

@@ -49,7 +49,7 @@ const headCells = [
   },
 ];
 
-export default function PostPageTable({catType, getMembers, handleSaveMember}) {
+export default function PostPageTable({catType, getMembers, handleSaveAmount, handleSaveMember}) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
 
@@ -90,6 +90,7 @@ export default function PostPageTable({catType, getMembers, handleSaveMember}) {
                       data={row} 
                       catType={catType}
                       index={index}
+                      handleSaveAmount={handleSaveAmount}
                       handleSaveMember={handleSaveMember}
                     />
                   );

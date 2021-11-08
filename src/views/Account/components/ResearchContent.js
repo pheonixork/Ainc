@@ -55,7 +55,11 @@ const ResearchContent = ({selType}) => {
           <div style={{textAlign:'end'}}>リストへ保存</div>
         </Box>
         {_.map(_.orderBy(account, (sortOrder < 2 ? ['followers'] : ['engage']), ['desc']), (itm, idx) => (
-          <SearchItem key={itm.id} itm={itm} cattype={selType} />
+          <SearchItem 
+            key={itm.id} 
+            itm={itm} 
+            cattype={selType} 
+          />
         ))}
         <Box className='load-more'>
           <Button className='active'>{Keyword.caption.nextpage}</Button>

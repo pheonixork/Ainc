@@ -73,8 +73,9 @@ const Fixed = ({ children }) => {
         <Toaster
           position="top-right"
           reverseOrder={true}
+          containerClassName="custom-toast-wrapper"
           toastOptions={{
-            duration: 5000,
+            duration: 3000,
             style: {
               background: 'rgb(35, 80, 122)',
               color: '#fff',

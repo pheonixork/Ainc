@@ -15,15 +15,21 @@ async function handler(req, res) {
   }
 
   async function createUser() {
-    const {company, url, name, phone, email, password, addr} = req.body;
+    const {company, url, name, phone, email, password, addr, paystart, payend} = req.body;
     
-    const usrId = await UserRepo.createUser(company, url, name, phone, email, password, addr);
+    const usrId = await UserRepo.createUser(company, url, name, phone, email, password, addr, paystart, payend);
     if (usrId === -1)
       return res.status(200).json({
         status: 'err',
         msg: Lang.communcation_errs.e040
       });   
-  
+    
+    if (usrId === -2) 
+      return res.status(200).json({
+        status: 'err',
+        msg: Lang.communcation_errs.e041
+      });   
+
     return res.status(200).json({
       status: 'ok',
       id: usrId

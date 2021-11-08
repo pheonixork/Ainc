@@ -12,6 +12,8 @@ export function MainContextWrapper({ children }) {
     isInfluCollapse,
     setInfluencerCollapsable: (val) => {
       setInfluCollapse(val);
+      if (val === true)
+        setInfluIndex('');
     },
     influSelectedIndex,
     setInfluencerIndex: (val) => {

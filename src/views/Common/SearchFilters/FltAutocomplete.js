@@ -25,7 +25,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
           {icon === true && <RoundInfo marginLeft={1}/>}
         </Box>
         {itemValue && itemValue.title !== '' && 
-          <span className='clear' onClick={e=>setItemValue({title:'', year:''})}>{Keyword.caption.clear}</span>
+          <span className='clear' onClick={e=>setItemValue({title:'', year:''})} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
         }
       </Box>
       <Autocomplete
@@ -54,7 +54,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
           setItemValue(newValue);
         }}
         sx={{
-          backgroundColor: theme.palette.clrVariables.grayWhite,
+          backgroundColor:`${(itemValue && itemValue.title !== '') ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
         }}
         // inputValue={itemValue}
         // onInputChange={(event, newInputValue) => {
@@ -63,6 +63,11 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
         renderInput={(params) => (
           <TextField 
             {...params} 
+            sx={{
+              '& fieldset': {
+                borderColor:`${(itemValue && itemValue.title !== '') ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
+              }
+            }}
             variant="outlined"
             placeholder={phstr}
             inputProps={{

@@ -64,7 +64,7 @@ const TiktokPage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('状態保存に成功しました。');
+          toast.success('保存しました。');
     
           setRows(_.filter(rows, itm => itm._id !== memId))
           setUpdatedMembers(_.filter(updatedMembers, itm => itm._id !== memId));
@@ -81,7 +81,7 @@ const TiktokPage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('状態保存に成功しました。');
+          toast.success('保存しました。');
 
           let tUpdates = _.map(updatedMembers, itm => {
             if (itm._id !== memId)

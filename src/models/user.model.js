@@ -51,13 +51,16 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 0
   },
+  paystart: {
+    type: String
+  },
   payend: {
     type: String
   },
   perms: {
     type: String,
     required: true, 
-    default: "User"
+    default: "user"
   }
 },
 {

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React, {useState, useRef, useMemo, useEffect} from 'react';
 import validator from 'validator'
 import {useRouter} from 'next/router';
@@ -57,6 +58,8 @@ const CreateComponent = () => {
     _.map(refObjects, itm => {
       _.set(inputValues, itm.current.name, itm.current.value);
     });
+    inputValues.paystart = moment().format('YYYY/MM/DD');
+    inputValues.payend = moment().add(15, 'days').format('YYYY/MM/DD');
 
     userService.createUser(inputValues)
       .then((response) => {
@@ -85,18 +88,7 @@ const CreateComponent = () => {
         </Typography>
         
       </Box>
-      <Paper 
-        sx={{ 
-          width: '60%', 
-          marginLeft: 'auto', 
-          marginRight: 'auto',
-          maxWidth: '800px',
-          mt: 2, 
-          mb: 2, 
-          boxShadow: '0 0px 6px 0 rgb(140 152 164 / 53%)',
-          padding: '60px 120px'
-        }}
-      >
+      <Paper className="user-wrapper user-padding-large">
         {error !== '' && (
           <Typography 
             sx={{

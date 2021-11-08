@@ -15,39 +15,31 @@ const statusValues = [
   '終了'
 ]
 
-export default function PostPageTableRow({data, catType, index, handleSaveMember}) {
+export default function PostPageTableRow({data, catType, index, handleSaveAmount, handleSaveMember}) {
   const [showDlg, setShow] = useState(false);
   const closeDlg = () => {
     setShow(false);
   }
 
-  const {setInfluencerCollapsable, setInfluencerIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
   const handleSelectChanged = (index) => {
     setInfluencerCollapsable(false);
     setInfluencerIndex(index);
   };
 
-  let pstatus = 0;
-  useEffect(() => {
-    if (!data || !data.pstatus)
-      return;
-
-    pstatus = data.pstatus;
-  }, [data]);
-
   const changeStatus = (val) => {
-    pstatus = val;
-    handleSaveMember(index, val, amountRef.current.value)
+    handleSaveMember(index, val)
   }
 
   const blurAmount = () => {
-    handleSaveMember(index, pstatus, amountRef.current.value)
+    handleSaveAmount(index, amountRef.current.value);
   }
 
   const amountRef = useRef();
 
   return (
     <TableRow
+      className={`${influSelectedIndex === index ? 'influencer-detail-active' : ''}`}
       hover
       onClick={() => handleSelectChanged(index)}
       tabIndex={-1}

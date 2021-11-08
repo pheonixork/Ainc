@@ -47,9 +47,9 @@ export default function SaveDlg({infId, catType, closeDlg}) {
     });
   }, [infId]);
 
-  const saveAccount = () => {
+  const saveAccount = (status) => {
     let categories = [];
-    _.each(chkStatus, (val, key) => {
+    _.each(status, (val, key) => {
       if (val === false)
         return;
 
@@ -74,7 +74,9 @@ export default function SaveDlg({infId, catType, closeDlg}) {
   }
 
   const handleChange = (evt) => {
-    changeStatus({...chkStatus, [evt.target.name]:evt.target.checked});
+    let tmpStatus = {...chkStatus, [evt.target.name]:evt.target.checked};
+    saveAccount(tmpStatus);
+    changeStatus(tmpStatus);
   }
 
   const getCampInfo = (campId) => {
@@ -93,11 +95,11 @@ export default function SaveDlg({infId, catType, closeDlg}) {
       <Box className="saveDlgToolbar">
         <Typography variant="h6">キャンペーンリストに保存する</Typography>
         <Box className="saveDlgButtons">
-          {isLoading ? (
+          {/* {isLoading ? (
             <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
           ) : (
             <SaveIcon fontSize="medium" className="closeIcon" onClick={e=>saveAccount()} />
-          )}
+          )} */}
           {isLoading ? (
             <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
           ) : (

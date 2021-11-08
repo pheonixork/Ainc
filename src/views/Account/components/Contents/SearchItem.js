@@ -10,9 +10,9 @@ import {SaveDlg} from 'views/Common';
 import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
 
-export default function SearchItem({itm, cattype, campaigns}) {
+export default function SearchItem({itm, cattype}) {
   const [showDlg, setShow] = useState(false);
-  const {setInfluencerCollapsable, setInfluencerIndex } = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
 
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
@@ -29,7 +29,7 @@ export default function SearchItem({itm, cattype, campaigns}) {
   
   return (
     <Box 
-      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow')}
+      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow', `${influSelectedIndex === itm.id ? 'influencer-detail-active' : ''}`)}
       onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.id);}}
       >
       <Box className='profile'>
@@ -83,5 +83,4 @@ export default function SearchItem({itm, cattype, campaigns}) {
 SearchItem.propTypes = {
   itm: PropTypes.object.isRequired,
   cattype: PropTypes.string,
-  campaigns: PropTypes.array,
 };

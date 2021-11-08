@@ -11,8 +11,8 @@ import MostPosts from './Brief/MostPosts';
 import InfluencerDetail from './InfluencerDetail';
 
 const InfluencerBrief = ({}) => {
-
-  const { setInfluencerCollapsable, influSelectedIndex } = useMainContext();
+  const {setInfluencerCollapsable, influSelectedIndex} = useMainContext();
+  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [openDlg, setOpenDialog] = useState(false);
 
@@ -26,6 +26,7 @@ const InfluencerBrief = ({}) => {
 
   useEffect(() => {
     if (influSelectedIndex != -1) {
+      setLoading(false);
       setData({
         avatar: 'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2DDgAk%2BlFE0f8CghKo5%2FCKHnrwHpFJsVwOsLT2HHY58qvvB2REevWri5e5dDWGq%2BUrC4M4BvvnB6Aeuo02N6AJw%3D%3D',
         name: 'Cristano ronaldo',
@@ -33,15 +34,18 @@ const InfluencerBrief = ({}) => {
         followers: 58473948,
         engage: 39582,
         per: 0.54})
+    } else {
+      setLoading(true);
     }
   }, [influSelectedIndex]);
 
   return (
-    <RightSidebar autoClose={false}>
-      <Box
-        className='influencer-brief'
-      >
+    <RightSidebar>
+      {isLoading ? 
         <Box>
+
+        </Box> :
+        <Box className='influencer-brief'>
           <Box className='influencer-toolbar'>
             <Button className='close'
               onClick={evt=>setInfluencerCollapsable(true)}
@@ -63,13 +67,13 @@ const InfluencerBrief = ({}) => {
           <AudienceDetails />
 
           <MostPosts title={'Most Link Posts'} info={true} sx={{gridTemplateColumns: '1fr 1fr'}}/>
-        </Box>
 
-        <InfluencerDetail 
-          open={openDlg}
-          handleClose={closeDialog}
-        />
-      </Box>
+          <InfluencerDetail 
+            open={openDlg}
+            handleClose={closeDialog}
+          />
+        </Box>
+      }
     </RightSidebar>
   );
 };

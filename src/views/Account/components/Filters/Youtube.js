@@ -116,7 +116,7 @@ export default function Instagram({...rest}) {
             <FltAutocomplete 
               clearFlag={clearFlag}
               tip={Keyword.caption.influencerlocation}
-              phstr='インフルエンサーはどこにありますか？'
+              phstr='インフルエンサ―の地域'
               icon={false} 
               values={top100Films} />
           </Box>
@@ -202,7 +202,7 @@ export default function Instagram({...rest}) {
             <FltAutocomplete 
               clearFlag={clearFlag}
               tip={Keyword.caption.audiencelocation}
-              phstr='観客がどこにありますか？' 
+              phstr='フォロワーの地域' 
               icon={true} 
               values={top100Films} />
           </Box>

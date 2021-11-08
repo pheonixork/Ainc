@@ -48,7 +48,7 @@ const ListPage = ({selCampId, catType}) => {
         toast.error('状態保存に失敗しました。');
         return;
       }
-      toast.success('状態保存に成功しました。');
+      toast.success('保存しました。');
 
       updatedMembers[idx].status = status;
       setUpdatedMembers([...updatedMembers]);

@@ -39,6 +39,8 @@ export const light = {
     blueWhite: '#0078C3',
     cyanBlack: '#B9E5F9',
     cyanWhite: '#DEF2FD',
+    cyanLight: '#4AABED',
+    cyanVeryLight: '#EDF7FE',
 
     purpleBlack: '#816BF7',
     purpleDark: '#8D6BF7',
@@ -92,6 +94,8 @@ export const dark = {
     blueWhite: '#0078C3',
     cyanBlack: '#B9E5F9',
     cyanWhite: '#DEF2FD',
+    cyanLight: '#4AABED',
+    cyanVeryLight: '#EDF7FE',
 
     purpleBlack: '#816BF7',
     purpleDark: '#8D6BF7',

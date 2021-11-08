@@ -7,8 +7,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import {FltTextField} from '../../../Common/SearchFilters';
+import {FltTextField, FltSingleSelect} from '../../../Common/SearchFilters';
 import Keyword from 'constants/lang';
+import Constants from 'constants/constants';
 
 const useStyles = makeStyles({
   typodata: {
@@ -29,6 +30,7 @@ export default function Youtube({...rest}) {
       <Box className='search-box' >
         <Typography
           variant="body1"
+          style={{fontWeight:600}}
         >
           基本情報
         </Typography>
@@ -53,8 +55,13 @@ export default function Youtube({...rest}) {
           <Box>
             <FltTextField clearFlag={clearFlag} tip='' icon={false} phstr='To' />
           </Box>
-          <Box>
-            <FltTextField clearFlag={clearFlag} tip='ジャンル' icon={false} phstr='Any' />
+          <Box sx={{minWidth:'200px'}}>
+            <FltSingleSelect 
+              clearFlag={clearFlag}
+              tip={'ジャンル'}
+              icon={false} 
+              values={Constants.campaignTypes}
+              />
           </Box>
         </Box>
         <Box sx={{display: 'flex', flexShrink: 0}}>
@@ -68,10 +75,10 @@ export default function Youtube({...rest}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0}}>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='EG率' icon={false} phstr='To' />
+            <FltTextField clearFlag={clearFlag} tip='EG%' icon={false} phstr='To' />
           </Box>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='シェア率' icon={false} phstr='From' />
+            <FltTextField clearFlag={clearFlag} tip='シェア%' icon={false} phstr='From' />
           </Box>
           <Box>
             <FltTextField clearFlag={clearFlag} tip='ROAS' icon={false} phstr='To' />

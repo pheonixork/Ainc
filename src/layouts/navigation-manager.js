@@ -21,7 +21,7 @@ const pages = {
     },
     {
       title: Lang.nav.keyaccount,
-      href: '/docs/quick-start-gatsbyjs',
+      href: '/keyaccount',
       icon: '/images/svgs/record.svg'
     },
     {

@@ -34,10 +34,13 @@ export default function FltRangeSelect({ clearFlag, tip, icon, fromValues, fromS
           sx={{
             fontSize:'14px',
             '& > .MuiSelect-select': {
-              backgroundColor: theme.palette.clrVariables.grayWhite
+              backgroundColor: `${itemValue.from !== '' ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
             },
             '& > svg': {
-              backgroundColor: theme.palette.clrVariables.grayWhite
+              backgroundColor: 'inherit'
+            },
+            '& fieldset': {
+              borderColor:`${itemValue.from !== '' ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
             }
           }}
           style={fromStyle}
@@ -54,10 +57,13 @@ export default function FltRangeSelect({ clearFlag, tip, icon, fromValues, fromS
           sx={{
             fontSize:'14px',
             '& > .MuiSelect-select': {
-              backgroundColor: theme.palette.clrVariables.grayWhite
+              backgroundColor: `${itemValue.to !== '' ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
             },
             '& > svg': {
-              backgroundColor: theme.palette.clrVariables.grayWhite
+              backgroundColor: 'inherit'
+            },
+            '& fieldset': {
+              borderColor:`${itemValue.to !== '' ? theme.palette.clrVariables.cyanLight : 'rgba(0,0,0,0.23)'}`
             }
           }}
           style={toStyle}

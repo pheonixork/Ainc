@@ -1,10 +1,20 @@
-const {User} = require('models');
+import moment from 'moment';
+const mongoose = require('mongoose');
+const {User, Usage, Plans} = require('models');
+const toObjectId = mongoose.Types.ObjectId;
 
 const UserRepo = {
-  getUserByEmail,
+  createUser,
+  changePwd,
   getAllUsers,
-  createUser
+  getUserByEmail,
+  getUserInfo,  
 };
+
+async function getUserInfo(id) {
+  const user = await User.findOne({_id:toObjectId(id)})
+  return user;
+}
 
 async function getUserByEmail(val) {
   const user = await User.findOne({email:val});
@@ -34,7 +44,18 @@ async function getAllUsers() {
   return users;
 }
 
-async function createUser(company, url, name, phone, email, password, addr) {
+async function changePwd(userId, pwd) {
+  await User.updateOne(
+    {_id: toObjectId(userId)},
+    {$set: {"password": pwd}}
+  );
+}
+
+async function createUser(company, url, name, phone, email, password, addr, paystart, payend) {
+  const planRecord = await Plans.findOne({type:'Free trial'});
+  if (!planRecord)
+    return -2;
+
   const existUser = await User.findOne({email: email});
   if (existUser)
     return -1;
@@ -46,7 +67,25 @@ async function createUser(company, url, name, phone, email, password, addr) {
     phone: phone, 
     email: email, 
     password: password, 
-    addr: addr
+    addr: addr,
+    paystart: paystart,
+    payend: payend,
+  });
+
+  await Usage.create({
+    userId: newUser._id,
+    history: [{
+      historydate: paystart,
+      status: 0,
+      pagesplan: planRecord.pages ?? 0,
+      pagesuse: 0,
+      profiesplan: planRecord.profies ?? 0,
+      profiesuse: 0,
+      reportsplan: planRecord.reports ?? 0,
+      reportsuse: 0,
+      csvplan: planRecord.csv ?? 0 ,
+      csvuse: 0,
+      }],
   });
 
   return newUser._id.toString();

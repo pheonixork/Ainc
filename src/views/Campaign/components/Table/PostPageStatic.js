@@ -33,7 +33,7 @@ const PostPageStatic = ({isloading, getMembers}) => {
     });
 
     setStaticInfo({
-      meme: datas.length,
+      mems: datas.length,
       followers: followers, amount: amount, 
       stops: stops, sells: sells, writings: writings, 
       posts: posts, insights: insights, completes: completes

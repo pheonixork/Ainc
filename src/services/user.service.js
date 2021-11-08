@@ -10,11 +10,16 @@ const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStora
 export const userService = {
   user: userSubject.asObservable(),
   get userValue () { return userSubject.value },
+  changePwd,
   login,
   logout,
   createUser,
-  getAll
+  getAll,
 };
+
+function changePwd(userId, newpwd) {
+  return fetchWrapper.post(`${baseUrl}/changepwd`, {userId, newpwd});
+}
 
 function login(username, password) {
   return fetchWrapper.post(`${baseUrl}/authenticate`, {username, password})

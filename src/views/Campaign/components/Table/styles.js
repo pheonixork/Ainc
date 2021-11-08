@@ -5,7 +5,12 @@ const styles = theme => ({
     marginTop: "10px",
 
     '&:Hover': {
-      backgroundColor: theme.palette.clrVariables.cyanBlack
+      // backgroundColor: theme.palette.clrVariables.cyanBlack
+      boxShadow: '0 4px 24px rgba(31, 31, 31, 0.16)',
+      cursor: 'pointer',
+      transition: 'box-shadow .2s',
+      // -webkit-user-select: none;
+      userSelect: 'none'
     }
   },
   feedtableCell: {
