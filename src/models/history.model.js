@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const toObjectId = mongoose.Types.ObjectId;
 
-const usageSchema = mongoose.Schema({
+const historySchema = mongoose.Schema({
   userId: {
     type: toObjectId,
     required: true,
@@ -13,9 +13,6 @@ const usageSchema = mongoose.Schema({
     historydate: {
       type: String,
       required: true,
-    },
-    historyend: {
-      type: String,
     },
     paytype: {
       type: Number,
@@ -41,30 +38,6 @@ const usageSchema = mongoose.Schema({
       type: Number,
       required: true
     },
-    pagesplan: {
-      type: Number
-    },
-    pagesuse: {
-      type: Number
-    },
-    profiesplan: {
-      type: Number
-    },
-    profiesuse: {
-      type: Number
-    },
-    reportsplan: {
-      type: Number
-    },
-    reportsuse: {
-      type: Number
-    },
-    csvplan: {
-      type: Number
-    },
-    csvuse: {
-      type: Number
-    },
   }]
 },
 {
@@ -73,13 +46,13 @@ const usageSchema = mongoose.Schema({
 );
 
 // add plugin that converts mongoose to json
-usageSchema.plugin(toJSON);
-usageSchema.plugin(paginate);
-usageSchema.set('timestamps', true);
+historySchema.plugin(toJSON);
+historySchema.plugin(paginate);
+historySchema.set('timestamps', true);
 
 /**
- * @typedef Usage
+ * @typedef History
  */
-const Usage = mongoose.models.usage || mongoose.model('usage', usageSchema);
+const History = mongoose.models.history || mongoose.model('history', historySchema);
 
-module.exports = Usage;
+module.exports = History;

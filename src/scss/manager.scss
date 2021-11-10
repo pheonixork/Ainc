@@ -27,14 +27,14 @@ $sidebar-hover-clr: hsla(0,0%,100%,.1);
 }
 
 .side-bar-button {
-  border-radius: 2;
-  min-width: auto;
-  padding: 1;
-  border: 1px solid transparent;
-  margin-right: 12px;
-  color: $purple-white-clr;
+  border-radius: 2 !important;
+  min-width: auto !important;
+  padding: 1 !important;
+  border: 1px solid transparent !important;
+  margin-right: 12px !important;
+  color: $purple-white-clr !important;
   &:Hover {
-    border-color: $purple-white-clr;
+    border-color: $purple-white-clr !important;
   }
 }
 

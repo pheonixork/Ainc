@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import {Detail} from 'views/Users';
-import {UserRepo, UsageRepo} from 'repositories';
+import {UserRepo, UsageRepo, HistoryRepo} from 'repositories';
 
 const DetailPage = ({userInfo, usage, history}) => {
   return <Detail userInfo={userInfo} usage={usage} history={history} />;
@@ -23,6 +23,7 @@ export async function getServerSideProps(context) {
     paytype: temp.paytype ? temp.paytype : 0,
     paystart: temp.paystart ?? '',
     payend: temp.payend ?? '',
+    paystatus: temp.paystatus ?? 2
   };
 
   let usage = {
@@ -40,7 +41,7 @@ export async function getServerSideProps(context) {
       };
   }
 
-  temp = await UsageRepo.getHistory(userInfo._id);
+  temp = await HistoryRepo.getHistory(userInfo._id);
   let history = temp.map(itm => {
     return {
       _id: itm._id.toString(),

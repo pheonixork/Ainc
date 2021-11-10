@@ -1,6 +1,6 @@
 import moment from 'moment';
 const mongoose = require('mongoose');
-const {User, Usage, Plans} = require('models');
+const {History, User, Usage, Plans} = require('models');
 const toObjectId = mongoose.Types.ObjectId;
 
 const UserRepo = {
@@ -70,12 +70,14 @@ async function createUser(company, url, name, phone, email, password, addr, pays
     addr: addr,
     paystart: paystart,
     payend: payend,
+    paystatus: 0,
   });
 
   await Usage.create({
     userId: newUser._id,
     history: [{
       historydate: paystart,
+      historyend: payend,
       status: 0,
       pagesplan: planRecord.pages ?? 0,
       pagesuse: 0,
@@ -86,6 +88,14 @@ async function createUser(company, url, name, phone, email, password, addr, pays
       csvplan: planRecord.csv ?? 0 ,
       csvuse: 0,
       }],
+  });
+
+  await History.create({
+    userId: newUser._id,
+    history: [{
+      historydate: paystart,
+      status: 0,
+    }]
   });
 
   return newUser._id.toString();

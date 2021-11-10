@@ -16,7 +16,7 @@ const Usage = ({getDatas, getUsages, classes}) => {
       return;
     }
 
-    setUserInfo({...userInfo, plantype: 'カスタム'});
+    setUserInfo({...userInfo, plantype: 'カスタム', paystatus: 0});
     showAlertDlg(false);
   }
 
@@ -32,14 +32,14 @@ const Usage = ({getDatas, getUsages, classes}) => {
 
   return (
     <Paper className="user-wrapper user-padding-small" sx={{marginTop: '30px !important'}}>
-      {userInfo.plantype !== 'カスタム' ? 
-        <UsageNormal getDatas={getDatas} classes={classes} /> : 
-        <UsageCustom getDatas={getDatas} classes={classes} />
+      {(userInfo.paystatus < 2 && userInfo.plantype === 'カスタム') ? 
+        <UsageCustom getDatas={getDatas} classes={classes} /> : 
+        <UsageNormal getDatas={getDatas} classes={classes} />
       }
       <UsageInfo getUsages={getUsages} classes={classes} />
       <Box sx={{display: 'flex', justifyContent: 'center'}}>
         <Button className="active" onClick={switchCustomHandle}>
-          {`${userInfo.plantype === 'カスタム' ? 'カスタム終了' : 'カスタム'}`}
+          {`${(userInfo.paystatus < 2 && userInfo.plantype === 'カスタム') ? 'カスタム終了' : 'カスタム'}`}
         </Button>
       </Box>
       <AlertDlg 

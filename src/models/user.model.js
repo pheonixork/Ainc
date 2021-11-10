@@ -57,6 +57,9 @@ const userSchema = mongoose.Schema({
   payend: {
     type: String
   },
+  paystatus: {
+    type: Number
+  },
   perms: {
     type: String,
     required: true, 
