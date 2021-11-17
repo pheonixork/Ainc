@@ -1,10 +1,20 @@
+import moment from 'moment';
 import clsx from 'clsx';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Box, Typography} from '@mui/material';
 import RoundInfo from 'components/RoundInfo';
 
-const UsageInfo = ({getUsages, classes}) => {
+const UsageInfo = ({getDatas, getUsages, classes}) => {
   const [usage, setUsage] = useState(getUsages());
+  const [userInfo, setUserInfo] = useState(getDatas());
+
+  // console.log(userInfo);
+
+  // useCallback(() => {
+  //   let info = getDatas();
+  //   setPayEnd(info.payend);
+  // }, [getDatas]);
+
   return (
     <Box>
       <Box className="user-wrapper-shadow user-padding-small" sx={{margin: '10px'}}>
@@ -59,7 +69,7 @@ const UsageInfo = ({getUsages, classes}) => {
         </Box>
         <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
-            <Typography>Monthly usage resets in 24 days, on 12 Oct 2021.</Typography>
+            <Typography>{`月間使用可能量は${moment(userInfo.payend).diff(moment(), 'days')}日後の${moment(userInfo.payend).format('YYYY年MM月DD日')}にリセットされます`}</Typography>
           </Box>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
           </Box>

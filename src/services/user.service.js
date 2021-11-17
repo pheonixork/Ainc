@@ -1,6 +1,6 @@
+import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import getConfig from 'next/config';
-
 import { fetchWrapper } from 'helpers';
 
 const { publicRuntimeConfig } = getConfig();
@@ -14,7 +14,9 @@ export const userService = {
   login,
   logout,
   createUser,
+  updateUser,
   getAll,
+  getLoginHistory
 };
 
 function changePwd(userId, newpwd) {
@@ -22,7 +24,8 @@ function changePwd(userId, newpwd) {
 }
 
 function login(username, password) {
-  return fetchWrapper.post(`${baseUrl}/authenticate`, {username, password})
+  const loginAt = moment().format('YYYY/MM/DD HH:mm:ss');
+  return fetchWrapper.post(`${baseUrl}/authenticate`, {username, password, loginAt})
     .then(user => {
       // publish user to subscribers and store in local storage to stay logged in between page refreshes
       userSubject.next(user);
@@ -47,6 +50,14 @@ function createUser(args) {
   }); 
 }
 
+function updateUser(args) {
+  return fetchWrapper.post(`${baseUrl}/update`, {...args});
+}
+
 function getAll() {
   return fetchWrapper.get(baseUrl);
+}
+
+function getLoginHistory(userId) {
+ return fetchWrapper.post(`${baseUrl}/loginhistory`, {userId}); 
 }

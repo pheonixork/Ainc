@@ -452,8 +452,8 @@ async function addNewReportTiktokMember(campId, memId) {
 async function updateMemberReport(campId, memId, rtype, detail) {
   if (rtype === 0) {  // move 2 candidate
     await Campaign.updateOne(
-      {_id: toObjectId(campId), "members._id": toObjectId(memId)},
-      {$set: {"members.$.rtype": 0}}
+      {_id: toObjectId(campId)},
+      {$pull: {members: {_id: toObjectId(memId)}}}
     );
 
     return;
@@ -467,7 +467,6 @@ async function updateMemberReport(campId, memId, rtype, detail) {
         "members.$.postAt": detail.postAt,
         "members.$.postLink": detail.postLink,
         "members.$.shopping": detail.shopping,
-        "members.$.amount": detail.amount,
         "members.$.rich": detail.rich,
         "members.$.oks": detail.oks,
         "members.$.comment": detail.comment,
@@ -484,7 +483,6 @@ async function updateMemberReport(campId, memId, rtype, detail) {
         "members.$.shopping": detail.shopping,
         "members.$.inp": detail.inp,
         "members.$.click": detail.click,
-        "members.$.amount": detail.amount,
         "members.$.stamp": detail.stamp,
         "members.$.sell": detail.sell,
       }}
@@ -497,7 +495,6 @@ async function updateMemberReport(campId, memId, rtype, detail) {
         "members.$.postAt": detail.postAt,
         "members.$.postLink": detail.postLink,
         "members.$.shopping": detail.shopping,
-        "members.$.amount": detail.amount,
         "members.$.rich": detail.rich,
         "members.$.saving": detail.saving,
         "members.$.oks": detail.oks,
@@ -523,7 +520,6 @@ async function updateMemberYoutube(campId, memId, detail) {
       "members.$.postAt": detail.postAt,
       "members.$.postLink": detail.postLink,
       "members.$.shopping": detail.shopping,
-      "members.$.amount": detail.amount,
       "members.$.prs": detail.prs,
       "members.$.good": detail.good,
       "members.$.bad": detail.bad,
@@ -550,7 +546,6 @@ async function updateMemberTiktok(campId, memId, detail) {
       "members.$.postAt": detail.postAt,
       "members.$.postLink": detail.postLink,
       "members.$.shopping": detail.shopping,
-      "members.$.amount": detail.amount,
       "members.$.prs": detail.prs,
       "members.$.oks": detail.oks,
       "members.$.comment": detail.comment,

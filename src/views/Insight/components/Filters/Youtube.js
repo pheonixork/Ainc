@@ -75,10 +75,10 @@ export default function Youtube({...rest}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0}}>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='クリック率' icon={false} phstr='From' />
+            <FltTextField clearFlag={clearFlag} tip='クリック%' icon={false} phstr='From' />
           </Box>
           <Box>
-            <FltTextField clearFlag={clearFlag} tip='CV率' icon={false} phstr='To' />
+            <FltTextField clearFlag={clearFlag} tip='CV%' icon={false} phstr='To' />
           </Box>
           <Box>
             <FltTextField clearFlag={clearFlag} tip='EG%' icon={false} phstr='From' />

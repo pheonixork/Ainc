@@ -32,7 +32,7 @@ const HashTag = () => {
   return (
     <Box className={classes.audiencelikes}>
       <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
-        <span style={{fontWeight:'600', marginLeft: '.5rem'}}># Popular Hashtags</span>
+        <span style={{fontWeight:'600', marginLeft: '.5rem'}}>人気ハッシュタグ</span>
       </Box>
       <Box className={clsx(classes.listitem, classes.listheader)}>
         <span>Hashtag</span>

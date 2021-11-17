@@ -33,7 +33,7 @@ const SponsorPosts = () => {
   return (
     <Box className={classes.sponsorposts}>
       <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
-        <span>Sponsor Popsts</span>
+        <span>PR投稿</span>
       </Box>
 
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr 1fr'}}>

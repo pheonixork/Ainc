@@ -41,8 +41,8 @@ const UserList = () => {
     // if (user.plantype === 'カスタム')
     //   return 'カスタム';
 
-    if (user.plantype === 'Free trial')
-      return '-';
+    // if (user.plantype === 'Free trial')
+    //   return '-';
      
     return user.payend;
   }
@@ -64,6 +64,7 @@ const UserList = () => {
               <TableCell>契約月</TableCell>
               <TableCell>決済</TableCell>
               <TableCell>終了予定</TableCell>
+              <TableCell>最終ログイン</TableCell>
               <TableCell>詳細</TableCell>
             </TableRow>
           </TableHead>
@@ -82,9 +83,8 @@ const UserList = () => {
                 </TableCell>
                 <TableCell align="left">{strPeriod[usr.periodtype]}</TableCell>
                 <TableCell align="left">{strPay[usr.paytype]}</TableCell>
-                <TableCell align="left">
-                  {getPayend(usr)}
-                </TableCell>
+                <TableCell align="left">{getPayend(usr)}</TableCell>
+                <TableCell align="left">{usr.loginAt}</TableCell>
                 <TableCell>
                   {usr.perms !== Constants.roleInfo.admin && 
                     <NextLink href={`/users/detail/${usr._id}`} passHref replace>

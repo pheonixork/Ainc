@@ -21,7 +21,7 @@ export default function FilterSelect({ curType, onSelect} ) {
         size='medium'
         onClick={e=>onSelect('bill')}
       >
-        決済
+        登録情報
       </Button>
       <Button
         className={`${curType === 'upgrade' ? 'active' : 'inactive' }`}
@@ -29,7 +29,7 @@ export default function FilterSelect({ curType, onSelect} ) {
         size='medium'
         onClick={e=>onSelect('upgrade')}
       >
-        更新
+        アップグレード
       </Button>
     </Box>
   );

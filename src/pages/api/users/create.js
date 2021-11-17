@@ -30,6 +30,12 @@ async function handler(req, res) {
         msg: Lang.communcation_errs.e041
       });   
 
+    if (usrId === -9)
+      return res.status(200).json({
+        status: 'err',
+        msg: Lang.communcation_errs.e049
+      });   
+
     return res.status(200).json({
       status: 'ok',
       id: usrId

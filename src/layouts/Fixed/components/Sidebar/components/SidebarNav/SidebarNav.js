@@ -153,10 +153,10 @@ const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
               </NextLink>
             </Box>
             <Box>
-              <NextLink href={'/accademy'} passHref replace>
-                <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/accademy'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
+              <NextLink href={'/academy'} passHref replace>
+                <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/academy'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
                   <Box component={'img'} src={'/images/svgs/trending-up.svg'} height={24} width={24} marginRight={1.5} />
-                  {(variant !== 'permanent' || !collapsed) && Lang.nav.accademy}
+                  {(variant !== 'permanent' || !collapsed) && Lang.nav.academy}
                 </Button>
               </NextLink>
             </Box>

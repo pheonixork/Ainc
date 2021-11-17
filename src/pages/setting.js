@@ -18,9 +18,7 @@ export const getServerSideProps = withSession(async function ({req, res}) {
     }
   }
 
-  return {
-    props: {user: user},
-  }
+  return {props: {user}};
 });
 
 export default SettingPage;

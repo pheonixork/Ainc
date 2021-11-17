@@ -6,7 +6,7 @@ import {makeStyles} from '@mui/styles';
 import Fixed from 'layouts/Fixed';
 import styles from './styles';
 import Container from 'layouts/Fixed/components/Container';
-import {Info, History, Usage} from './details';
+import {Info, History, Usage, LoginHistory} from './details';
 
 const Detail = ({userInfo, usage, history}) => {
   const theme = useTheme();
@@ -52,8 +52,8 @@ const Detail = ({userInfo, usage, history}) => {
           </Button>
         </Box>
         <Info getDatas={getInfo} classes={classes} />
-        <Usage getDatas={getInfo} getUsages={getUsage} classes={classes} />
-        <History getDatas={getInfo} getHistory={getHistory} classes={classes} />
+        <Usage getDatas={getInfo} getUsages={getUsage} getHistory={getHistory} classes={classes} />
+        <LoginHistory getDatas={getInfo} classes={classes} data-aos={'fade-up'} />
       </Container>
     </Fixed>
   );

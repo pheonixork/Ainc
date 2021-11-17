@@ -1,2 +1,3 @@
-export { default as Filter } from './Filter';
-export { default as ResearchContent } from './ResearchContent';
+export { default as Instagram } from './Instagram';
+export { default as Youtube } from './Youtube';
+export { default as Tiktok } from './Tiktok';

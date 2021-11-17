@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Fixed from 'layouts/Fixed';
 import Container from 'layouts/Fixed/components/Container';
 import {FilterSelect, InfluencerBrief} from '../Common';
-import {Filter, ResearchContent} from './components';
+import {Instagram, Youtube, Tiktok} from './components';
 
 import Keyword from 'constants/lang';
 import Constants from 'constants/constants';
@@ -38,11 +38,10 @@ const Research = () => {
           <FilterSelect curType={selType} onSelect={onSelect}/>
         </Box>
         <Box marginTop={2}>
-          <Filter curType={selType}/>
+          <Instagram selected={selType === Constants.snsInstagram} display={`${selType === Constants.snsInstagram ? 'block' : 'none'}`} />
+          <Youtube selected={selType === Constants.snsYoutube} display={`${selType === 'youtube' ? 'block' : 'none'}`} />
+          <Tiktok selected={selType === Constants.snsTiktok} display={`${selType === 'tiktok' ? 'block' : 'none'}`} />
         </Box>  
-        <Box marginTop={2} data-aos={'fade-up'}>
-          <ResearchContent selType={selType} />
-        </Box> 
         <InfluencerBrief /> 
       </Container>
     </Fixed>

@@ -63,6 +63,8 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
           <StatusSelect 
             initValue={data.status}
             values={statusValues}
+            step={1}
+            row={data}
             updateStatus={changeStutus}
             style={{ width: '150px', marginLeft: 'auto' }}
             onClick={(e) => {e.stopPropagation()}}

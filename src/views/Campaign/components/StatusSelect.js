@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import {useState, useRef} from 'react';
+import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
@@ -14,9 +15,19 @@ const MenuProps = {
   },
 };
 
-export default function StatusSelect({initValue, values, updateStatus, ...rest}) {
+export default function StatusSelect({initValue, values, step, row, updateStatus, ...rest}) {
   const [itemValue, setItemValue] = useState(initValue);
   const handleStatusChange = (val) => {
+    if (step === 1) {
+      if (row.status == 4 && row.pstatus > 1) {
+        toast.error('このアカウントは投稿が進んでいるので、他のステータスに変更できません');
+        return;
+      }
+    } else if (row.pstatus == 6 && row.rtype > 0) {
+      toast.error('このアカウントはレポートが進んでいるので、他のステータスに変更できません');
+      return;
+    }
+
     setItemValue(val);
     updateStatus(val);
   }
@@ -48,5 +59,7 @@ export default function StatusSelect({initValue, values, updateStatus, ...rest})
 StatusSelect.propTypes = {
   initValue: PropTypes.number.isRequired,
   values: PropTypes.array.isRequired,
-  updateStatus: PropTypes.func
+  updateStatus: PropTypes.func,
+  step: PropTypes.number,
+  row: PropTypes.object
 };

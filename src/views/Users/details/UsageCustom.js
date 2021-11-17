@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import clsx from 'clsx';
-import React, {useRef, useState} from 'react';
-import {Box, Button, Paper, TextField, Typography} from '@mui/material';
+import React, {useEffect, useRef, useState} from 'react';
+import {Skeleton, Box, Button, Paper, TextField, Typography, Switch} from '@mui/material';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 
 const UsageCustom = ({getDatas, classes}) => {
   const [userInfo, setUserInfo] = useState(getDatas());
+  const [updatemode, setUpdatemode] = useState(false);
 
   const searchRef = useRef();
   const profileRef = useRef();
@@ -17,7 +18,6 @@ const UsageCustom = ({getDatas, classes}) => {
   const csvRef = useRef();
   const startRef = useRef();
   const endRef = useRef();
-  const modeRef = useRef();
   const useSearchRef = useRef();
   const useProfileRef = useRef();
   const useReportRef = useRef();
@@ -25,6 +25,30 @@ const UsageCustom = ({getDatas, classes}) => {
 
   const [endDate, setEndDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
+  const [isloading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    return planService.getCustomInfo(
+      userInfo._id, 
+      )
+      .then((response) => {
+        searchRef.current.value = response.data.search;
+        profileRef.current.value = response.data.profile;
+        reportRef.current.value = response.data.report;
+        csvRef.current.value = response.data.csv;
+        useSearchRef.current.value = response.data.usesearch;
+        useProfileRef.current.value = response.data.useprofile;
+        useReportRef.current.value = response.data.usereport;
+        useCsvRef.current.value = response.data.usecsv;
+
+        setStartDate(response.data.startdate);
+        setEndDate(response.data.enddate);
+        setUpdatemode(response.data.updatemode);
+
+        setLoading(false);
+      });
+  }, []);
 
   const saveClicked = (e) => {
     if (searchRef.current.value === '' || searchRef.current.value === '0') {
@@ -58,7 +82,7 @@ const UsageCustom = ({getDatas, classes}) => {
       return;
     }
 
-    return planService.switchToCustom(
+    return planService.saveToCustom(
       userInfo._id, 
       searchRef.current.value,
       profileRef.current.value,
@@ -69,108 +93,130 @@ const UsageCustom = ({getDatas, classes}) => {
       useSearchRef.current.value,
       useProfileRef.current.value,
       useReportRef.current.value,
-      useCsvRef.current.value
+      useCsvRef.current.value,
+      updatemode
       )
       .then((response) => {
+        toast.success('保存しました');
       });
   }
 
   return (
     <Box>
       <Typography className={classes.userdetailwrappertitle}>プラン</Typography>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>現在のプラン</Typography>
-        <Typography>カスタム</Typography>
+      {isloading && 
+        <Skeleton width={'100%'} height={600} sx={{transform:'unset'}}/>
+      }
+      <Box sx={{display: `${isloading ? 'none' : 'relative'}`}}>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>現在のプラン</Typography>
+          <Typography>カスタム</Typography>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>検索数</Typography>
+          <TextField inputRef={searchRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>プロフィール</Typography>
+          <TextField inputRef={profileRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>レポート</Typography>
+          <TextField inputRef={reportRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>CSV</Typography>
+          <TextField inputRef={csvRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>プラン開始日</Typography>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MobileDatePicker
+              value={startDate}
+              onChange={(newValue) => setStartDate(newValue)}
+              inputFormat={'yyyy/MM/dd'}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  sx={{
+                    width: '200px',
+                    '& input': {
+                      padding: '4px'
+                    }
+                  }}
+                  variant="outlined" 
+                  inputRef={startRef}
+                />
+              }
+            />
+          </LocalizationProvider>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>プラン終了日</Typography>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MobileDatePicker
+              value={endDate}
+              onChange={(newValue) => setEndDate(newValue)}
+              inputFormat={'yyyy/MM/dd'}
+              renderInput={(params) => 
+                <TextField 
+                  {...params} 
+                  sx={{
+                    width: '200px',
+                    '& input': {
+                      padding: '4px'
+                    }
+                  }}
+                  variant="outlined" 
+                  inputRef={endRef}
+                />
+              }
+            />
+          </LocalizationProvider>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>更新モード</Typography>
+          <Box sx={{display:'flex', alignItems:'center'}}>
+            <Typography className={clsx("text", !updatemode ? "auto-manual-caption" : "")}>OFF</Typography>
+            <Switch 
+              checked={updatemode}
+              onChange={e=>setUpdatemode(e.target.checked)}
+            />
+            <Typography className={clsx("text", updatemode ? "auto-manual-caption" : "")}>1カ月</Typography>
+          </Box>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>現在の検索数</Typography>
+          <TextField inputRef={useSearchRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>現在のプロフィール数</Typography>
+          <TextField inputRef={useProfileRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>現在のレポート数</Typography>
+          <TextField inputRef={useReportRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Box className={classes.userdetailwrapper}>
+          <Box />
+          <Typography>現在のCSV数</Typography>
+          <TextField inputRef={useCsvRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
+        </Box>
+        <Button className="active" onClick={saveClicked} sx={{marginLeft: '100px'}}>
+          保存
+        </Button>
       </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>検察数</Typography>
-        <TextField inputRef={searchRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>プロフィール</Typography>
-        <TextField inputRef={profileRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>レポート</Typography>
-        <TextField inputRef={reportRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>CSV</Typography>
-        <TextField inputRef={csvRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>プラン開始日</Typography>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
-            value={startDate}
-            onChange={(newValue) => setStartDate(newValue)}
-            inputFormat={'yyyy/MM/dd'}
-            renderInput={(params) => 
-              <TextField 
-                {...params} 
-                sx={{width: '200px'}}
-                className={classes.feedtableTextField} 
-                variant="outlined" 
-                inputRef={startRef}
-              />
-            }
-          />
-        </LocalizationProvider>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>プラン終了日</Typography>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
-            value={endDate}
-            onChange={(newValue) => setEndDate(newValue)}
-            inputFormat={'yyyy/MM/dd'}
-            renderInput={(params) => 
-              <TextField 
-                {...params} 
-                sx={{width: '200px'}}
-                className={classes.feedtableTextField} 
-                variant="outlined" 
-                inputRef={endRef}
-              />
-            }
-          />
-        </LocalizationProvider>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>更新モード</Typography>
-        <TextField inputRef={modeRef} sx={{width: '200px'}} inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>現在の検察数</Typography>
-        <TextField inputRef={useSearchRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>現在のプロフィール数</Typography>
-        <TextField inputRef={useProfileRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>現在のレポート数</Typography>
-        <TextField inputRef={useReportRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Box className={classes.userdetailwrapper}>
-        <Box />
-        <Typography>現在のCSV数</Typography>
-        <TextField inputRef={useCsvRef} sx={{width: '200px'}} type="number" inputProps={{style:{padding:'.5rem'}}}/>
-      </Box>
-      <Button className="active" onClick={saveClicked} sx={{marginLeft: '100px'}}>
-        保存
-      </Button>
     </Box>
   );
 };

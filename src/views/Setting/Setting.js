@@ -10,8 +10,12 @@ import {FilterSelect, PlanContent} from './components';
 
 import Keyword from 'constants/lang';
 
-const Setting = ({user}) => {
+const Setting = ({user, usage}) => {
   const [selType, onSelect] = useState('plan');
+
+  const switchToUpgrade = () => {
+    onSelect('upgrade');
+  }
 
   return (
     <Fixed>
@@ -24,31 +28,19 @@ const Setting = ({user}) => {
               fontWeight: 700,
             }}
           >
-            {Keyword.nav.accountresearch}
-          </Typography>
-          <Typography
-            gutterBottom
-          >
-            {Keyword.label.searchfromsite}
+            {Keyword.nav.plan}
           </Typography>
         </Box>
         <Box marginTop={4}>
           <FilterSelect curType={selType} onSelect={onSelect}/>
         </Box>
         <Box marginTop={2} data-aos={'fade-up'}>
-          <PlanContent user={user} selType={selType} />
+          <PlanContent user={user} selType={selType} switchToUpgrade={switchToUpgrade} />
         </Box> 
         <InfluencerBrief /> 
       </Container>
     </Fixed>
   );
 };
-
-Setting.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string,
-    role: PropTypes.string,
-  }),
-}
 
 export default Setting;

@@ -3,15 +3,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import {useMainContext} from 'context/MainContext';
 
 export default function TabSelect({ curType, onSelect} ) {
+  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
+  const tabChanged = (val) => {
+    if (curType === val)
+      return;
+
+    setInfluencerCollapsable(true);
+    setInfluencerIndex('');
+
+    onSelect(val);
+  };
+
   return (
     <Box>
       <Button
         className={`${curType === 'list' ? 'active' : 'inactive' }`}
         variant={'outlined'}
         size='medium'
-        onClick={e=>onSelect('list')}
+        onClick={e=>tabChanged('list')}
       >
         リストアップ
       </Button>
@@ -19,7 +31,7 @@ export default function TabSelect({ curType, onSelect} ) {
         className={`${curType === 'post' ? 'active' : 'inactive' }`}
         variant={'outlined'}
         size='medium'
-        onClick={e=>onSelect('post')}
+        onClick={e=>tabChanged('post')}
       >
         投稿
       </Button>
@@ -27,7 +39,7 @@ export default function TabSelect({ curType, onSelect} ) {
         className={`${curType === 'report' ? 'active' : 'inactive' }`}
         variant={'outlined'}
         size='medium'
-        onClick={e=>onSelect('report')}
+        onClick={e=>tabChanged('report')}
       >
         レポート
       </Button>

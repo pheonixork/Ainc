@@ -60,11 +60,11 @@ const feedHeadCells = [
   },
   {
     id: 'normal',
-    label: '通常/EG',
+    label: '通常EG%',
   },
   {
     id: 'prper',
-    label: 'PR/EG',
+    label: 'PREG%',
   },
   {
     id: 'share',
@@ -102,7 +102,6 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
   const postAtRef = useRef();
   const postLinkRef = useRef();
   const shoppingRef = useRef();
-  const amountRef = useRef();
   const oksRef = useRef();
   const prsRef = useRef();
   const commentRef = useRef();
@@ -112,24 +111,26 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
   const sellRef = useRef();
   const roasRef = useRef();
 
-  const handleMenuClose = (type, accId) => {
+  const handleMenuClose = (type, memId, accId) => {
     switch (type) {
       case 'add':
+        updateDatas(type, memId);
+        break;
       case 'del':
-        updateDatas(type, accId);
+        updateDatas(type, memId, accId);
         break;
       case 'cp':
-        setAccountId(accId);
+        setAccountId(memId);
         break;
       case 'save':
         let detail = {
           postAt: postAtRef.current.value, postLink: postLinkRef.current.value, 
-          shopping: shoppingRef.current.value, amount: amountRef.current.value,
+          shopping: shoppingRef.current.value, 
           prs: prsRef.current.value, oks: oksRef.current.value,
           comment: commentRef.current.value, share: shareRef.current.value, 
           sell: sellRef.current.value
         };
-        updateDatas(type, accId, detail);
+        updateDatas(type, memId, detail);
         break;
       default:
         break;
@@ -144,7 +145,6 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
     postAtRef.current.value = row.postAt ? row.postAt : '';
     postLinkRef.current.value = row.postLink ? row.postLink : '';
     shoppingRef.current.value = row.shopping ? row.shopping : '';
-    amountRef.current.value = row.amount ? row.amount : 0;
     prsRef.current.value = row.prs ? row.prs : 0;
     oksRef.current.value = row.oks ? row.oks : 0;
     commentRef.current.value = row.comment ? row.comment : 0;
@@ -158,7 +158,7 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
   }, [row]);
 
   const amountValueChanged = (evt) => {
-    let amountVal = parseInt(amountRef.current.value);
+    let amountVal = parseInt(row.amount);
     let sellVal = parseInt(sellRef.current.value);
     if (isNaN(sellVal) || isNaN(amountVal))
       return;
@@ -209,9 +209,7 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
-        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={amountRef } onChange={amountValueChanged} />
-        </TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{row.amount}</TableCell>
         <TableCell className={classes.feedtableCell}>{row.registers}</TableCell>
         <TableCell className={classes.feedtableCell}>{row.recycle}</TableCell>
         <TableCell className={classes.feedtableCell}>
@@ -250,7 +248,7 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
             }}
           >
             <MenuItem onClick={e=>handleMenuClose('add', row._id)}>追加</MenuItem>
-            <MenuItem onClick={e=>handleMenuClose('del', row._id)}>削除</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('del', row._id, row.accountId)}>削除</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('cp', row.accountId)}>CP</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('save', row._id)}>SAVE</MenuItem>
           </Menu>

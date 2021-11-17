@@ -14,14 +14,18 @@ const Info = ({getDatas, classes}) => {
   const [showDlg, setShowDlg] = useState(false);
 
   const setClicked = (e) => {
+    if (passRef.current.value.trim() === '') {
+      toast.error('パスワードを入力して下さい。');
+      return;
+    }
     if (passRef.current.value !== passConfRef.current.value) {
-      toast.error('パスワードが違いです');
+      toast.error('パスワードとパスワードが違いです');
       return;
     }
 
     userService.changePwd(userInfo._id, passRef.current.value)
       .then((response) => {
-        toast.success('パスワードが再設定しました');
+        toast.success('パスワードを再設定しました');
         setShowDlg(false);
       });
   }
@@ -75,15 +79,15 @@ const Info = ({getDatas, classes}) => {
       </Box>
       {showDlg && 
         <Box className={classes.passwordresetdlg} >
-          <Box sx={{display: 'grid', gridTemplateColumns: '1.5fr 3fr'}}>
-            <Typography>パスワード</Typography>
-            <TextField inputRef={passRef}></TextField>
+          <Box className={classes.passwordinput}>
+            <Typography style={{marginRight:'.5rem'}}>パスワード</Typography>
+            <TextField inputRef={passRef} size="small" type="password"></TextField>
           </Box>
-          <Box sx={{display: 'grid', gridTemplateColumns: '1.5fr 3fr'}}>
-            <Typography>パスワード再入力</Typography>
-            <TextField inputRef={passConfRef}></TextField>
+          <Box className={classes.passwordinput}>
+            <Typography style={{marginRight:'.5rem'}}>パスワード再入力</Typography>
+            <TextField inputRef={passConfRef} size="small" type="password"></TextField>
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'center', marginTop: '.5rem'}}>
+          <Box sx={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}>
             <Button className="active" onClick={setClicked}>確定</Button>
             <Button sx={{marginLeft:'.5rem'}} onClick={cancelClicked} className="inactive">キャンセル</Button>
           </Box>

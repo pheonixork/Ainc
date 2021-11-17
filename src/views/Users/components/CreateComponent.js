@@ -40,14 +40,14 @@ const CreateComponent = () => {
     let idx = 0;
     for (idx = 0; idx < labels.length; idx ++) {
       if (refObjects[idx].current.value.trim() === '') {
-        setError(labels[idx] + 'に値を入力してください。');
+        setError(labels[idx] + 'を入力して下さい。');
         refObjects[idx].current.focus();
         return;
       }
     }
 
     if (!validator.isEmail(refObjects[4].current.value)) {
-      setError(labels[4] + 'を正確に入力してください。');
+      setError(labels[4] + 'を正確に入力して下さい。');
       refObjects[4].current.focus();
       return;
     }

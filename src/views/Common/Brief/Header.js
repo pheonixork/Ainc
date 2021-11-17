@@ -75,7 +75,7 @@ const Header = ({data, handleOpen}) => {
         onClick={e=>handleOpen()}
         className='manager active mgt20' 
         variant={'outlined'}>
-        View full report
+        フルレポートを表示
       </Button>
     </Box>
   );

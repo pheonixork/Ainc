@@ -2,14 +2,58 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import React, {useState, useEffect} from 'react';
 import {TableContainer, Table, TableRow, TableCell, TableHead, TableBody, Box, Button, Paper, Typography} from '@mui/material';
+import {planService} from 'services';
+import HistoryDlg from './HistoryDlg';
 
 const strPeriod = ['2週間', '単月', '1年', 'カスタム'];
 const strPay = ['-', 'クレジットカード', 'カスタム'];
 const strStatus = ['開始', '継続', '終了'];
 
-const History = ({getDatas, getHistory, classes}) => {
-  const [userInfo, setUserInfo] = useState(getDatas());
+const History = ({getDatas, getHistory, isreload, setDone, classes}) => {
+  const [userInfo, setUserInfo] = useState({});
   const [history, setHistory] = useState(getHistory());
+  const [showDlg, setShowStatus] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  const closeDlg = () => {
+    setShowStatus(false);
+  }
+
+  const saveHistory = (data) => {
+    return planService.saveCustomHistory(
+      userInfo._id, data, 
+    )
+    .then((response) => {
+      setHistory([...history, 
+        {
+          _id: response.data, 
+          historydate: data.historyDate,
+          periodtype: data.period,
+          status: data.status,
+          paytype: data.pay,
+          memo: 'A操作',
+          plantype: 'カスタム'
+        }
+      ])
+    });
+  }
+
+  useEffect(() => {
+    setUserInfo({...getDatas()});
+  }, [getDatas]);
+
+  useEffect(() => {
+    if (!isreload)
+      return;
+
+      return planService.getHistory(
+        userInfo._id, 
+      )
+      .then((response) => {
+        setHistory([...response.data]);
+        setShowStatus(false);
+      });
+  }, [isreload]);
 
   return (
     <Paper className="user-wrapper user-padding-small" sx={{marginTop: '30px !important'}}>
@@ -39,10 +83,10 @@ const History = ({getDatas, getHistory, classes}) => {
                   <TableCell>{strPeriod[row.periodtype]}</TableCell>
                   <TableCell>{strStatus[row.status]}</TableCell>
                   <TableCell>{strPay[row.paytype]}</TableCell>
-                  <TableCell>{row.plantype === 'カスタム' ? 'A操作' : ''}</TableCell>
+                  <TableCell>{row.memo}</TableCell>
                   <TableCell>
                     {row.plantype === 'カスタム' &&
-                      <Button>編集</Button>
+                      <Button onClick={e=>{setSelected(row), setShowStatus(true)}}>編集</Button>
                     }
                   </TableCell>
                 </TableRow>
@@ -57,9 +101,15 @@ const History = ({getDatas, getHistory, classes}) => {
       </TableContainer>
       {userInfo.plantype === 'カスタム' && 
         <Box sx={{display: 'flex', justifyContent: 'center'}}>
-          <Button className="active">入力</Button>
+          <Button className="active" onClick={e=>{setSelected(null), setShowStatus(true)}}>入力</Button>
         </Box>
       }
+      <HistoryDlg 
+        dlgState={showDlg} 
+        closeDlg={closeDlg} 
+        saveHistory={saveHistory} 
+        selRow={selected}
+      />
     </Paper>
   );
 };

@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import clsx from 'clsx';
-import React, {useMemo} from 'react';
-
+import React, {useEffect, useMemo, useState} from 'react';
 import {Typography, Box, Button, FormControlLabel, Switch} from '@mui/material';
 import {useTheme, styled} from '@mui/material/styles';
 import {makeStyles} from '@mui/styles'; 
 import styles from './styles';
+import DiscoveryTable from './DiscoveryTable';
+import MonitorTable from './MonitorTable';
+import RecommendTable from './RecommendTable';
+import NextLink from 'next/link';
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -40,129 +43,148 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PlanSelect() {
+export default function PlanSelect({enterprise, advanced, performance, essentials, trial}) {
   const theme = useTheme();
   const useStyles = useMemo(() => {
     return makeStyles(styles, {defaultTheme: theme});
   }, [theme]);
   const classes = useStyles();
-
+  const [isMonth, setMonth] = useState(false);
+  const formatter = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+  });
   return (
     <Box>
-      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Typography>Monthly</Typography>
-        <Android12Switch defaultChecked />
-        <Typography>Annually (save 10%)</Typography>
+      <Box>
+        <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Typography>Monthly</Typography>
+          <Android12Switch 
+            checked={isMonth}
+            onChange={e=>setMonth(e.target.checked)}
+          />
+          <Typography>Annually (save 10%)</Typography>
+        </Box>
+        <Box className={clsx(classes.upgradeselect, classes.mt30, classes.mb40)}>
+          <Box className={clsx(classes.upgradeplanitem)}>
+            <Typography className={clsx(classes.upgradeplantitle, classes.upgradeenterprise)}>Enterprise</Typography>
+            <Typography 
+              className={classes.upgradeplandetail}
+              style={{
+                marginTop: '5.2rem',
+                marginBottom: 0,
+                whiteSpace: 'pre-wrap'
+              }}
+            >
+              {'大規模な検索プランもご用意できます\r\n気軽にお問合せください'}
+            </Typography>
+            <Box className={classes.upgradeplanbutton}>
+              <Button
+                className={classes.upgradeenterprisebtn}
+                variant={'outlined'}
+                size='medium'
+              >
+                Book a call
+              </Button>
+            </Box>
+          </Box>
+          <Box className={clsx(classes.upgradeplanitem)}>
+            <Typography className={clsx(classes.upgradeplantitle, classes.upgradeadvanced)}>Advanced</Typography>
+            <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
+              {'大型ブランド・\r\n代理店向け'}
+            </Typography>
+            <Box>
+              <Box className={classes.upgradeplanmoney}>
+                {!isMonth && (formatter.format(advanced.monthval ?? 0))}
+                {isMonth && (formatter.format(advanced.yearval ?? 0))}
+              </Box>
+              <Box className={classes.upgradeplandivide} />
+            </Box>
+            <Box className={classes.upgradeplanbutton}>
+              <Button
+                className={classes.upgradeadvancedbtn}
+                variant={'outlined'}
+                size='medium'
+              >
+                My plan
+              </Button>
+            </Box>
+          </Box>
+          <Box className={clsx(classes.upgradeplanitem)}>
+            <Typography className={clsx(classes.upgradeplantitle, classes.upgradeperformance)}>Performance</Typography>
+            <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
+              {'ブランド・代理店向け'}
+            </Typography>
+            <Box>
+              <Box className={classes.upgradeplanmoney}>
+                {!isMonth && (formatter.format(performance.monthval ?? 0))}
+                {isMonth && (formatter.format(performance.yearval ?? 0))}
+              </Box>
+              <Box className={classes.upgradeplandivide} />
+            </Box>
+            <Box className={classes.upgradeplanbutton}>
+              <Button
+                className={classes.upgradeperformancebtn}
+                variant={'outlined'}
+                size='medium'
+              >
+                Down grade
+              </Button>
+            </Box>
+          </Box>
+          <Box className={clsx(classes.upgradeplanitem, 'upgradeselected')}>
+            <Typography className={clsx(classes.upgradeplantitle, classes.upgradeessentials)}>Essentials</Typography>
+            <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
+              {'ブランド向け'}
+            </Typography>
+            <Box>
+              <Box className={classes.upgradeplanmoney}>
+                {!isMonth && (formatter.format(essentials.monthval ?? 0))}
+                {isMonth && (formatter.format(essentials.yearval ?? 0))}
+              </Box>
+              <Box className={classes.upgradeplandivide} />
+            </Box>
+            <Box className={classes.upgradeplanbutton}>
+              <Button
+                className={classes.upgradeessentialsbtn}
+                variant={'outlined'}
+                size='medium'
+              >
+                Down grade
+              </Button>
+            </Box>
+          </Box>
+          <Box className={clsx(classes.upgradeplanitem)}>
+            <Typography className={clsx(classes.upgradeplantitle, classes.upgradetrial)}>Free trial</Typography>
+            <Typography 
+              className={classes.upgradeplandetail}
+              style={{
+                marginTop: '5.2rem',
+                marginBottom: 0
+              }}
+            >
+              Your first 14 days on a limited trial plan
+            </Typography>
+            <Box className={classes.upgradeplanbutton}>
+              <Button
+                className={classes.upgradetrialbtn}
+                variant={'outlined'}
+                size='medium'
+              >
+                Downgrade
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Box>  
+      <Box className={clsx(classes.contentWrapper, classes.smallShadow)} sx={{textAlign: 'center'}}>
+        <Typography>
+          If you're looking for something special, <NextLink href="#">book a call</NextLink> with us.
+        </Typography>
       </Box>
-      <Box className={clsx(classes.upgradeselect, classes.mt30, classes.mb40)}>
-        <Box className={clsx(classes.upgradeplanitem)}>
-          <Typography className={clsx(classes.upgradeplantitle, classes.upgradeenterprise)}>Enterprise</Typography>
-          <Typography 
-            className={classes.upgradeplandetail}
-            style={{
-              marginTop: '5.2rem',
-              marginBottom: 0
-            }}
-          >
-            Need to go bigger? Book a call
-          </Typography>
-          <Box className={classes.upgradeplanbutton}>
-            <Button
-              className={classes.upgradeenterprisebtn}
-              variant={'outlined'}
-              size='medium'
-            >
-              Book a call
-            </Button>
-          </Box>
-        </Box>
-        <Box className={clsx(classes.upgradeplanitem)}>
-          <Typography className={clsx(classes.upgradeplantitle, classes.upgradeadvanced)}>Advanced</Typography>
-          <Typography className={classes.upgradeplandetail}>
-            Ideal for larger teams
-          </Typography>
-          <Box>
-            <Box className={classes.upgradeplanmoney}>
-              $498
-              <span className={classes.upgradeplanperiod}>/month</span>
-            </Box>
-            <Box className={classes.upgradeplandivide} />
-          </Box>
-          <Box className={classes.upgradeplanbutton}>
-            <Button
-              className={classes.upgradeadvancedbtn}
-              variant={'outlined'}
-              size='medium'
-            >
-              My plan
-            </Button>
-          </Box>
-        </Box>
-        <Box className={clsx(classes.upgradeplanitem)}>
-          <Typography className={clsx(classes.upgradeplantitle, classes.upgradeperformance)}>Performance</Typography>
-          <Typography className={classes.upgradeplandetail}>
-            Ideal for scaling brands
-          </Typography>
-          <Box>
-            <Box className={classes.upgradeplanmoney}>
-              $274
-              <span className={classes.upgradeplanperiod}>/month</span>
-            </Box>
-            <Box className={classes.upgradeplandivide} />
-          </Box>
-          <Box className={classes.upgradeplanbutton}>
-            <Button
-              className={classes.upgradeperformancebtn}
-              variant={'outlined'}
-              size='medium'
-            >
-              Down grade
-            </Button>
-          </Box>
-        </Box>
-        <Box className={clsx(classes.upgradeplanitem, 'upgradeselected')}>
-          <Typography className={clsx(classes.upgradeplantitle, classes.upgradeessentials)}>Essentials</Typography>
-          <Typography className={classes.upgradeplandetail}>
-            Ideal for getting serious
-          </Typography>
-          <Box>
-            <Box className={classes.upgradeplanmoney}>
-              $109
-              <span className={classes.upgradeplanperiod}>/month</span>
-            </Box>
-            <Box className={classes.upgradeplandivide} />
-          </Box>
-          <Box className={classes.upgradeplanbutton}>
-            <Button
-              className={classes.upgradeessentialsbtn}
-              variant={'outlined'}
-              size='medium'
-            >
-              Down grade
-            </Button>
-          </Box>
-        </Box>
-        <Box className={clsx(classes.upgradeplanitem)}>
-          <Typography className={clsx(classes.upgradeplantitle, classes.upgradetrial)}>Free trial</Typography>
-          <Typography 
-            className={classes.upgradeplandetail}
-            style={{
-              marginTop: '5.2rem',
-              marginBottom: 0
-            }}
-          >
-            Your first 14 days on a limited trial plan
-          </Typography>
-          <Box className={classes.upgradeplanbutton}>
-            <Button
-              className={classes.upgradetrialbtn}
-              variant={'outlined'}
-              size='medium'
-            >
-              Downgrade
-            </Button>
-          </Box>
-        </Box>
+      <Box className={classes.mt30} data-aos={'fade-up'}>
+        <DiscoveryTable isMonth={isMonth} enterprise={enterprise} advanced={advanced} performance={performance} essentials={essentials} trial={trial}/>
+        <RecommendTable />
       </Box>
     </Box>
   );

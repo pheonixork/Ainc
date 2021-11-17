@@ -4,10 +4,24 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {useTheme} from '@mui/material/styles';
+import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import {styled} from '@mui/material/styles';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
 
-export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(0, 0, 0, 0.8)'
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+}));
+
+export default function FltTextField({ clearFlag, tip, icon, phstr, caption, ...rest}) {
   const theme = useTheme();
   const [itemValue, setItemValue] = useState('');
   useEffect(()=>{
@@ -20,7 +34,7 @@ export default function FltTextField({ clearFlag, tip, icon, phstr, ...rest}) {
       <Box className='search-item-wrapper'>
         <Box className='search-item-header' sx={{height: tip ? 'unset' : '21px'}}>
           <span>{tip}</span>
-          {icon === true && <RoundInfo marginLeft={1}/>}
+          {icon === true && <RoundInfo caption={caption} marginLeft={1} />}
         </Box>
         {itemValue !== '' && 
           <span className='clear' onClick={e=>setItemValue('')} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
@@ -53,4 +67,5 @@ FltTextField.propTypes = {
   tip: PropTypes.string.isRequired,
   phstr: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
+  caption: PropTypes.string
 };

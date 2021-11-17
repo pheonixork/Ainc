@@ -17,7 +17,8 @@ const Sidebar = ({ collapsed, pages, open, variant, setCollapse, onClose }) => {
           maxWidth: variant === 'permanent' && collapsed ? 50 : 240,
           top: { xs: 0, md: 0 },
           height: { xs: '100%', md: 'calc(100%)' },
-          transition: 'all .2s ease-out'
+          transition: 'all .2s ease-out',
+          overflowX: 'hidden'
         },
       }}
     >

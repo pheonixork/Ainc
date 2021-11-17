@@ -116,9 +116,9 @@ const styles = theme => ({
     flex: '.32',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    maxWidth: '11.5rem',
+    maxWidth: '12rem',
     height: '20rem',
-    padding: '1rem 1.5rem',
+    padding: '1rem .5rem',
     backgroundColor: '#fff',
     border: '1px solid #eee',
     borderRadius: '6px',
@@ -194,8 +194,9 @@ const styles = theme => ({
   },
   upgradeplanmoney: {
     fontWeight: '700',
-    fontSize: '36px',
-    lineHeight: '54px'
+    fontSize: '28px',
+    lineHeight: '50px',
+    textAlign: 'center'
   },
   upgradeplanperiod: {
     fontSize: '.9rem'
@@ -203,6 +204,37 @@ const styles = theme => ({
   upgradeplandivide: {
     height: '2rem',
     fontSize: '14px'
+  },
+  userdetailwrapper: {
+    display: 'grid',
+    gridTemplateColumns: '1.5fr 3fr 7fr',
+    padding: '.2rem 0'
+  },
+  userdetailwrappertitle: {
+    fontWeight: 600,
+    fontSize: '20px'
+  },
+  passwordresetdlg: {
+    width: '450px',
+    height: 'fit-content',
+    position: 'fixed',
+    top: 'calc(50vh - 280px)',
+    left: 'calc(50vw - 460px)',
+    zIndex: '9999',
+    border: '1px solid #00000089',
+    padding: '2rem',
+    background: '#fff',
+    boxShadow: '0px 0px 9px #00000069'
+  },
+  editdlg: {
+    top: '0 !important',
+    left: 'calc(50vw - 460px) !important',
+  },
+  passwordinput: {
+    display: 'grid', 
+    gridTemplateColumns: '2fr 3fr', 
+    alignItems: 'center',
+    marginTop:'1rem', 
   }
 });
 

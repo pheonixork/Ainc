@@ -98,6 +98,17 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
     }
 
     if (type === 'del') { //　アカウントを削除
+      let sameMembers = 0;
+      updatedMembers.map(itm => {
+        if (itm.accountId === detail)
+          sameMembers ++;
+      });
+
+      if (sameMembers === 1) {
+        toast.error('削除できません');
+        return;
+      }
+
       return campaignService.updateReport(selCampId, memId, 0)
         .then((ret) => {
           if (ret.status !== 'ok') {
@@ -107,44 +118,17 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
           toast.success('保存しました。');
     
           if (rtype === 1) {
-            _.map(feeds, itm => {
-              if (itm._id !== memId)
-                return;
-              
-              setCandidates([...candidates, itm]);
-            });
-
             let tFeeds = _.filter(feeds, itm => itm._id !== memId);
             setFeeds(tFeeds);
           } else if (rtype === 2) {
-            _.map(stories, itm => {
-              if (itm._id !== memId)
-                return;
-              
-              setCandidates([...candidates, itm]);
-            });
-            
             let tStories = _.filter(stories, itm => itm._id !== memId);
             setStories(tStories);
           } else if (rtype === 3) {
-            _.map(rils, itm => {
-              if (itm._id !== memId)
-                return;
-              
-              setCandidates([...candidates, itm]);
-            });
-
             let tRils = _.filter(rils, itm => itm._id !== memId);
             setRils(tRils);
           }
 
-          let tUpdates = _.map(updatedMembers, itm => {
-            if (itm._id !== memId)
-              return itm;
-            
-            return {...itm, rtype: 0};
-          });
-    
+          let tUpdates = _.filter(updatedMembers, itm => itm._id !== memId);
           setUpdatedMembers([...tUpdates]);
         })
         .catch(error => {

@@ -9,6 +9,7 @@ import Container from 'layouts/Fixed/components/Container';
 import SettingInput from './components/SettingInput';
 import SettingSwitch from './components/SettingSwitch';
 import {planService} from 'services';
+import {AlertDlg} from 'views/Common';
 import styles from './styles';
 import Lang from 'constants/lang';
 
@@ -24,14 +25,14 @@ const UserSettings = () => {
   const [performance, setPerformance] = useState({});
   const [essentials, setEssentials] = useState({});
   const [trial, setTrial] = useState({});
+  const [showAlert, showAlertDlg] = useState(false);
+  const closeAlertDlg = (status) => {
+    if (status === false) {
+      showAlertDlg(false);
+      return;
+    }
 
-  const theme = useTheme();
-  const useStyles = useMemo(() => {
-    return makeStyles(styles, {defaultTheme: theme});
-  }, [theme]);
-  const classes = useStyles();
-
-  const savePlan = () => {
+    enterprise.monthval = 900000;
     planService.savePlans(enterprise, advanced, performance, essentials, trial)
       .then((response) => {
         if (response.status !== 'ok') {
@@ -39,10 +40,17 @@ const UserSettings = () => {
           return;
         }
         toast.success('プラン設定を保存しました。');
+        showAlertDlg(false);
       }).catch(err => {
         toast.error('プラン設定保存に失敗しました。');
       });
   }
+
+  const theme = useTheme();
+  const useStyles = useMemo(() => {
+    return makeStyles(styles, {defaultTheme: theme});
+  }, [theme]);
+  const classes = useStyles();
 
   useEffect(() => {
     planService.getAllPlans()
@@ -97,7 +105,7 @@ const UserSettings = () => {
               {_.map(amountLabels, (itm, idx) => (
                 <TableRow key={idx}>
                   <TableCell className={classes.settingCellNoPadding} align="right">{itm}</TableCell>
-                  <TableCell className={classes.settingCellNoPadding} align="center">ask</TableCell>
+                  <TableCell className={classes.settingCellNoPadding} align="center">{`${amountFields[idx] === 'monthval' ? '900000' : 'ask'}`}</TableCell>
                   <TableCell className={classes.settingCellNoPadding}>
                     <SettingInput 
                       classes={classes} 
@@ -188,12 +196,18 @@ const UserSettings = () => {
           <Button
             className="active"
             variant={'outlined'}
-            onClick={e => savePlan()}
+            onClick={e => showAlertDlg(true)}
           >
             {Lang.btn.save}
           </Button>
         </Box>
       </Container>
+      <AlertDlg 
+        title={'注意'} 
+        caption={'ユーザープランの内容が変更されますが、本当によろしいでしょうか。'}
+        dlgState={showAlert}
+        closeDlg={closeAlertDlg}
+      />
     </Fixed>
   );
 };

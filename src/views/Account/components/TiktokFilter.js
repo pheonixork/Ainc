@@ -1,13 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import React, { useState } from 'react';
-
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useTheme} from '@mui/material/styles';
-import {FltAutocomplete, FltSingleSelect, FltMultiSelect, FltTextField, FltRangeSelect} from '../../../Common/SearchFilters';
+import {FltAutocomplete, FltSingleSelect, FltMultiSelect, FltTextField, FltRangeSelect} from '../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 
 const top100Films = [
@@ -92,22 +91,22 @@ const ages = ['13-17', '18-24', '25-34', '35-44', '45+'];
 
 const engages = ['>1%', '>2% (average)', '>3%', '>4%', '>5%', '>6%', '>7%', '>8%', '>9%', '>10%'];
 
-export default function Instagram({...rest}) {
+export default function TiktokFilter() {
   const [clearFlag, setClearFlag] = useState(false);
   const theme = useTheme();
+
   const clearFilterClicked = (e) => {
     setClearFlag(!clearFlag);
   }
 
   return (
-    <Box {...rest}>
+    <Box>
       <Box className='search-box' >
         <Typography
           variant="body1"
           style={{fontWeight: '600'}}
         >
-          インフルエンサーフィルター 
-          {/* • <span style={{fontSize:'0.8rem'}}>検察するインフルエンサーフィルターを選択</span> */}
+          インフルエンサーフィルター • <span style={{fontSize:'14px', fontWeight:'normal'}}>フォロワー数やエンゲージメント率などで絞り込み</span>
         </Typography>
 
         <Box 
@@ -142,15 +141,15 @@ export default function Instagram({...rest}) {
               toStyle={{width:'8rem', marginLeft:'10px'}}
               />
           </Box>
-          <Box>
+          <Box style={{width:'8rem'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={false} 
               values={['Male', 'Female']}
-              style={{width:'8rem'}}/>
+            />
           </Box>
-          <Box sx={{minWidth:'350px', flex:1}}>
+          <Box sx={{minWidth:'150px', flex:1}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
@@ -158,32 +157,35 @@ export default function Instagram({...rest}) {
               values={languages}
               style={{width: '100% !important'}}/>
           </Box>
-          <Box >
+          <Box sx={{minWidth: '7.7108433735rem!important', maxWidth: '11.4285714286rem!important'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.post}
               icon={false} 
               values={['30 days', '3 Months', '6 Months']}
-              style={{width:'12rem'}}/>
+              />
           </Box>
-          <Box>
+          <Box sx={{width:'11.4285714286rem!important'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.engagement}
               icon={true} 
-              values={engages}
-              style={{width:'12rem'}}/>
+              caption={Keyword.caption.engagement_tip}
+              values={engages}/>
           </Box>
-          <Box>
+          <Box sx={{minWidth: '7.7108433735rem!important', maxWidth: '11.4285714286rem!important'}}>
             <FltSingleSelect 
               clearFlag={clearFlag}
               tip={Keyword.caption.contractinfo}
               icon={false} 
               values={['Email available']}
-              style={{width:'13rem'}}/>
+              />
+          </Box>
+          <Box sx={{flex:1, minWidth:'150px !important'}}>
+            <FltTextField clearFlag={clearFlag} tip='Bio' icon={true} phstr='Any' caption={Keyword.caption.bio_tip}/>
           </Box>
           <Box sx={{width:'300px'}}>
-            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.keyword} icon={true} phstr='Any' />
+            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.keyword} icon={true} phstr='Any' caption={Keyword.caption.keyword_tip}/>
           </Box>
         </Box>
       </Box>
@@ -192,8 +194,7 @@ export default function Instagram({...rest}) {
           variant="body1"
           style={{fontWeight: '600'}}
         >
-          フォロワーフィルター
-          {/* • <span style={{fontSize:'0.8rem'}}>性別・地域など選択</span> */}
+          フォロワーフィルター • <span style={{fontSize:'14px', fontWeight:'normal'}}>フォロワーの地域や性別などから絞り込み</span>
         </Typography>
 
         <Box 
@@ -204,6 +205,7 @@ export default function Instagram({...rest}) {
               tip={Keyword.caption.audiencelocation}
               phstr='フォロワーの地域' 
               icon={true} 
+              caption={Keyword.caption.other_tip}
               values={top100Films} />
           </Box>
           <Box>
@@ -211,6 +213,7 @@ export default function Instagram({...rest}) {
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={true} 
+              caption={Keyword.caption.other_tip}
               values={['Male', 'Female']}
               style={{width:'8rem'}}/>
           </Box>
@@ -219,6 +222,7 @@ export default function Instagram({...rest}) {
               clearFlag={clearFlag}
               tip={Keyword.caption.age}
               icon={true}
+              caption={Keyword.caption.other_tip}
               values={ages}
             />
           </Box>
@@ -228,7 +232,7 @@ export default function Instagram({...rest}) {
               tip={Keyword.caption.language}
               icon={false} 
               values={languages}
-            />
+              style={{width: '100% !important'}}/>
           </Box>
         </Box>
       </Box>
@@ -237,8 +241,7 @@ export default function Instagram({...rest}) {
           variant="body1"
           style={{fontWeight: '600'}}
         >
-          ユーザーネーム
-          {/* 名前検察 • <span style={{fontSize:'0.8rem'}}>アカウント・インフルエンサー検察</span> */}
+          ユーザーネーム • <span style={{fontSize:'14px', fontWeight:'normal'}}>特定のアカウントをチェックします</span>
         </Typography>
         <Box sx={{marginTop:'10px'}}>
           <TextField 

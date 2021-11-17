@@ -1,18 +1,19 @@
 import _ from 'lodash';
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Paper, Box, Table, TableContainer, TableHead, TableBody, TableCell, TableRow} from '@mui/material';
 import RoundInfo from 'components/RoundInfo';
 
-const mockdata = [
-  {caption: 'Search Pages', en: '8000+ / month', ad: '8000 / month', pe: '5000 / month', es: '1000 / month', tr: '250'},
-  {caption: 'Profile summaries', en: '700+ / month', ad: '700 / month', pe: '500 / month', es: '200 / month', tr: '50'},
-  {caption: 'Full reports', en: '300+ / month', ad: '300 / month', pe: '100 / month', es: '50 / month', tr: '25'},
-  {caption: 'Profiles in CSV exports', en: '700+ / month', ad: '300 / month', pe: '300 / month', es: '50 / month', tr: '25'},
-  {caption: 'Contact details', en: 'ok', ad: 'ok', pe: 'ok', es: 'ok', tr: 'ok'},
-  {caption: 'API', en: 'ok', ad: '-', pe: '-', es: '-', tr: '-'},
-];
+const amountFields = ['monthval', 'yearval', 'pages', 'profies', 'reports', 'csv'];
+const amountLabels = ['金額/月', '金額/年', 'ページ検察', 'プロフィール表示', 'フルレポート', 'CSV'];
+const checkFields = ['isinsight', 'iscampaign', 'isaccount'];
+const checkLabels =  ['インサイトリスト', 'キャンペーンリスト', 'キーアカウント調査'];
 
-export default function DiscoveryTable() {
+export default function DiscoveryTable({isMonth, enterprise, advanced, performance, essentials, trial}) {
+  const formatter = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+  });
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', boxShadow: 'none !important' }}>
@@ -34,69 +35,78 @@ export default function DiscoveryTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {_.map(mockdata, (row, index) => (
-                <TableRow
-                  hover
-                  key={index}
-                >
-                  <TableCell style={{width: '300px'}}>
-                    <Box sx={{display:'flex', alignItems:'center'}}>
-                      <span>{row.caption}</span>
-                      <RoundInfo marginLeft={1} />
-                    </Box>
-                  </TableCell>
-                  <TableCell style={{width: '150px'}}>
-                    {row.en === 'ok' ? 
+              <>
+                {_.map(amountLabels, (itm, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell style={{width: '300px'}}>{itm}</TableCell>
+                    <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' ? formatter.format(900000) : 'ask'}`}</TableCell>
+                    <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(advanced, amountFields[idx])) : _.get(advanced, amountFields[idx])}`}</TableCell>
+                    <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(performance, amountFields[idx])) : _.get(performance, amountFields[idx])}`}</TableCell>
+                    <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(essentials, amountFields[idx])) : _.get(essentials, amountFields[idx])}`}</TableCell>
+                    <TableCell style={{width: '200px'}}>{_.get(trial, amountFields[idx])}</TableCell>
+                  </TableRow>
+                ))}
+                {_.map(checkLabels, (itm, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{itm}</TableCell>
+                  <TableCell>
+                    {_.get(enterprise, checkFields[idx]) === 1 && 
                       <Box
                         component={'img'}
                         src={'/images/svgs/tick.svg'}
                         marginRight={1.5}
-                      /> : 
-                      <span>{row.en}</span>
+                      />
                     }
                   </TableCell>
-                  <TableCell style={{width: '150px'}}>
-                    {row.ad === 'ok' ? 
+                  <TableCell>
+                    {_.get(advanced, checkFields[idx]) === 1 && 
                       <Box
                         component={'img'}
                         src={'/images/svgs/tick.svg'}
                         marginRight={1.5}
-                      /> : 
-                      <span>{row.ad}</span>
+                      />
                     }
                   </TableCell>
-                  <TableCell style={{width: '150px'}}>
-                    {row.pe === 'ok' ? 
+                  <TableCell>
+                    {_.get(performance, checkFields[idx]) === 1 && 
                       <Box
                         component={'img'}
                         src={'/images/svgs/tick.svg'}
                         marginRight={1.5}
-                      /> : 
-                      <span>{row.pe}</span>
+                      />
                     }
                   </TableCell>
-                  <TableCell style={{width: '150px'}}>
-                    {row.es === 'ok' ? 
+                  <TableCell>
+                    {_.get(essentials, checkFields[idx]) === 1 && 
                       <Box
                         component={'img'}
                         src={'/images/svgs/tick.svg'}
                         marginRight={1.5}
-                      /> : 
-                      <span>{row.es}</span>
+                      />
                     }
                   </TableCell>
-                  <TableCell style={{width: '200px'}}>
-                    {row.tr === 'ok' ? 
+                  <TableCell>
+                    {_.get(trial, checkFields[idx]) === 1 && 
                       <Box
                         component={'img'}
                         src={'/images/svgs/tick.svg'}
                         marginRight={1.5}
-                      /> : 
-                      <span>{row.tr}</span>
+                      />
                     }
                   </TableCell>
                 </TableRow>
-              ))}
+                ))}
+                <TableRow>
+                  <TableCell>API</TableCell>
+                  <TableCell>
+                    <Box component={'img'} src={'/images/svgs/tick.svg'} marginRight={1.5}/>
+                  </TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              </>
             </TableBody>
           </Table>
         </TableContainer>

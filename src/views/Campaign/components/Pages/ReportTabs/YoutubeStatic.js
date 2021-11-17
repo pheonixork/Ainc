@@ -2,16 +2,51 @@
 import clsx from 'clsx';
 import React, {useEffect, useRef, useState} from 'react';
 import {Skeleton, Switch, Box, Button, Typography, Paper, TextField, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {AlertDlg} from 'views/Common';
+
+const PurpleSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: '#816BF7',
+    '&:hover': {
+      backgroundColor: alpha('#816BF7', 0.8),
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: '#816BF7',
+  },
+}));
 
 export default function InstagramStatic({isLoading, getDatas, classes}) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [staticType, setStaticType] = useState(true);
+  const [showAlert, showAlertDlg] = useState(false);
+  const [alertcaption, setAlertCaption] = useState('');
 
+  const closeAlertDlg = (status) => {
+    showAlertDlg(false);
+    if (status === false) {
+      return;
+    }
+
+    setStaticType(!staticType);
+  }
+
+  const switchCustomHandle = (val) => {
+    if (staticType === false) {
+      setAlertCaption('自動に切り替えると、\r\n今まで手動で入力されたものが全て自動で取得した数字に更新されます。\r\n本当によろしいでしょうか？');
+      showAlertDlg(true);
+      return;
+    }
+
+    setAlertCaption('手動に切り替えると、\r\nレポート数値の自動反映が現時点でストップします。\r\n本当によろしいでしょうか？');
+    showAlertDlg(true);
+  }
   // const [info, setInfos] = useState({
   //   amount:100, sells:0, roas:0, mems:0, followers:0, folvalue:0,
   //   feed:{mems: 0, rich:0, richper:0, savings:0, per:0, normal:0},
@@ -42,7 +77,7 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
 
     if (staticType === true) {
       _.map(tmp, itm => {
-        amount += itm.amount ? parseInt(itm.amount) : 0;
+        // amount += itm.amount ? parseInt(itm.amount) : 0;
         sells += itm.sell ? parseInt(itm.sell) : 0;
         recycle += itm.recycle ? parseInt(itm.recycle) : 0;
         normal += itm.normal ? parseInt(itm.normal) : 0;
@@ -52,10 +87,16 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
         cvPer += (!itm.cv || !itm.recycle) ? 0 : (itm.cv / itm.recycle) * 100;
       });
 
+      amount = 0;
+      let distinctMems = Array.from(new Set(tmp.map(x => x.accountId)))
+        .map(id => {
+          amount += parseInt(tmp.find(s => s.accountId === id).amount);
+        });
+
       amountRef.current.value = amount;
       sellRef.current.value = sells;
       roasRef.current.value = amount > 0 && sells > 0 ? (sells / amount * 100).toFixed(1) : 0;
-      memsRef.current.value = mems;
+      memsRef.current.value = distinctMems.length;
       recycleRef.current.value = recycle;
       recycleVal.current.value = recyclevalue;
       normalRef.current.value = normal;
@@ -85,7 +126,7 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
         display: 'flex', position: 'absolute', right: 20, top: 50, alignItems: 'center', marginTop: '10px'}}
       >
         <Typography className={clsx("text", !staticType ? "auto-manual-caption" : "")}>手動</Typography>
-        <Switch 
+        <PurpleSwitch 
           checked={staticType}
           onChange={e=>setStaticType(e.target.checked)}
         />
@@ -211,12 +252,18 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
           <Skeleton width={120} height={40} sx={{transform:'unset'}}/>
         ) : (
           <Box>
-            <Typography className={classes.staticCaption}>平均CV率</Typography>
+            <Typography className={classes.staticCaption}>平均CV%</Typography>
             <TextField variant="standard" size="small"
               inputProps={{readOnly: staticType}} inputRef={cvPerRef}/>
           </Box>
         )}
       </Box>
+      <AlertDlg 
+        title={'注意'} 
+        caption={alertcaption}
+        dlgState={showAlert}
+        closeDlg={closeAlertDlg}
+      />
     </Paper>
   );
 };

@@ -11,6 +11,8 @@ import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
 
 export default function SearchItem({itm, cattype}) {
+  const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
+
   const [showDlg, setShow] = useState(false);
   const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
 
@@ -29,27 +31,27 @@ export default function SearchItem({itm, cattype}) {
   
   return (
     <Box 
-      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow', `${influSelectedIndex === itm.id ? 'influencer-detail-active' : ''}`)}
-      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.id);}}
+      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow', `${influSelectedIndex === itm.userId ? 'influencer-detail-active' : ''}`)}
+      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.userId);}}
       >
       <Box className='profile'>
         <RelativeImage
           isRound
-          imgSrc={itm.avatar}
+          imgSrc={itm.profile.picture}
           sx={{width: '3.125rem !important', height: '3.125rem !important', margin: '1rem'}}
         />
         <Box className='instagram'>
-          <Box>{itm.name}</Box>
-          <a className='instagram-link' href={itm.url}>@{itm.name}</a>
+          <Box>{itm.profile.fullname}</Box>
+          <a className='instagram-link' href={itm.profile.url}>@{itm.profile.username}</a>
         </Box>
       </Box>
       <Box className='followers'>
-        <Box className='first'>{evaluateValue(itm.followers)}</Box>
-        <Box  className='second'>{Keyword.caption.follower}</Box>
+        <Box className='first'>{evaluateValue(itm.profile.followers)}</Box>
+        <Box className='second'>{Keyword.caption.follower}</Box>
       </Box>
       <Box className='followers'>
         <Box className='first'>
-          {evaluateValue(itm.engage)}<span>{`(${itm.per}%)`}</span>
+          {evaluateValue(itm.profile.engagements)}<span>{`(${formatter.format(itm.profile.engagementRate * 100)}%)`}</span>
         </Box>
         <Box  className='second'>{Keyword.caption.engagement}</Box>
       </Box>
@@ -68,7 +70,7 @@ export default function SearchItem({itm, cattype}) {
             </Button>
             {showDlg === true && 
               <SaveDlg 
-                infId={itm.id}
+                infId={itm.userId}
                 catType={cattype}
                 closeDlg={closeDlg} 
               />

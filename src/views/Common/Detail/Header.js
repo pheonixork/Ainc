@@ -4,6 +4,20 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import RoundInfo from 'components/RoundInfo';
+import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import {styled} from '@mui/material/styles';
+
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(0, 0, 0, 0.8)'
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+}));
 
 const useStyles = makeStyles({
   showFront: {
@@ -63,29 +77,35 @@ const Header = ({data}) => {
         }
       </Box>
       <Box className={`wrapper-grid ${classes.gridwrapper}`}>
-        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`}>
+        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg height="16" width="18" fill="none" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.2143 15.5319C9.53055 16.1575 8.47795 16.1575 7.79422 15.5229L7.69526 15.4322C2.97207 11.1255 -0.113742 8.30573 0.00321271 4.78783C0.057192 3.24649 0.839891 1.76861 2.1084 0.8982C4.48349 -0.733813 7.41636 0.0277934 8.99975 1.89554C10.5831 0.0277934 13.516 -0.74288 15.8911 0.8982C17.1596 1.76861 17.9423 3.24649 17.9963 4.78783C18.1222 8.30573 15.0274 11.1255 10.3043 15.4503L10.2143 15.5319Z" fill="#e88585"></path>
           </svg>
           <Box className='subtitle'>9.9M</Box>
-          <span>AVG LIKES</span>
-          <RoundInfo />
+          <span>平均いいね</span>
+          <BootstrapTooltip title={'直近30投稿の平均いいね'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
-        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`}>
+        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="14" viewBox="0 0 22 14" width="22" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 6C16.66 6 17.99 4.66 17.99 3C17.99 1.34 16.66 0 15 0C13.34 0 12 1.34 12 3C12 4.66 13.34 6 15 6ZM7 6C8.66 6 9.99 4.66 9.99 3C9.99 1.34 8.66 0 7 0C5.34 0 4 1.34 4 3C4 4.66 5.34 6 7 6ZM7 8C4.67 8 0 9.17 0 11.5V13C0 13.55 0.45 14 1 14H13C13.55 14 14 13.55 14 13V11.5C14 9.17 9.33 8 7 8ZM15 8C14.71 8 14.38 8.02 14.03 8.05C14.05 8.06 14.06 8.08 14.07 8.09C15.21 8.92 16 10.03 16 11.5V13C16 13.35 15.93 13.69 15.82 14H21C21.55 14 22 13.55 22 13V11.5C22 9.17 17.33 8 15 8Z" fill="#447D91"></path>
           </svg>
           <Box className='subtitle'>383.2M</Box>
-          <span>FOLLOWERS</span>
-          <RoundInfo />
+          <span>フォロワー</span>
+          <BootstrapTooltip title={'合計フォロワー数'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
-        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`}>
+        <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="11" width="24" viewBox="0 0 24 11" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.22.24c-2-.6-4.06-.04-5.39 1.29L12 4.04l-1.52 1.34h.01L7.8 7.77c-.81.81-1.95 1.15-3.12.92A3.354 3.354 0 012.11 6.2 3.39 3.39 0 015.4 2c.91 0 1.76.35 2.44 1.03l.47.41c.38.34.95.34 1.33 0 .45-.4.45-1.1 0-1.5l-.42-.36A5.37 5.37 0 005.4 0C2.42 0 0 2.42 0 5.38s2.42 5.38 5.4 5.38c1.44 0 2.8-.56 3.77-1.53L12 6.73l.01.01 1.51-1.36h-.01l2.69-2.39c.81-.81 1.95-1.15 3.12-.92 1.25.25 2.28 1.25 2.57 2.49a3.39 3.39 0 01-3.29 4.2c-.9 0-1.76-.35-2.44-1.03l-.48-.42a.995.995 0 00-1.33 0c-.45.4-.45 1.1 0 1.5l.42.37a5.386 5.386 0 003.82 1.57c3.27 0 5.86-2.9 5.33-6.25-.3-1.99-1.77-3.69-3.7-4.26z" fill="#61339C"></path>
           </svg>
           <Box className='subtitle'>2.87%</Box>
-          <span>ENGAGEMENT RATES</span>
-          <RoundInfo />
+          <span>エンゲージメント</span>
+          <BootstrapTooltip title={'エンゲージメント率は「(いいね＋コメント)÷フォロワー」で算出しています。Instagramの平均エンゲージメント率は2%です。'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
       </Box>
     </Box>

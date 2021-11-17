@@ -91,25 +91,25 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = (type, accId) => {
+  const handleMenuClose = (type, memId, accId) => {
     switch (type) {
       case 'add':
-        updateDatas(accId, 'add', 2);
+        updateDatas(memId, 'add', 2);
         break;
       case 'del':
-        updateDatas(accId, 'del', 2);
+        updateDatas(memId, 'del', 2, accId);
         break;
       case 'cp':
-        setAccountId(accId);
+        setAccountId(memId);
         break;
       case 'save':
         let detail = {
           postAt: postAtRef.current.value, postLink: postLinkRef.current.value, 
-          shopping: shoppingRef.current.value, amount: amountRef.current.value,
+          shopping: shoppingRef.current.value, 
           inp: inpRef.current.value, click: clickRef.current.value, 
           stamp: stampRef.current.value, sell: sellRef.current.value,
         };
-        updateDatas(accId, 'update', 2, detail);
+        updateDatas(memId, 'update', 2, detail);
         break;
       default:
         break;
@@ -120,7 +120,6 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
   const postAtRef = useRef();
   const postLinkRef = useRef();
   const shoppingRef = useRef();
-  const amountRef = useRef();
   const inpRef = useRef();
   const clickRef = useRef();
   const stampRef = useRef();
@@ -155,7 +154,7 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
   }
 
   const amountValueChanged = (evt) => {
-    let amountVal = parseInt(amountRef.current.value);
+    let amountVal = parseInt(row.amount);
     let sellVal = parseInt(sellRef.current.value);
     if (isNaN(amountVal) || isNaN(sellVal))
       return;
@@ -170,7 +169,6 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
     postAtRef.current.value = row.postAt ? row.postAt : '';
     postLinkRef.current.value = row.postLink ? row.postLink : '';
     shoppingRef.current.value = row.shopping ? row.shopping : '';
-    amountRef.current.value = row.amount ? row.amount : 0;
     inpRef.current.value = row.inp ? row.inp : 0;
     clickRef.current.value = row.click ? row.click : 0;
     stampRef.current.value = row.stamp ? row.stamp : 0;
@@ -211,9 +209,7 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
-        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={amountRef } onChange={amountValueChanged} />
-        </TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{row.amount}</TableCell>
         <TableCell className={classes.feedtableCell}>{row.followers}</TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={inpRef } onChange={inpValueChanged}/>
@@ -250,7 +246,7 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
             }}
           >
             <MenuItem onClick={e=>handleMenuClose('add', row._id)}>追加</MenuItem>
-            <MenuItem onClick={e=>handleMenuClose('del', row._id)}>削除</MenuItem>
+            <MenuItem onClick={e=>handleMenuClose('del', row._id, row.accountId)}>削除</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('cp', row.accountId)}>CP</MenuItem>
             <MenuItem onClick={e=>handleMenuClose('save', row._id)}>保存</MenuItem>
           </Menu>

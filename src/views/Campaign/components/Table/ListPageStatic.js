@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, {useState, useEffect} from 'react';
-import {Box, Paper, Skeleton} from '@mui/material';
+import {Button, Box, Paper, Skeleton} from '@mui/material';
 
 const ListPageStatic = ({isloading, updatedInfos}) => {
   const [staticInfo, setStaticInfo] = useState({mems:0, oks: 0, okfols: 0, memfols: 0, imems: 0, cmems: 0, nmems:0});
@@ -32,9 +32,17 @@ const ListPageStatic = ({isloading, updatedInfos}) => {
   return (
     <Paper
       sx={{
-        padding: '10px 0'
+        padding: '10px 0',
+        position: 'relative'
       }}
     >
+      <Button 
+        className="active"
+        variant="contained"
+        sx={{position: 'absolute', right: 20, top: 20}}
+      >
+        ダウンロード
+      </Button>
       <Box className='valueItemContainer'>
         <Box className='valueItem'>
           {isloading ? (

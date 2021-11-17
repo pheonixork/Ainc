@@ -58,6 +58,17 @@ const YoutubePage = ({selCampId, isLoading, data, catType}) => {
     }
 
     if (type === 'del') { //　アカウントを削除
+      let sameMembers = 0;
+      updatedMembers.map(itm => {
+        if (itm.accountId === detail)
+          sameMembers ++;
+      });
+
+      if (sameMembers === 1) {
+        toast.error('削除できません');
+        return;
+      }
+      
       return campaignService.updateReportYoutube(selCampId, memId)
         .then((ret) => {
           if (ret.status !== 'ok') {

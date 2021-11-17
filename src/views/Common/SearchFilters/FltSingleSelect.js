@@ -2,9 +2,8 @@
 import _ from 'lodash';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import {Box, Select, MenuItem, Button} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
 import {useTheme} from '@mui/material/styles';
@@ -17,7 +16,7 @@ const MenuProps = {
   },
 };
 
-export default function FltSingleSelect({ clearFlag, tip, icon, values, ...rest }) {
+export default function FltSingleSelect({ clearFlag, tip, icon, values, caption, ...rest }) {
   const [itemValue, setItemValue] = useState('');
   const theme = useTheme();
   useEffect(()=>{
@@ -30,7 +29,7 @@ export default function FltSingleSelect({ clearFlag, tip, icon, values, ...rest 
       <Box className='search-item-wrapper'>
         <Box className='search-item-header'>
           <span>{tip}</span>
-          {icon === true && <RoundInfo marginLeft={1}/>}
+          {icon === true && <RoundInfo caption={caption} marginLeft={1} />}
         </Box>
         {itemValue !== '' && 
           <span className='clear' onClick={e=>setItemValue('')} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
@@ -73,5 +72,6 @@ FltSingleSelect.propTypes = {
   clearFlag: PropTypes.bool,
   tip: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
-  values: PropTypes.array.isRequired
+  values: PropTypes.array.isRequired,
+  caption: PropTypes.string
 };

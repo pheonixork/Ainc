@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
   let userInfo = {
     _id: temp._id.toString(),
     company: temp.company ? temp.company : '',
-    ur: temp.url ? temp.url : '',
+    url: temp.url ? temp.url : '',
     name: temp.name ? temp.name : '',
     email: temp.email ? temp.email : '',
     addr: temp.addr ? temp.addr : '',
@@ -25,6 +25,8 @@ export async function getServerSideProps(context) {
     payend: temp.payend ?? '',
     paystatus: temp.paystatus ?? 2
   };
+
+  // console.log(userInfo);
 
   let usage = {
     pagesplan: 0, pagesuse: 0, profiesplan: 0, profiesuse: 0,
@@ -51,6 +53,7 @@ export async function getServerSideProps(context) {
       paytype: itm.paytype,
       status: itm.status,
       plantype: itm.plantype,
+      memo: itm.memo ?? '',
     }
   })
 

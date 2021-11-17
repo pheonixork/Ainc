@@ -75,6 +75,8 @@ export default function PostPageTableRow({data, catType, index, handleSaveAmount
         <StatusSelect 
           initValue={data.pstatus}
           values={statusValues}
+          step={2}
+          row={data}
           updateStatus={changeStatus}
           style={{ width: '150px', marginLeft: 'auto' }}
           onClick={(e) => {e.stopPropagation()}}

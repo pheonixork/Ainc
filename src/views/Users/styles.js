@@ -47,16 +47,22 @@ const styles = theme => ({
     height: '100%'
   },
   passwordresetdlg: {
-    width: '600px',
-    height: '220px',
+    width: '450px',
+    height: 'fit-content',
     position: 'fixed',
     top: 'calc(50vh - 110px)',
-    left: 'calc(50vw - 300px)',
+    left: 'calc(50vw - 200px)',
     zIndex: '9999',
-    border: '1px solid',
+    border: '1px solid #00000089',
     padding: '2rem',
     background: '#fff',
-    boxShadow: '0px 0px 9px #00000029'
+    boxShadow: '0px 0px 9px #00000069'
+  },
+  passwordinput: {
+    display: 'grid', 
+    gridTemplateColumns: '2fr 3fr', 
+    alignItems: 'center',
+    marginTop:'1rem', 
   }
 });
 

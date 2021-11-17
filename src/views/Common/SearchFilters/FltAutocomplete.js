@@ -5,10 +5,12 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import {styled} from '@mui/material/styles';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
 import {useTheme} from '@mui/material/styles';
-export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr }) {
+
+export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, caption }) {
   const [itemValue, setItemValue] = useState({title:'', year:''});
   const theme = useTheme();
 
@@ -22,7 +24,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr })
       <Box className='search-item-wrapper'>
         <Box className='search-item-header'>
           <span>{tip}</span>
-          {icon === true && <RoundInfo marginLeft={1}/>}
+          {icon === true && <RoundInfo caption={caption} marginLeft={1} />}
         </Box>
         {itemValue && itemValue.title !== '' && 
           <span className='clear' onClick={e=>setItemValue({title:'', year:''})} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
@@ -88,5 +90,6 @@ FltAutocomplete.propTypes = {
   tip: PropTypes.string.isRequired,
   phstr: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
-  values: PropTypes.array.isRequired
+  values: PropTypes.array.isRequired,
+  caption: PropTypes.string
 };

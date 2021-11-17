@@ -12,7 +12,6 @@ const historySchema = mongoose.Schema({
   history: [{
     historydate: {
       type: String,
-      required: true,
     },
     paytype: {
       type: Number,
@@ -38,6 +37,9 @@ const historySchema = mongoose.Schema({
       type: Number,
       required: true
     },
+    memo: {
+      type: String
+    }
   }]
 },
 {

@@ -1,17 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import _ from 'lodash';
 import clsx from 'clsx';
-import NextLink from 'next/link';
-import React, {useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {Box, Typography} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import {makeStyles} from '@mui/styles'; 
 import styles from './styles';
-import DiscoveryTable from './DiscoveryTable';
-import MonitorTable from './MonitorTable';
-import RecommendTable from './RecommendTable';
 import QABrief from './QABrief';
 import PlanSelect from './PlanSelect';
+import {planService} from 'services';
 
 const Upgrade = ({...rest}) => {
   const theme = useTheme();
@@ -20,19 +17,36 @@ const Upgrade = ({...rest}) => {
   }, [theme]);
   const classes = useStyles();
 
+  const [enterprise, setEnterprise] = useState({});
+  const [advanced, setAdvanced] = useState({});
+  const [performance, setPerformance] = useState({});
+  const [essentials, setEssentials] = useState({});
+  const [trial, setTrial] = useState({});
+
+  useEffect(() => {
+    planService.getAllPlans()
+      .then((response) => {
+        if (response.status !== 'ok')
+          return;
+
+        _.map(response.plans, itm => {
+          if (itm.type === 'Enterprise')
+            setEnterprise(itm);
+          else if (itm.type === 'Advanced')
+            setAdvanced(itm);
+          else if (itm.type === 'Performance')
+            setPerformance(itm);
+          else if (itm.type === 'Essentials')
+            setEssentials(itm);
+          else if (itm.type === 'Free trial')
+            setTrial(itm);
+        })
+      });
+  }, []);
+
   return (
     <Box className="upgradeWrapper" {...rest}>
-      <PlanSelect />
-      <Box className={clsx(classes.contentWrapper, classes.smallShadow)} sx={{textAlign: 'center'}}>
-        <Typography>
-          If you're looking for something special, <NextLink href="#">book a call</NextLink> with us.
-        </Typography>
-      </Box>
-      <Box className={classes.mt30} data-aos={'fade-up'}>
-        <DiscoveryTable />
-        <MonitorTable />
-        <RecommendTable />
-      </Box>
+      <PlanSelect enterprise={enterprise} advanced={advanced} performance={performance} essentials={essentials} trial={trial} />
       <Box className={clsx(classes.mt50, classes.fontBold)} sx={{textAlign: 'center', color: '#555'}} data-aos={'fade-up'}>
         <Typography>Trusted by results-driven marketers at growth-focused companies</Typography>
       </Box>

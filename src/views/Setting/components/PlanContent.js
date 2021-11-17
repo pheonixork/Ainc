@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import {useMainContext} from 'context/MainContext';
 import {Plan, Bill, Upgrade} from './Contents';
 
-const PlanContent = ({user, selType}) => {
+const PlanContent = ({user, switchToUpgrade, selType}) => {
   const {setLoginUser} = useMainContext();
 
   useEffect(() => {
@@ -15,8 +15,8 @@ const PlanContent = ({user, selType}) => {
 
   return (
     <Box>
-      <Plan display={`${selType === 'plan' ? 'block' : 'none'}`} />
-      <Bill display={`${selType === 'bill' ? 'block' : 'none'}`} />
+      <Plan user={user} switchToUpgrade={switchToUpgrade} display={`${selType === 'plan' ? 'block' : 'none'}`} />
+      <Bill user={user} display={`${selType === 'bill' ? 'block' : 'none'}`} />
       <Upgrade display={`${selType === 'upgrade' ? 'block' : 'none'}`} />
     </Box>
   );

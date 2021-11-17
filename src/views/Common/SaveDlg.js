@@ -74,6 +74,10 @@ export default function SaveDlg({infId, catType, closeDlg}) {
   }
 
   const handleChange = (evt) => {
+    if (evt.target.checked === false) {
+      toast.error('一度チェックをいれたものは外せません');
+      return;
+    }
     let tmpStatus = {...chkStatus, [evt.target.name]:evt.target.checked};
     saveAccount(tmpStatus);
     changeStatus(tmpStatus);
@@ -88,7 +92,8 @@ export default function SaveDlg({infId, catType, closeDlg}) {
   }
 
   return (
-    <section className="saveDlg"
+    <section 
+      className="saveDlg"
       onClick={e=>e.stopPropagation()}
       >
       <Box className="up-triangle"></Box>

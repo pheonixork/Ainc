@@ -60,6 +60,12 @@ const userSchema = mongoose.Schema({
   paystatus: {
     type: Number
   },
+  loginAt: {
+    type: String
+  },
+  updateMode: {
+    type: Boolean
+  },
   perms: {
     type: String,
     required: true, 

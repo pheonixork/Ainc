@@ -2,6 +2,20 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import RoundInfo from 'components/RoundInfo';
 import RelativeImage from 'components/RelativeImage';
+import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import {styled} from '@mui/material/styles';
+
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(0, 0, 0, 0.8)'
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+}));
 
 const MostPosts = () => {
   return (
@@ -10,8 +24,10 @@ const MostPosts = () => {
               alignItems: 'center',
               paddingTop: '1rem',
               paddingBottom: '1rem'}}>
-        <span>Most Link Posts</span>
-        <RoundInfo className='mgl5' />
+        <span>人気投稿</span>
+        <BootstrapTooltip title={'最もいいねされた投稿'} placement="top">
+          <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+        </BootstrapTooltip>
       </Box>
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
         <Box className='box-wrapper-shadow grid-item nopadding'>

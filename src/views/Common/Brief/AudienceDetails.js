@@ -3,6 +3,20 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import RoundInfo from 'components/RoundInfo';
+import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import {styled} from '@mui/material/styles';
+
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(0, 0, 0, 0.8)'
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+}));
 
 const AudienceDetails = () => {
   return (
@@ -11,25 +25,29 @@ const AudienceDetails = () => {
         <svg fill="none" height="11" viewBox="0 0 15 11" width="15" xmlns="http://www.w3.org/2000/svg" >
           <path d="M5.25 5.5C6.6975 5.5 7.875 4.26643 7.875 2.75C7.875 1.23357 6.6975 0 5.25 0C3.8025 0 2.625 1.23357 2.625 2.75C2.625 4.26643 3.8025 5.5 5.25 5.5ZM5.25 1.57143C5.8725 1.57143 6.375 2.09786 6.375 2.75C6.375 3.40214 5.8725 3.92857 5.25 3.92857C4.6275 3.92857 4.125 3.40214 4.125 2.75C4.125 2.09786 4.6275 1.57143 5.25 1.57143ZM5.25 6.875C3.495 6.875 0 7.79429 0 9.625V10.2143C0 10.6464 0.3375 11 0.75 11H9.75C10.1625 11 10.5 10.6464 10.5 10.2143V9.625C10.5 7.79429 7.005 6.875 5.25 6.875ZM1.755 9.42857C2.385 8.97286 3.9075 8.44643 5.25 8.44643C6.5925 8.44643 8.115 8.97286 8.745 9.42857H1.755ZM10.53 6.92214C11.4 7.58214 12 8.46214 12 9.625V11H14.25C14.6625 11 15 10.6464 15 10.2143V9.625C15 8.03786 12.375 7.13429 10.53 6.92214ZM9.75 5.5C11.1975 5.5 12.375 4.26643 12.375 2.75C12.375 1.23357 11.1975 0 9.75 0C9.345 0 8.97 0.102143 8.625 0.275C9.0975 0.974286 9.375 1.83071 9.375 2.75C9.375 3.66929 9.0975 4.52571 8.625 5.225C8.97 5.39786 9.345 5.5 9.75 5.5Z" fill="#000"></path>
         </svg>
-        <span>Audience Details</span>&nbsp;by Followers
-        <RoundInfo className='mgl5'/>
+        <span>フォロワー分析</span>
+        <BootstrapTooltip title={'もっと詳しく知りたい場合は「フルレポート」をご覧ください'} placement="top">
+          <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+        </BootstrapTooltip>
       </Box>
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
         <Box>
-          <Box className='box-wrapper-shadow grid-item' sx={{marginBottom:'.5rem'}}>
+          <Box className='box-wrapper-shadow grid-item' sx={{marginBottom:'.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <svg fill="none" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.48 11.95c.17.02.34.05.52.05 2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4c0 .18.03.35.05.52l3.43 3.43zm2.21 2.21l5.74 5.74c.33-.17.57-.5.57-.9v-1c0-2.14-3.56-3.5-6.31-3.84zM2.12 2.42A.996.996 0 10.71 3.83L4 7.12V10H2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2.88l2.51 2.51C9.19 15.11 7 16.3 7 18v1c0 .55.45 1 1 1h8.88l3.29 3.29a.996.996 0 101.41-1.41L2.12 2.42zM6 10v-.88l.88.88H6z" fill="#FA8F38"></path>
             </svg>
             <Box className='subtitle'>23.71%</Box>
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
-              <span>FAKE FOLLOWERS</span>
-              <RoundInfo marginLeft='.5rem' />
-            </Box>
+            <span>非アクティブ率</span>
+            <BootstrapTooltip title={'フォロワーの実在率(もしくはアクティブ率)。25%を超えると危険な兆候です。'} placement="top">
+              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+            </BootstrapTooltip>
           </Box>
           <Box className='box-wrapper-shadow grid-item'>
             <Box sx={{display: 'flex'}}>
-              <Box className='subtitle1'>Gender Split</Box>  
-              <RoundInfo marginLeft='.5rem' />
+              <Box className='subtitle1'>男女比</Box>  
+              <BootstrapTooltip title={'インフルエンサーがリーチできるフォロワーの男女比'} placement="top">
+                <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+              </BootstrapTooltip>
             </Box>
             <svg viewBox="0 0 160 160" style={{width:'90px', height:'90px'}}>
               <g>
@@ -41,20 +59,22 @@ const AudienceDetails = () => {
             </svg>
             <Box sx={{display:'flex', alignItems:'center'}}>
               <Box className="ui-pie-male-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
-              <span style={{marginLeft:'.5rem'}}>Male</span>
+              <span style={{marginLeft:'.5rem'}}>男</span>
               <span style={{marginLeft:'auto'}}>70.16%</span>
             </Box>
             <Box sx={{display:'flex', alignItems:'center'}}>
               <Box className="ui-pie-female-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
-              <span style={{marginLeft:'.5rem'}}>Female</span>
+              <span style={{marginLeft:'.5rem'}}>女</span>
               <span style={{marginLeft:'auto'}}>29.84%</span>
             </Box>
           </Box>
         </Box>
         <Box className='box-wrapper-shadow grid-item'>
           <Box sx={{display: 'flex'}}>
-            <Box className='subtitle1'>Location by Country</Box>  
-            <RoundInfo marginLeft='.5rem' />
+            <Box className='subtitle1'>国</Box>  
+            <BootstrapTooltip title={'フォロワーがどこの国や都市にいるのか'} placement="top">
+              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+            </BootstrapTooltip>
           </Box>
           <Box sx={{display: 'flex', justifyContent:'space-between', marginTop:'30px'}}>
             <span>Brazil</span>
@@ -78,7 +98,7 @@ const AudienceDetails = () => {
             <Box className="ui-bar-progress" sx={{width: '9%'}}></Box>
           </Box>
           <Box sx={{display: 'flex', marginTop:'30px', marginBottom:'10px'}}>
-            <Box className='subtitle2'>Location by Top 3 Cities</Box>  
+            <Box className='subtitle2'>都市 TOP3</Box>  
           </Box>
           <Box sx={{display: 'flex'}}>
             <span>1. San paulo</span>
@@ -94,8 +114,10 @@ const AudienceDetails = () => {
 
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>Age and Gender Split</Box>  
-          <RoundInfo marginLeft='.5rem' />
+          <Box className='subtitle1'>年代別男女比</Box>  
+          <BootstrapTooltip title={'インフルエンサーがリーチできるフォロワーの年代別男女比'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
         <Box sx={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
           <Box className='bar-chat-item'>
@@ -168,8 +190,10 @@ const AudienceDetails = () => {
     
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>エンゲージメント</Box>  
-          <RoundInfo marginLeft='.5rem' />
+          <Box className='subtitle1'>ハッシュタグエンゲージメント</Box>  
+          <BootstrapTooltip title={'どのハッシュタグをつけた際の投稿がフォロワーからリアクションされているか'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
         <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
           <Box className='genre-span'>#finaollafine</Box>
@@ -185,8 +209,10 @@ const AudienceDetails = () => {
 
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>Popular # and @</Box>  
-          <RoundInfo marginLeft='.5rem' />
+          <Box className='subtitle1'>人気の#と@</Box>  
+          <BootstrapTooltip title={'投稿に頻繁に使用されている#と@'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
         <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
           <Box className='genre-span'>#finaollafine</Box>
@@ -202,8 +228,10 @@ const AudienceDetails = () => {
       
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>Lookalikes</Box>  
-          <RoundInfo marginLeft='.5rem' />
+          <Box className='subtitle1'>類似アカウント</Box>  
+          <BootstrapTooltip title={'キーワードトピックから類似アカウントを表示しています。'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -241,8 +269,10 @@ const AudienceDetails = () => {
 
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>Audience Interests</Box>  
-          <RoundInfo marginLeft='.5rem' />
+          <Box className='subtitle1'>興味</Box>  
+          <BootstrapTooltip title={'フォロワーがどんな投稿に興味をもちやすいか、独自のアルゴリズムで計測。'} placement="top">
+            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+          </BootstrapTooltip>
         </Box>
         <Box className='interest-span'>{'Friends, Family & Relationship'}</Box>
         <Box className='interest-span'>{'Sports'}</Box>

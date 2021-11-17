@@ -36,7 +36,7 @@ const Notable = () => {
     <Box className={classes.audiencelikes}>
       <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
         <svg fill="none" height="11" width="24" viewBox="0 0 24 11" xmlns="http://www.w3.org/2000/svg"><path d="M20.22.24c-2-.6-4.06-.04-5.39 1.29L12 4.04l-1.52 1.34h.01L7.8 7.77c-.81.81-1.95 1.15-3.12.92A3.354 3.354 0 012.11 6.2 3.39 3.39 0 015.4 2c.91 0 1.76.35 2.44 1.03l.47.41c.38.34.95.34 1.33 0 .45-.4.45-1.1 0-1.5l-.42-.36A5.37 5.37 0 005.4 0C2.42 0 0 2.42 0 5.38s2.42 5.38 5.4 5.38c1.44 0 2.8-.56 3.77-1.53L12 6.73l.01.01 1.51-1.36h-.01l2.69-2.39c.81-.81 1.95-1.15 3.12-.92 1.25.25 2.28 1.25 2.57 2.49a3.39 3.39 0 01-3.29 4.2c-.9 0-1.76-.35-2.44-1.03l-.48-.42a.995.995 0 00-1.33 0c-.45.4-.45 1.1 0 1.5l.42.37a5.386 5.386 0 003.82 1.57c3.27 0 5.86-2.9 5.33-6.25-.3-1.99-1.77-3.69-3.7-4.26z" fill="#61339C"></path></svg>
-        <span style={{fontWeight:'600', marginLeft: '.5rem'}}>Notable Followers</span>
+        <span style={{fontWeight:'600', marginLeft: '.5rem'}}>フォロワーの中の有名人</span>
       </Box>
       <Box className={classes.listitem}>
         <span>Influencers</span>

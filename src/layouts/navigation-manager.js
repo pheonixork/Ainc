@@ -25,8 +25,8 @@ const pages = {
       icon: '/images/svgs/record.svg'
     },
     {
-      title: Lang.nav.accademy,
-      href: '/accademy',
+      title: Lang.nav.academy,
+      href: '/academy',
       icon: '/images/svgs/trending-up.svg'
     }
   ],
@@ -43,7 +43,7 @@ const pages = {
     // },
     {
       title: Lang.nav.question,
-      href: '/manager/question',
+      href: '/question',
       icon: '/images/svgs/question.svg'
     },
     {

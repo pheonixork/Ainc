@@ -20,9 +20,9 @@ const PostPageStatic = ({isloading, getMembers}) => {
         sells ++;
       } else if (itm.pstatus === 3) { //下書き待ち
         writings ++;
-      } else if (itm.pstatus === 3) { //本投稿待ち
+      } else if (itm.pstatus === 4) { //本投稿待ち
         posts ++;
-      } else if (itm.pstatus === 3) { //インサイト待ち
+      } else if (itm.pstatus === 5) { //インサイト待ち
         insights ++;
       } else { //終了
         completes ++;

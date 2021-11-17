@@ -12,7 +12,6 @@ const usageSchema = mongoose.Schema({
   history: [{
     historydate: {
       type: String,
-      required: true,
     },
     historyend: {
       type: String,
@@ -65,6 +64,9 @@ const usageSchema = mongoose.Schema({
     csvuse: {
       type: Number
     },
+    updatemode: {
+      type: Boolean
+    }
   }]
 },
 {
