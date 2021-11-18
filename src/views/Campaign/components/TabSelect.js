@@ -6,13 +6,13 @@ import Button from '@mui/material/Button';
 import {useMainContext} from 'context/MainContext';
 
 export default function TabSelect({ curType, onSelect} ) {
-  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerId, influSelectedId} = useMainContext();
   const tabChanged = (val) => {
     if (curType === val)
       return;
 
     setInfluencerCollapsable(true);
-    setInfluencerIndex('');
+    setInfluencerId('');
 
     onSelect(val);
   };

@@ -21,10 +21,10 @@ export default function PostPageTableRow({data, catType, index, handleSaveAmount
     setShow(false);
   }
 
-  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerId, influSelectedId} = useMainContext();
   const handleSelectChanged = (index) => {
     setInfluencerCollapsable(false);
-    setInfluencerIndex(index);
+    setInfluencerId(index);
   };
 
   const changeStatus = (val) => {
@@ -39,7 +39,7 @@ export default function PostPageTableRow({data, catType, index, handleSaveAmount
 
   return (
     <TableRow
-      className={`${influSelectedIndex === index ? 'influencer-detail-active' : ''}`}
+      className={`${influSelectedId === index ? 'influencer-detail-active' : ''}`}
       hover
       onClick={() => handleSelectChanged(index)}
       tabIndex={-1}

@@ -4,7 +4,8 @@ const MainContext = createContext();
 
 export function MainContextWrapper({ children }) {
   const [isInfluCollapse, setInfluCollapse] = useState(true);
-  const [influSelectedIndex, setInfluIndex] = useState('');
+  const [influSelectedId, setInfluIndex] = useState('');
+  const [profileType, setProfileType] = useState('');
   const [userInfo, setUserInfo] = useState({id:'', role:''});
 
   const state = {
@@ -15,11 +16,14 @@ export function MainContextWrapper({ children }) {
       if (val === true)
         setInfluIndex('');
     },
-    influSelectedIndex,
-    setInfluencerIndex: (val) => {
+    influSelectedId,
+    setInfluencerId: (val) => {
       setInfluIndex(val);
     },
-
+    profileType,
+    setSelectedProfileType: (val) => {
+      setProfileType(val);
+    },
     /* Login user info */
     userInfo,
     setLoginUser: (val) => {

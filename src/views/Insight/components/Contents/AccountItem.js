@@ -22,13 +22,13 @@ export default function AccountItem({itm}) {
     setAccountId(data._id);
   }
 
-  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerId, influSelectedId} = useMainContext();
   const itemRowClicked = (e) => {
     if (selId !== '')
       return;
       
     setInfluencerCollapsable(false); 
-    setInfluencerIndex(data.infId);
+    setInfluencerId(data.infId);
   }
 
   const evaluateValue = (val) => {
@@ -42,7 +42,7 @@ export default function AccountItem({itm}) {
 
   return (
     <Box 
-      className={clsx('research-content-item', 'research-content-insight-grid', 'box-wrapper-shadow', `${influSelectedIndex === data.infId ? 'influencer-detail-active' : ''}`)}
+      className={clsx('research-content-item', 'research-content-insight-grid', 'box-wrapper-shadow', `${influSelectedId === data.infId ? 'influencer-detail-active' : ''}`)}
       onClick={itemRowClicked}
       >
       <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>

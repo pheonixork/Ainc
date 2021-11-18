@@ -9,6 +9,7 @@ export const modashService = {
   getInstagramAccounts,
   getYoutubeAccounts,
   getTiktokAccounts,
+  getProfileOverview,
 };
 
 function getInstagramAccounts(page, sort, filter) {
@@ -39,4 +40,8 @@ function getTiktokAccounts(page, sort, filter) {
       
     }
   });
+}
+
+function getProfileOverview(userId, type) {
+  return apiWrapper.get(`${baseUrl}/${type}/profile/${userId}/overview`);
 }

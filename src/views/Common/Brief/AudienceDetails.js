@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Box from '@mui/material/Box';
@@ -18,7 +19,34 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const AudienceDetails = () => {
+const AudienceDetails = ({data}) => {
+  const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
+  const evaluateValue = (val) => {
+    if (val > 1000 * 1000)
+      return (val / (1000 * 1000)).toFixed(1) + 'M'
+    else if (val > 1000)
+      return (val / 1000).toFixed(1) + 'K'
+
+    return val
+  }
+
+  const getMaleOrFemale = (isMale) => {
+    if (!data.genders || data.genders.length !== 2)
+      return 0;
+
+    if (data.genders[0].code === 'MALE') {
+      if (isMale)
+        return data.genders[0].weight;
+      else
+        return data.genders[1].weight;
+    } else {
+      if (isMale)
+        return data.genders[1].weight;
+      else
+        return data.genders[0].weight;
+    }
+  }
+
   return (
     <Box className='audiencedetails'>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -36,7 +64,7 @@ const AudienceDetails = () => {
             <svg fill="none" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.48 11.95c.17.02.34.05.52.05 2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4c0 .18.03.35.05.52l3.43 3.43zm2.21 2.21l5.74 5.74c.33-.17.57-.5.57-.9v-1c0-2.14-3.56-3.5-6.31-3.84zM2.12 2.42A.996.996 0 10.71 3.83L4 7.12V10H2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2.88l2.51 2.51C9.19 15.11 7 16.3 7 18v1c0 .55.45 1 1 1h8.88l3.29 3.29a.996.996 0 101.41-1.41L2.12 2.42zM6 10v-.88l.88.88H6z" fill="#FA8F38"></path>
             </svg>
-            <Box className='subtitle'>23.71%</Box>
+            <Box className='subtitle'>{`${formatter.format((1 - data.credibility) * 100)}%`}</Box>
             <span>非アクティブ率</span>
             <BootstrapTooltip title={'フォロワーの実在率(もしくはアクティブ率)。25%を超えると危険な兆候です。'} placement="top">
               <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
@@ -51,21 +79,21 @@ const AudienceDetails = () => {
             </Box>
             <svg viewBox="0 0 160 160" style={{width:'90px', height:'90px'}}>
               <g>
-                <circle className="ui-pie-male" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="112.50131257099349" transform="rotate(-90, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-male" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset={`${getMaleOrFemale(false) * 365}`} transform="rotate(-90, 80, 80)" fill="transparent"></circle>
               </g>
               <g>
-                <circle className="ui-pie-female" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset="264.48980585978165" transform="rotate(162.56916, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-female" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset={`${getMaleOrFemale(true) * 365}`} transform="rotate(162.56916, 80, 80)" fill="transparent"></circle>
               </g>
             </svg>
             <Box sx={{display:'flex', alignItems:'center'}}>
               <Box className="ui-pie-male-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
               <span style={{marginLeft:'.5rem'}}>男</span>
-              <span style={{marginLeft:'auto'}}>70.16%</span>
+              <span style={{marginLeft:'auto'}}>{`${formatter.format(getMaleOrFemale(true) * 100)}%`}</span>
             </Box>
             <Box sx={{display:'flex', alignItems:'center'}}>
               <Box className="ui-pie-female-bk" sx={{width:'8px', height:'8px', borderRadius:'50%'}}></Box>
               <span style={{marginLeft:'.5rem'}}>女</span>
-              <span style={{marginLeft:'auto'}}>29.84%</span>
+              <span style={{marginLeft:'auto'}}>{`${formatter.format(getMaleOrFemale(false) * 100)}%`}</span>
             </Box>
           </Box>
         </Box>
@@ -76,39 +104,27 @@ const AudienceDetails = () => {
               <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
             </BootstrapTooltip>
           </Box>
-          <Box sx={{display: 'flex', justifyContent:'space-between', marginTop:'30px'}}>
-            <span>Brazil</span>
-            <span>11.91%</span>
-          </Box>
-          <Box className="ui-bar-comp">
-            <Box className="ui-bar-progress" sx={{width: '12%'}}></Box>
-          </Box>
-          <Box sx={{display: 'flex', justifyContent:'space-between'}}>
-            <span>Indonesia</span>
-            <span>9.44%</span>
-          </Box>
-          <Box className="ui-bar-comp">
-            <Box className="ui-bar-progress" sx={{width: '9.5%'}}></Box>
-          </Box>
-          <Box sx={{display: 'flex', justifyContent:'space-between'}}>
-            <span>India</span>
-            <span>8.89%</span>
-          </Box>
-          <Box className="ui-bar-comp">
-            <Box className="ui-bar-progress" sx={{width: '9%'}}></Box>
-          </Box>
+          <Box sx={{marginTop:'30px'}} />
+          {_.map(data.geoCountries, (country, idx) => {
+            <Box key={idx}>
+              <Box sx={{display: 'flex', justifyContent:'space-between'}}>
+                <span>{country.name}</span>
+                <span>{`${formatter.format(country.weight * 100)}%`}</span>
+              </Box>
+              <Box className="ui-bar-comp">
+                <Box className="ui-bar-progress" sx={{width: `${country.weight * 100}%`}}></Box>
+              </Box>  
+            </Box>
+          })}
           <Box sx={{display: 'flex', marginTop:'30px', marginBottom:'10px'}}>
             <Box className='subtitle2'>都市 TOP3</Box>  
           </Box>
-          <Box sx={{display: 'flex'}}>
-            <span>1. San paulo</span>
-          </Box>
-          <Box sx={{display: 'flex'}}>
-            <span>2. Jakarta</span>
-          </Box>
-          <Box sx={{display: 'flex'}}>
-            <span>3. Rio De Janeiro</span>
-          </Box>
+          {_.map(data.getCities, (city, idx) => {
+            i < 3 && 
+            <Box sx={{display: 'flex'}}>
+              <span>{`${idx + 1}. ${idx.name}`}</span>
+            </Box>
+          })}
         </Box>
       </Box>
 
@@ -120,74 +136,23 @@ const AudienceDetails = () => {
           </BootstrapTooltip>
         </Box>
         <Box sx={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
-          <Box className='bar-chat-item'>
-            <Box sx={{display:'flex'}}>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle first" sx={{height: '2.54%'}}></Box>
-                <Box className="bar-candle-caption"> 2.54% </Box>
+          {_.map(data.gendersPerAge, (itm, idx) => {
+            <Box className='bar-chat-item' key={idx}>
+              <Box sx={{display:'flex'}}>
+                <Box className='bar-chat-candle'>
+                  <Box className="bar-candle first" sx={{height: `${itm.male * 100}%`}}></Box>
+                  <Box className="bar-candle-caption">{`${formatter.format(itm.male * 100)}%`}</Box>
+                </Box>
+                <Box className='bar-chat-candle'>
+                  <Box className="bar-candle second" sx={{height: `${itm.female * 100}%`}}></Box>
+                  <Box className="bar-candle-caption">{`${formatter.format(itm.female * 100)}%`}</Box>
+                </Box>
               </Box>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle second" sx={{height: '4.3%'}}></Box>
-                <Box className="bar-candle-caption"> 4.3% </Box>
-              </Box>
+              <Box>{itm.code}</Box>
             </Box>
-            <Box>13-17</Box>
-          </Box>
-          <Box className='bar-chat-item'>
-            <Box sx={{display:'flex'}}>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle first" sx={{height: '13%'}}></Box>
-                <Box className="bar-candle-caption"> 12.66% </Box>
-              </Box>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle second" sx={{height: '28%'}}></Box>
-                <Box className="bar-candle-caption"> 27.89% </Box>
-              </Box>
-            </Box>
-            <Box>18-24</Box>
-          </Box>
-          <Box className='bar-chat-item'>
-            <Box sx={{display:'flex'}}>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle first" sx={{height: '13%'}}></Box>
-                <Box className="bar-candle-caption"> 12.66% </Box>
-              </Box>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle second" sx={{height: '28%'}}></Box>
-                <Box className="bar-candle-caption"> 27.89% </Box>
-              </Box>
-            </Box>
-            <Box>25-34</Box>
-          </Box>
-          <Box className='bar-chat-item'>
-            <Box sx={{display:'flex'}}>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle first" sx={{height: '13%'}}></Box>
-                <Box className="bar-candle-caption"> 12.66% </Box>
-              </Box>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle second" sx={{height: '28%'}}></Box>
-                <Box className="bar-candle-caption"> 27.89% </Box>
-              </Box>
-            </Box>
-            <Box>35-44</Box>
-          </Box>
-          <Box className='bar-chat-item'>
-            <Box sx={{display:'flex'}}>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle first" sx={{height: '13%'}}></Box>
-                <Box className="bar-candle-caption"> 12.66% </Box>
-              </Box>
-              <Box className='bar-chat-candle'>
-                <Box className="bar-candle second" sx={{height: '28%'}}></Box>
-                <Box className="bar-candle-caption"> 27.89% </Box>
-              </Box>
-            </Box>
-            <Box>45-64</Box>
-          </Box>
+          })}
         </Box>
       </Box>
-    
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>ハッシュタグエンゲージメント</Box>  
@@ -206,7 +171,6 @@ const AudienceDetails = () => {
           <Box className='genre-span'>#gerginoago</Box>
         </Box>  
       </Box>
-
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>人気の#と@</Box>  
@@ -215,58 +179,58 @@ const AudienceDetails = () => {
           </BootstrapTooltip>
         </Box>
         <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-          <Box className='genre-span'>#finaollafine</Box>
-          <Box className='genre-span'>#vamoscomtudo</Box>
-          <Box className='genre-span'>#forzajvue</Box>
-          <Box className='genre-span'>#c7eyewear</Box>
-          <Box className='genre-span'>#clearman</Box>
-          <Box className='genre-span'>#portugual</Box>
-          <Box className='genre-span'>#nikefootball</Box>
-          <Box className='genre-span'>#gerginoago</Box>
+          {_.map(data.brandAffinity, (itm, idx) => {
+            <Box 
+              key={idx}
+              className='genre-span'
+            >
+              {`#${itm.name}`}
+            </Box>  
+          })}
         </Box>
       </Box>
-      
-      <Box className='wrapper-box box-wrapper-shadow'>
-        <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>類似アカウント</Box>  
-          <BootstrapTooltip title={'キーワードトピックから類似アカウントを表示しています。'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
-        </Box>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Box
-              className='mgr5'
-              component={LazyLoadImage}
-              effect="blur"
-              src={'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2V5KPwPXcA2WyNRhPMoCHKMdtKG3eSEc5JQ8TgTu0NynllFlelISOb%2Blsdn%2FFsiegkW4xzvOq4WKYeHoY1KFSvw%3D%3D'}
-              width={'18px'}
-              height={'18px'}
-              sx={{borderRadius:'50%', marginTop:'.5rem'}}
-            />
-            <Box 
-              className="influencer-header-name"
-              component="a"
-              href="https://www.instagram.com/alxsndro12"
-            >
-              @alxsndro12
+      {/*
+        <Box className='wrapper-box box-wrapper-shadow'>
+          <Box sx={{display: 'flex'}}>
+            <Box className='subtitle1'>類似アカウント</Box>  
+            <BootstrapTooltip title={'キーワードトピックから類似アカウントを表示しています。'} placement="top">
+              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
+            </BootstrapTooltip>
+          </Box>
+          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+              <Box
+                className='mgr5'
+                component={LazyLoadImage}
+                effect="blur"
+                src={'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2V5KPwPXcA2WyNRhPMoCHKMdtKG3eSEc5JQ8TgTu0NynllFlelISOb%2Blsdn%2FFsiegkW4xzvOq4WKYeHoY1KFSvw%3D%3D'}
+                width={'18px'}
+                height={'18px'}
+                sx={{borderRadius:'50%', marginTop:'.5rem'}}
+              />
+              <Box 
+                className="influencer-header-name"
+                component="a"
+                href="https://www.instagram.com/alxsndro12"
+              >
+                @alxsndro12
+              </Box>
+            </Box>
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+              <Button variant={'outlined'} className='alike-btn'>
+                <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
+                  <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
+                </svg>
+              </Button>
+              <Button variant={'outlined'} className='alike-btn' sx={{marginLeft:'.5rem'}}>
+                <svg fill="none" height="16" width="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.5 11h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34A6.505 6.505 0 00.05 7.32c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L12.5 11zm-6 0C4.01 11 2 8.99 2 6.5S4.01 2 6.5 2 11 4.01 11 6.5 8.99 11 6.5 11z"></path>
+                </svg>
+              </Button>
             </Box>
           </Box>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button variant={'outlined'} className='alike-btn'>
-              <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
-                <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
-              </svg>
-            </Button>
-            <Button variant={'outlined'} className='alike-btn' sx={{marginLeft:'.5rem'}}>
-              <svg fill="none" height="16" width="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.5 11h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34A6.505 6.505 0 00.05 7.32c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L12.5 11zm-6 0C4.01 11 2 8.99 2 6.5S4.01 2 6.5 2 11 4.01 11 6.5 8.99 11 6.5 11z"></path>
-              </svg>
-            </Button>
-          </Box>
         </Box>
-      </Box>
-
+      */}
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>興味</Box>  
@@ -274,11 +238,14 @@ const AudienceDetails = () => {
             <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
           </BootstrapTooltip>
         </Box>
-        <Box className='interest-span'>{'Friends, Family & Relationship'}</Box>
-        <Box className='interest-span'>{'Sports'}</Box>
-        <Box className='interest-span'>{'Clothes, Shoes, Handbags'}</Box>
-        <Box className='interest-span'>{'Travel, Tourism & Aviation'}</Box>
-        <Box className='interest-span'>{'Camera & Photography'}</Box>
+        {_.map(data.interests, (itm, idx) => {
+          <Box 
+            key={idx}
+            className='interest-span'
+          >
+            {`${itm.name}`}
+          </Box>  
+        })}
       </Box>
     </Box>
   );

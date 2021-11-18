@@ -9,7 +9,7 @@ import RelativeImage from 'components/RelativeImage';
 
 export default function SearchItem({itm, idx}) {
   const [showDlg, setShow] = useState(false);
-  const { setInfluencerCollapsable, setInfluencerIndex } = useMainContext();
+  const { setInfluencerCollapsable, setInfluencerId } = useMainContext();
 
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
@@ -27,7 +27,7 @@ export default function SearchItem({itm, idx}) {
   return (
     <Box 
       className='research-content-item research-content-account-grid box-wrapper-shadow'
-      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(idx);}}
+      onClick={e=>{setInfluencerCollapsable(false); setInfluencerId(idx);}}
       >
       <Box className='profile'>
         <RelativeImage

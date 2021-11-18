@@ -11,6 +11,7 @@ import TiktokFilter from './TiktokFilter';
 import Constants from 'constants/constants';
 import Keyword from 'constants/lang';
 import {modashService} from 'services';
+import toast from 'react-hot-toast';
 
 export default function Tiktok({selected, ...rest}) {
   const [isLoading, setLoading] = useState(false);
@@ -57,6 +58,9 @@ export default function Tiktok({selected, ...rest}) {
       else
         setAccounts([...accounts, ...response.lookalikes]);
       setLoading(false);
+    }).catch(msg => {
+      setLoading(false);
+      toast.error(msg);
     });
   }
 

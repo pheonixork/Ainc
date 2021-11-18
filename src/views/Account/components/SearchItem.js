@@ -14,7 +14,7 @@ export default function SearchItem({itm, cattype}) {
   const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
 
   const [showDlg, setShow] = useState(false);
-  const {setInfluencerCollapsable, setInfluencerIndex, influSelectedIndex} = useMainContext();
+  const {setInfluencerCollapsable, setInfluencerId, influSelectedId, setSelectedProfileType} = useMainContext();
 
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
@@ -31,8 +31,8 @@ export default function SearchItem({itm, cattype}) {
   
   return (
     <Box 
-      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow', `${influSelectedIndex === itm.userId ? 'influencer-detail-active' : ''}`)}
-      onClick={e=>{setInfluencerCollapsable(false); setInfluencerIndex(itm.userId);}}
+      className={clsx('research-content-item', 'research-content-account-grid', 'box-wrapper-shadow', `${influSelectedId === itm.userId ? 'influencer-detail-active' : ''}`)}
+      onClick={e=>{setInfluencerCollapsable(false); setSelectedProfileType(cattype); setInfluencerId(itm.userId);}}
       >
       <Box className='profile'>
         <RelativeImage

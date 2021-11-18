@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import RoundInfo from 'components/RoundInfo';
 import RelativeImage from 'components/RelativeImage';
+import Constants from 'constants/constants';
 
 const useStyles = makeStyles({
   lazyBorderRound: {
@@ -13,17 +14,17 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({data, handleOpen}) => {
+const Header = ({data, type, handleOpen}) => {
   const classes = useStyles();
   return (
     <Box className='header'>
       <RelativeImage
         isRound
-        imgSrc={data.avatar}
+        imgSrc={data.picture}
         sx={{width: '150px !important', height: '150px !important'}}
       />
       <Box className='mgt10'>
-        <span style={{fontSize:'20px', fontWeight:600}}>{data.name ?? data.name}</span>
+        <span style={{fontSize:'20px', fontWeight:600}}>{data.fullname}</span>
       </Box>
       <Box className='mgt10' sx={{display:'flex', alignItems:'center'}} >
         <svg height="10" width="14" fill="none" viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg">
@@ -32,8 +33,8 @@ const Header = ({data, handleOpen}) => {
         <span className='mgl5'>Contact info available (CSV export)</span>
         <RoundInfo className='mgl5' />
       </Box>
-      {data.instagram && 
-        <a href={data.instagram} rel="noopener noreferrer" target="_blank">
+      {type === Constants.snsInstagram && 
+        <a href={data.url} rel="noopener noreferrer" target="_blank">
           <Box
             className='mgt10'
             component={LazyLoadImage}
@@ -42,11 +43,11 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span className="influencer-header-name">@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.username}</span>
         </a>
       }
-      {data.youtube && 
-        <a href={data.youtube} rel="noopener noreferrer" target="_blank">
+      {type === Constants.snsYoutube && 
+        <a href={data.url} rel="noopener noreferrer" target="_blank">
           <Box
             className='mgr5'
             component={LazyLoadImage}
@@ -55,11 +56,11 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span className="influencer-header-name">@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.username}</span>
         </a>
       }
-      {data.tiktok && 
-        <a href={data.tiktok} rel="noopener noreferrer" target="_blank">
+      {type === Constants.snsTiktok && 
+        <a href={data.url} rel="noopener noreferrer" target="_blank">
           <Box
             className='mgr5'
             component={LazyLoadImage}
@@ -68,7 +69,7 @@ const Header = ({data, handleOpen}) => {
             width={'12px'}
             height={'15px'}
           />
-          <span className="influencer-header-name">@{data.name ?? data.name}</span>
+          <span className="influencer-header-name">@{data.username}</span>
         </a>
       }
       <Button 
