@@ -33,7 +33,7 @@ const campaignSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    email: {
+    avatar: {
       type: String,
       default: "",
     },

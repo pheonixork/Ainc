@@ -147,7 +147,7 @@ async function updateInfluencer(userId, id, star, memo) {
   return true;
 }
 
-async function saveInfluencer(userId, infId, infName, catType, categories) {
+async function saveInfluencer(userId, infId, info, catType, categories) {
   let oldInflu = await Influencers.findOne({userId: toObjectId(userId), infId: infId, type: catType});
   let differs = categories;
 
@@ -173,7 +173,11 @@ async function saveInfluencer(userId, infId, infName, catType, categories) {
       oldInflu =  await Influencers.create({
         userId: toObjectId(userId),
         infId: infId,
-        name: infName,
+        name: info.profile.fullname,
+        link: info.profile.url,
+        followers: info.profile.followers,
+        engage: info.profile.engagement,
+        avatar: info.profile.picture,
         type: catType,
         campaigns: _.map(categories, itm => {
           return toObjectId(itm);
@@ -185,7 +189,17 @@ async function saveInfluencer(userId, infId, infName, catType, categories) {
     for (let cmp in differs) {
       await Campaign.updateOne(
         {_id: toObjectId(differs[cmp])},
-        {$addToSet: {members: {accountId: oldInflu._id, infId: infId, name: infName}}}
+        {$addToSet: {
+          members: {
+            accountId: oldInflu._id, 
+            infId: infId, 
+            name: oldInflu.name,
+            link: oldInflu.link,
+            followers: oldInflu.followers,
+            engage: oldInflu.engage,
+            avatar: oldInflu.avatar
+          }}
+        }
       );
     }
 

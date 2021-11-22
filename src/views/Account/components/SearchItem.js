@@ -11,7 +11,7 @@ import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
 
 export default function SearchItem({itm, cattype}) {
-  const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
 
   const [showDlg, setShow] = useState(false);
   const {setInfluencerCollapsable, setInfluencerId, influSelectedId, setSelectedProfileType} = useMainContext();
@@ -71,6 +71,7 @@ export default function SearchItem({itm, cattype}) {
             {showDlg === true && 
               <SaveDlg 
                 infId={itm.userId}
+                info={itm}
                 catType={cattype}
                 closeDlg={closeDlg} 
               />

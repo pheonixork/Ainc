@@ -23,9 +23,8 @@ function updateAccount(id, star, memo) {
   return fetchWrapper.post(`${baseUrl}/update`, {id, star, memo});
 }
 
-function updateAmongCampiangs(id, cattype, categories) {
-  let infname = id;
-  return fetchWrapper.post(`${baseUrl}/save`, {id, infname, cattype, categories})
+function updateAmongCampiangs(id, info, cattype, categories) {
+  return fetchWrapper.post(`${baseUrl}/save`, {id, info, cattype, categories})
     .then(response => {
       return response;
     });

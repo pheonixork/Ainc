@@ -10,7 +10,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import {accountService} from 'services';
 import Lang from 'constants/lang';
 
-export default function SaveDlg({infId, catType, closeDlg}) {
+export default function SaveDlg({infId, info, catType, closeDlg}) {
   const [chkStatus, changeStatus] = useState({});
   const [campaigns, setChampaigns] = useState([]);
   const [isLoading, changeLoading] = useState(true);
@@ -61,7 +61,7 @@ export default function SaveDlg({infId, catType, closeDlg}) {
       return;
     }
 
-    accountService.updateAmongCampiangs(infId, catType, categories)
+    accountService.updateAmongCampiangs(infId, info, catType, categories)
       .then((response) => {
         if (response.status !== 'ok') {
           toast.error(response.msg);
@@ -146,10 +146,4 @@ export default function SaveDlg({infId, catType, closeDlg}) {
       </Box>
     </section>
   );
-};
-
-SaveDlg.propTypes = {
-  infId: PropTypes.string.isRequired,
-  catType: PropTypes.string.isRequired,
-  closeDlg: PropTypes.func,
 };

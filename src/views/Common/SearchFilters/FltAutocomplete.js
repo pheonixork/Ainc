@@ -11,12 +11,12 @@ import Keyword from 'constants/lang';
 import {useTheme} from '@mui/material/styles';
 
 export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, caption }) {
-  const [itemValue, setItemValue] = useState({title:'', year:''});
+  const [itemValue, setItemValue] = useState({title:'', id:''});
   const theme = useTheme();
 
   useEffect(()=>{
     if (clearFlag === true || clearFlag === false)
-      setItemValue({title:'', year:''});
+      setItemValue({title:'', id:''});
   }, [clearFlag]);
 
   return (
@@ -27,7 +27,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
           {icon === true && <RoundInfo caption={caption} marginLeft={1} />}
         </Box>
         {itemValue && itemValue.title !== '' && 
-          <span className='clear' onClick={e=>setItemValue({title:'', year:''})} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
+          <span className='clear' onClick={e=>setItemValue({title:'', id:''})} style={{color:theme.palette.clrVariables.cyanLight}}>{Keyword.caption.clear}</span>
         }
       </Box>
       <Autocomplete

@@ -19,7 +19,7 @@ const BootstrapTooltip = styled(({className, ...props }) => (
 }));
 
 const LastUpdates = ({data, stats}) => {
-  const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
       return (val / (1000 * 1000)).toFixed(1) + 'M'
@@ -44,16 +44,14 @@ const LastUpdates = ({data, stats}) => {
         </Button>
       </Box>
       */}
-      <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
+      <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr 1fr'}}>
         <Box className='box-wrapper-shadow grid-item' sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg height="16" width="18" fill="none" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.2143 15.5319C9.53055 16.1575 8.47795 16.1575 7.79422 15.5229L7.69526 15.4322C2.97207 11.1255 -0.113742 8.30573 0.00321271 4.78783C0.057192 3.24649 0.839891 1.76861 2.1084 0.8982C4.48349 -0.733813 7.41636 0.0277934 8.99975 1.89554C10.5831 0.0277934 13.516 -0.74288 15.8911 0.8982C17.1596 1.76861 17.9423 3.24649 17.9963 4.78783C18.1222 8.30573 15.0274 11.1255 10.3043 15.4503L10.2143 15.5319Z" fill="#e88585"></path>
           </svg>
-          <Box className='subtitle'>{evaluateValue(stats.avgLikes.value)}</Box>
+          <Box className='subtitle'>{stats ? evaluateValue(stats.avgLikes.value) : 0}</Box>
           <span>平均いいね</span>
-          <BootstrapTooltip title={'直近30投稿の平均いいね'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'直近30投稿の平均いいね'} />
         </Box>
         <Box className='box-wrapper-shadow grid-item' sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="14" viewBox="0 0 22 14" width="22" xmlns="http://www.w3.org/2000/svg">
@@ -61,9 +59,7 @@ const LastUpdates = ({data, stats}) => {
           </svg>
           <Box className='subtitle'>{evaluateValue(data.followers)}</Box>
           <span>フォロワー</span>
-          <BootstrapTooltip title={'合計フォロワー数'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'合計フォロワー数'} />
         </Box>
         <Box className='box-wrapper-shadow grid-item' sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="11" width="24" viewBox="0 0 24 11" xmlns="http://www.w3.org/2000/svg">
@@ -71,9 +67,7 @@ const LastUpdates = ({data, stats}) => {
           </svg>
           <Box className='subtitle'>{`${formatter.format(data.engagementRate * 100)}%`}</Box>
           <span>エンゲージメント</span>
-          <BootstrapTooltip title={'エンゲージメント率は「(いいね＋コメント)÷フォロワー」で算出しています。Instagramの平均エンゲージメント率は2%です。'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'エンゲージメント率は「(いいね＋コメント)÷フォロワー」で算出しています。Instagramの平均エンゲージメント率は2%です。'} />
         </Box>
         {/*
           <Box className='box-wrapper-shadow grid-item' sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

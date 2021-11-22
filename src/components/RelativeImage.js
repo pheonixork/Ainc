@@ -11,9 +11,10 @@ const useStyles = makeStyles({
     width: '100%',
     '& div': {
       position: 'unset !important',
+      height: '100%'
     },
     '& .image': {
-      objectFit: 'contain',
+      objectFit: 'cover',
       width: '100% !important',
       position: 'relative !important',
       height: 'unset !important'

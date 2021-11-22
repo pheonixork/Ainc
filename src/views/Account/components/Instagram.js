@@ -13,7 +13,7 @@ import Keyword from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
 
-export default function Instagram({selected, ...rest}) {
+export default function Instagram({selected, interests, languages, locations, ...rest}) {
   const [isLoading, setLoading] = useState(false);
   const [curpage, setPageNum] = useState(0);
 
@@ -37,7 +37,7 @@ export default function Instagram({selected, ...rest}) {
       return;
 
     if (accounts.length === 0) {
-      loadFromServer(0, sortOrder, setSortDirection);
+      loadFromServer(0, sortOrder, sortDirection);
     }
   }, [selected]);
 
@@ -45,18 +45,21 @@ export default function Instagram({selected, ...rest}) {
     setLoading(true);
     setPageNum(pageNum);
 
-    return modashService.getInstagramAccounts(
+    return modashService.getAccounts(
+      Constants.snsInstagram,
       pageNum, 
       {field: sortField, direction: sortDir},
       ''
     ).then((response) => {
-      if (response.error !== false) 
+      if (response.status !== 'ok' || response.data.error !== false)
         return;
 
+      const data = response.data;
+
       if (pageNum === 0)
-        setAccounts([...response.lookalikes]);
+        setAccounts([...data.lookalikes]);
       else
-        setAccounts([...accounts, ...response.lookalikes]);
+        setAccounts([...accounts, ...data.lookalikes]);
       setLoading(false);
     }).catch(msg => {
       setLoading(false);
@@ -66,7 +69,10 @@ export default function Instagram({selected, ...rest}) {
 
   return (
     <Box {...rest}>
-      <InstagramFilter />
+      <InstagramFilter interests={interests}
+            languages={languages}
+            locations={locations}
+            />
       <Box marginTop={2} data-aos={'fade-up'}>
         <Box className='research-content' sx={{marginTop: '32px !important'}}>
           <Box className='research-content-header research-content-account-grid'>

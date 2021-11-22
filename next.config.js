@@ -4,7 +4,7 @@ module.exports = {
     cookie: 'AINC SESSION INFO COOKIE',
   },
   publicRuntimeConfig: {
-    modashToken: 'qx6xwyrDM9BAuMiFZUMbkRaCdsHNGe9O',
+    modashToken: 'ntyzuATzu3P9fpsF4b93tHQwI0SR4HVZ',
     modashUrl: 'https://api.modash.io/v1',
     managerUrl: '/account/research',
     adminUrl: '/users/create',
@@ -13,6 +13,6 @@ module.exports = {
       : 'http://localhost:3000/api' // production api
   },
   images: {
-    domains: ['assets.maccarianagency.com', 'imgigp.modash.io', 'yt3.ggpht.com', 'p16-amd-va.tiktokcdn.com'],
+    domains: ['i.ytimg.com', 'assets.maccarianagency.com', 'imgigp.modash.io', 'yt3.ggpht.com', 'p16-amd-va.tiktokcdn.com'],
   }
 }

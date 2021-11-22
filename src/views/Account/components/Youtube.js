@@ -13,7 +13,7 @@ import Keyword from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
 
-export default function Youtube({selected, ...rest}) {
+export default function Youtube({selected, interests, languages, locations, ...rest}) {
   const [isLoading, setLoading] = useState(false);
   const [curpage, setPageNum] = useState(0);
 
@@ -45,18 +45,21 @@ export default function Youtube({selected, ...rest}) {
     setLoading(true);
     setPageNum(pageNum);
 
-    return modashService.getYoutubeAccounts(
+    return modashService.getAccounts(
+      Constants.snsYoutube,
       pageNum, 
       {field: sortField, direction: sortDir},
       ''
     ).then((response) => {
-      if (response.error !== false) 
+      if (response.status !== 'ok' || response.data.error !== false)
         return;
-
+        
+      const data = response.data;
+      
       if (pageNum === 0)
-        setAccounts([...response.lookalikes]);
+        setAccounts([...data.lookalikes]);
       else
-        setAccounts([...accounts, ...response.lookalikes]);
+        setAccounts([...accounts, ...data.lookalikes]);
       setLoading(false);
     }).catch(msg => {
       setLoading(false);
@@ -66,7 +69,10 @@ export default function Youtube({selected, ...rest}) {
 
   return (
     <Box {...rest}>
-      <YoutubeFilter />
+      <YoutubeFilter interests={interests}
+            languages={languages}
+            locations={locations}
+            />
       <Box marginTop={2} data-aos={'fade-up'}>
         <Box className='research-content' sx={{marginTop: '32px !important'}}>
           <Box className='research-content-header research-content-account-grid'>

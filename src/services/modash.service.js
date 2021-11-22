@@ -1,47 +1,41 @@
 import moment from 'moment';
 import getConfig from 'next/config';
-import {apiWrapper} from 'helpers';
+import {fetchWrapper} from 'helpers';
 
 const {publicRuntimeConfig} = getConfig();
-const baseUrl = `${publicRuntimeConfig.modashUrl}`;
+const baseUrl = `${publicRuntimeConfig.apiUrl}/modash`;
 
 export const modashService = {
-  getInstagramAccounts,
-  getYoutubeAccounts,
-  getTiktokAccounts,
+  getAccounts,
   getProfileOverview,
+  getProfileReport,
+  getInterests,
+  getLanguages,
+  getLocations,
 };
 
-function getInstagramAccounts(page, sort, filter) {
-  return apiWrapper.post(`${baseUrl}/instagram/search`, {
-    sort: sort,
-    page: page,
-    filter: {
-      
-    }
-  });
-}
-
-function getYoutubeAccounts(page, sort, filter) {
-  return apiWrapper.post(`${baseUrl}/youtube/search`, {
-    sort: sort,
-    page: page,
-    filter: {
-      
-    }
-  });
-}
-
-function getTiktokAccounts(page, sort, filter) {
-  return apiWrapper.post(`${baseUrl}/tiktok/search`, {
-    sort: sort,
-    page: page,
-    filter: {
-      
-    }
+function getAccounts(type, page, sort, filter) {
+  return fetchWrapper.post(`${baseUrl}/search`, {
+    type, sort, page, filter
   });
 }
 
 function getProfileOverview(userId, type) {
-  return apiWrapper.get(`${baseUrl}/${type}/profile/${userId}/overview`);
+  return fetchWrapper.post(`${baseUrl}/overview`, {type, userId});
+}
+
+function getProfileReport(userId, type) {
+  return fetchWrapper.post(`${baseUrl}/report`, {type, userId});
+}
+
+function getInterests(type) {
+  return fetchWrapper.post(`${baseUrl}/interests`, {type});  
+}
+
+function getLanguages(type) {
+  return fetchWrapper.post(`${baseUrl}/languages`, {type});   
+}
+
+function getLocations(type) {
+  return fetchWrapper.post(`${baseUrl}/locations`, {type});   
 }

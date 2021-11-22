@@ -19,8 +19,8 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const AudienceDetails = ({data}) => {
-  const formatter = new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2});
+const AudienceDetails = ({data, hashtags}) => {
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const evaluateValue = (val) => {
     if (val > 1000 * 1000)
       return (val / (1000 * 1000)).toFixed(1) + 'M'
@@ -54,9 +54,7 @@ const AudienceDetails = ({data}) => {
           <path d="M5.25 5.5C6.6975 5.5 7.875 4.26643 7.875 2.75C7.875 1.23357 6.6975 0 5.25 0C3.8025 0 2.625 1.23357 2.625 2.75C2.625 4.26643 3.8025 5.5 5.25 5.5ZM5.25 1.57143C5.8725 1.57143 6.375 2.09786 6.375 2.75C6.375 3.40214 5.8725 3.92857 5.25 3.92857C4.6275 3.92857 4.125 3.40214 4.125 2.75C4.125 2.09786 4.6275 1.57143 5.25 1.57143ZM5.25 6.875C3.495 6.875 0 7.79429 0 9.625V10.2143C0 10.6464 0.3375 11 0.75 11H9.75C10.1625 11 10.5 10.6464 10.5 10.2143V9.625C10.5 7.79429 7.005 6.875 5.25 6.875ZM1.755 9.42857C2.385 8.97286 3.9075 8.44643 5.25 8.44643C6.5925 8.44643 8.115 8.97286 8.745 9.42857H1.755ZM10.53 6.92214C11.4 7.58214 12 8.46214 12 9.625V11H14.25C14.6625 11 15 10.6464 15 10.2143V9.625C15 8.03786 12.375 7.13429 10.53 6.92214ZM9.75 5.5C11.1975 5.5 12.375 4.26643 12.375 2.75C12.375 1.23357 11.1975 0 9.75 0C9.345 0 8.97 0.102143 8.625 0.275C9.0975 0.974286 9.375 1.83071 9.375 2.75C9.375 3.66929 9.0975 4.52571 8.625 5.225C8.97 5.39786 9.345 5.5 9.75 5.5Z" fill="#000"></path>
         </svg>
         <span>フォロワー分析</span>
-        <BootstrapTooltip title={'もっと詳しく知りたい場合は「フルレポート」をご覧ください'} placement="top">
-          <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-        </BootstrapTooltip>
+        <RoundInfo sx={{marginLeft:'.5rem'}} caption={'もっと詳しく知りたい場合は「フルレポート」をご覧ください'} />
       </Box>
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
         <Box>
@@ -64,25 +62,21 @@ const AudienceDetails = ({data}) => {
             <svg fill="none" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.48 11.95c.17.02.34.05.52.05 2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4c0 .18.03.35.05.52l3.43 3.43zm2.21 2.21l5.74 5.74c.33-.17.57-.5.57-.9v-1c0-2.14-3.56-3.5-6.31-3.84zM2.12 2.42A.996.996 0 10.71 3.83L4 7.12V10H2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1v-2h2.88l2.51 2.51C9.19 15.11 7 16.3 7 18v1c0 .55.45 1 1 1h8.88l3.29 3.29a.996.996 0 101.41-1.41L2.12 2.42zM6 10v-.88l.88.88H6z" fill="#FA8F38"></path>
             </svg>
-            <Box className='subtitle'>{`${formatter.format((1 - data.credibility) * 100)}%`}</Box>
+            <Box className='subtitle'>{`${formatter.format((1 - (data.credibility ?? 0)) * 100)}%`}</Box>
             <span>非アクティブ率</span>
-            <BootstrapTooltip title={'フォロワーの実在率(もしくはアクティブ率)。25%を超えると危険な兆候です。'} placement="top">
-              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-            </BootstrapTooltip>
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーの実在率(もしくはアクティブ率)。25%を超えると危険な兆候です。'} />
           </Box>
           <Box className='box-wrapper-shadow grid-item'>
             <Box sx={{display: 'flex'}}>
               <Box className='subtitle1'>男女比</Box>  
-              <BootstrapTooltip title={'インフルエンサーがリーチできるフォロワーの男女比'} placement="top">
-                <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-              </BootstrapTooltip>
+              <RoundInfo sx={{marginLeft:'.5rem'}} caption={'インフルエンサーがリーチできるフォロワーの男女比'} />
             </Box>
             <svg viewBox="0 0 160 160" style={{width:'90px', height:'90px'}}>
               <g>
-                <circle className="ui-pie-male" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset={`${getMaleOrFemale(false) * 365}`} transform="rotate(-90, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-male" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" transform="rotate(0, 80, 80)" fill="transparent"></circle>
               </g>
               <g>
-                <circle className="ui-pie-female" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset={`${getMaleOrFemale(true) * 365}`} transform="rotate(162.56916, 80, 80)" fill="transparent"></circle>
+                <circle className="ui-pie-female" cx="80" cy="80" r="60" strokeDasharray="376.99111843077515" strokeDashoffset={`${getMaleOrFemale(true) * 365}`} transform="rotate(0, 80, 80)" fill="transparent"></circle>
               </g>
             </svg>
             <Box sx={{display:'flex', alignItems:'center'}}>
@@ -100,12 +94,10 @@ const AudienceDetails = ({data}) => {
         <Box className='box-wrapper-shadow grid-item'>
           <Box sx={{display: 'flex'}}>
             <Box className='subtitle1'>国</Box>  
-            <BootstrapTooltip title={'フォロワーがどこの国や都市にいるのか'} placement="top">
-              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-            </BootstrapTooltip>
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーがどこの国や都市にいるのか'} />
           </Box>
           <Box sx={{marginTop:'30px'}} />
-          {_.map(data.geoCountries, (country, idx) => {
+          {_.map(data.geoCountries, (country, idx) => (
             <Box key={idx}>
               <Box sx={{display: 'flex', justifyContent:'space-between'}}>
                 <span>{country.name}</span>
@@ -115,28 +107,26 @@ const AudienceDetails = ({data}) => {
                 <Box className="ui-bar-progress" sx={{width: `${country.weight * 100}%`}}></Box>
               </Box>  
             </Box>
-          })}
+          ))}
           <Box sx={{display: 'flex', marginTop:'30px', marginBottom:'10px'}}>
             <Box className='subtitle2'>都市 TOP3</Box>  
           </Box>
-          {_.map(data.getCities, (city, idx) => {
-            i < 3 && 
-            <Box sx={{display: 'flex'}}>
+          {_.map(data.geoCities, (city, idx) => (
+            idx < 3 && 
+            <Box key={idx} sx={{display: 'flex'}}>
               <span>{`${idx + 1}. ${idx.name}`}</span>
             </Box>
-          })}
+          ))}
         </Box>
       </Box>
 
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>年代別男女比</Box>  
-          <BootstrapTooltip title={'インフルエンサーがリーチできるフォロワーの年代別男女比'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'インフルエンサーがリーチできるフォロワーの年代別男女比'} />
         </Box>
         <Box sx={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
-          {_.map(data.gendersPerAge, (itm, idx) => {
+          {_.map(data.gendersPerAge, (itm, idx) => (
             <Box className='bar-chat-item' key={idx}>
               <Box sx={{display:'flex'}}>
                 <Box className='bar-chat-candle'>
@@ -150,52 +140,43 @@ const AudienceDetails = ({data}) => {
               </Box>
               <Box>{itm.code}</Box>
             </Box>
-          })}
+          ))}
         </Box>
       </Box>
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>ハッシュタグエンゲージメント</Box>  
-          <BootstrapTooltip title={'どのハッシュタグをつけた際の投稿がフォロワーからリアクションされているか'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'どのハッシュタグをつけた際の投稿がフォロワーからリアクションされているか'} />
         </Box>
         <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-          <Box className='genre-span'>#finaollafine</Box>
-          <Box className='genre-span'>#vamoscomtudo</Box>
-          <Box className='genre-span'>#forzajvue</Box>
-          <Box className='genre-span'>#c7eyewear</Box>
-          <Box className='genre-span'>#clearman</Box>
-          <Box className='genre-span'>#portugual</Box>
-          <Box className='genre-span'>#nikefootball</Box>
-          <Box className='genre-span'>#gerginoago</Box>
+          {_.map(hashtags, (itm, idx) => (
+            <Box key={idx} className='genre-span'>#{`${itm.tag}`}</Box>  
+          ))}
         </Box>  
-      </Box>
-      <Box className='wrapper-box box-wrapper-shadow'>
-        <Box sx={{display: 'flex'}}>
-          <Box className='subtitle1'>人気の#と@</Box>  
-          <BootstrapTooltip title={'投稿に頻繁に使用されている#と@'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
-        </Box>
-        <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-          {_.map(data.brandAffinity, (itm, idx) => {
-            <Box 
-              key={idx}
-              className='genre-span'
-            >
-              {`#${itm.name}`}
-            </Box>  
-          })}
-        </Box>
       </Box>
       {/*
         <Box className='wrapper-box box-wrapper-shadow'>
           <Box sx={{display: 'flex'}}>
+            <Box className='subtitle1'>人気の#と@</Box>  
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'投稿に頻繁に使用されている#と@'} />
+          </Box>
+          <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
+            {_.map(data.brandAffinity, (itm, idx) => (
+              <Box 
+                key={idx}
+                className='genre-span'
+              >
+                {`#${itm.name}`}
+              </Box>  
+            ))}
+          </Box>
+        </Box>
+      */}
+      {/*
+        <Box className='wrapper-box box-wrapper-shadow'>
+          <Box sx={{display: 'flex'}}>
             <Box className='subtitle1'>類似アカウント</Box>  
-            <BootstrapTooltip title={'キーワードトピックから類似アカウントを表示しています。'} placement="top">
-              <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-            </BootstrapTooltip>
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'キーワードトピックから類似アカウントを表示しています。'} />
           </Box>
           <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
             <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -234,18 +215,16 @@ const AudienceDetails = ({data}) => {
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>興味</Box>  
-          <BootstrapTooltip title={'フォロワーがどんな投稿に興味をもちやすいか、独自のアルゴリズムで計測。'} placement="top">
-            <InfoIcon fontSize="small" sx={{cursor:'pointer'}} />
-          </BootstrapTooltip>
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーがどんな投稿に興味をもちやすいか、独自のアルゴリズムで計測。'} />
         </Box>
-        {_.map(data.interests, (itm, idx) => {
+        {_.map(data.interests, (itm, idx) => (
           <Box 
             key={idx}
             className='interest-span'
           >
             {`${itm.name}`}
           </Box>  
-        })}
+        ))}
       </Box>
     </Box>
   );

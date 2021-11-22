@@ -34,10 +34,13 @@ const InfluencerBrief = ({}) => {
     setLoading(true);
     return modashService.getProfileOverview(influSelectedId, profileType)
       .then((response) => {
-        if (response.error !== false) 
+        if (response.status !== 'ok' || response.data.error !== false) {
+          setLoading(false);
+          setData(null);
           return;
+        }
 
-        setData(response.profile);
+        setData(response.data.profile);
         setLoading(false);
       }).catch(msg => {
         setLoading(false);
@@ -66,12 +69,14 @@ const InfluencerBrief = ({}) => {
               >
                 <CloseIcon fontSize="small" />
               </Button>
+              {/*
               <Button className='save'>
                 <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
                   <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
                 </svg>
                 <span>保存</span>
               </Button>
+              */}
             </Box>
 
             {data !== null && 
@@ -80,7 +85,7 @@ const InfluencerBrief = ({}) => {
 
                 <LastUpdates data={data.profile} stats={data.stats} />
 
-                <AudienceDetails data={data.audience} />
+                <AudienceDetails data={data.audience} hashtags={data.hashtags}/>
 
                 <MostPosts data={data.popularPosts}/>
 

@@ -16,9 +16,9 @@ async function handler(req, res) {
   }
 
   async function saveInfluencer() {
-    const {id, infname, cattype, categories} = req.body;
+    const {id, info, cattype, categories} = req.body;
     
-    const infId = await InfluencerRepo.saveInfluencer(req.user.id, id, infname, cattype, categories);
+    const infId = await InfluencerRepo.saveInfluencer(req.user.id, id, info, cattype, categories);
     if (infId === -1)
       return res.status(200).json({
         status: 'err',
