@@ -7,6 +7,7 @@ import RelativeImage from 'components/RelativeImage';
 import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import {styled} from '@mui/material/styles';
+import {evaluateValue} from 'constants/constants';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -20,14 +21,6 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
 }));
 
 const MostPosts = ({data}) => {
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   return (
     <Box className='mostposts'>
@@ -36,10 +29,11 @@ const MostPosts = ({data}) => {
               paddingTop: '1rem',
               paddingBottom: '1rem'}}>
         <span>人気投稿</span>
-        <RoundInfo sx={{marginLeft:'.5rem'}} caption={'最もいいねされた投稿'} />
+        <RoundInfo sx={{marginLeft:'.5rem'}} caption={'最もいいねされた投稿。'} />
       </Box>
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
         {_.map(data, (itm, idx) => (
+          idx < 4 && 
           <Box key={idx} className='box-wrapper-shadow grid-item nopadding'>
             <Box className='subtitle1 mgl5 mgt5'>{`${moment(itm.created).format('YYYY年M月D日')}`}</Box>
             <Box 

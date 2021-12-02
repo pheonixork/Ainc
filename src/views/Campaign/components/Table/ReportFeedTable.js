@@ -42,7 +42,7 @@ const feedHeadCells = [
   },
   {
     id: 'saving',
-    label: '保存',
+    label: '保存数',
   },
   {
     id: 'savePercent',
@@ -57,7 +57,7 @@ const feedHeadCells = [
     label: 'コメント数',
   },
   {
-    id: 'normal',
+    id: 'engagerate',
     label: '通常EG%',
   },
   {
@@ -75,6 +75,8 @@ const feedHeadCells = [
 ];
 
 const ReportFeedRow = ({catType, row, updateDatas, classes}) => {
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -142,9 +144,9 @@ const ReportFeedRow = ({catType, row, updateDatas, classes}) => {
     commentRef.current.value = row.comment ? row.comment : 0;
     sellRef.current.value = row.sell ? row.sell : 0;
 
-    savingPerRef.current.value = (!row.saving || !row.rich || row.rich === 0) ? 0 : (row.rich / row.saving * 100).toFixed(1);
+    savingPerRef.current.value = (!row.saving || !row.rich) ? 0 : (row.saving / row.rich * 100).toFixed(1);
     richPerRef.current.value = (!row.rich || !row.followers || row.followers === 0) ? 0 : (row.rich / row.followers * 100).toFixed(1);
-    prsRef.current.value = (!row.oks || !row.rich || row.rich === 0) ? 0 : (row.oks / row.rich * 100).toFixed(1);
+    prsRef.current.value = (!row.oks || !row.rich || !row.comment || row.rich === 0) ? 0 : ((row.oks + row.comment)/ row.rich * 100).toFixed(1);
     roasRef.current.value = (!row.sell || !row.amount || row.amount === 0) ? 0 : (row.sell / row.amount * 100).toFixed(1);
 
     setPostDate(row.postAt ? row.postAt : null);
@@ -154,18 +156,19 @@ const ReportFeedRow = ({catType, row, updateDatas, classes}) => {
     let oksVal = parseInt(oksRef.current.value);
     let richVal = parseInt(richRef.current.value);
     let savingVal = parseInt(savingRef.current.value);
+    let commentVal = parseInt(commentRef.current.value);
 
     if (isNaN(richVal))
       return;
 
     richPerRef.current.value = (!richVal || !row.followers || row.followers === 0) ? 0 : (richVal / row.followers * 100).toFixed(1);
 
-    if (!isNaN(oksVal)) {
-      prsRef.current.value = (!oksVal || !richVal || richVal === 0) ? 0 : (oksVal / richVal * 100).toFixed(1);
+    if (!isNaN(savingVal)) {
+      savingPerRef.current.value = (!richVal) ? 0 : (savingVal / richVal * 100).toFixed(1);
     }
 
-    if (!isNaN(savingVal)) {
-      savingPerRef.current.value = (!savingVal || !richVal || richVal === 0) ? 0 : (richVal / savingVal * 100).toFixed(1);
+    if (!isNaN(commentVal) && !isNaN(oksVal)) {
+      prsRef.current.value = (!richVal) ? 0 : ((commentVal + oksVal) / richVal * 100).toFixed(1); 
     }
   }
 
@@ -181,7 +184,7 @@ const ReportFeedRow = ({catType, row, updateDatas, classes}) => {
   return (
     <>
       <TableRow>
-        <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
@@ -206,36 +209,38 @@ const ReportFeedRow = ({catType, row, updateDatas, classes}) => {
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>
-          {row.amount}
-        </TableCell>
-        <TableCell className={classes.feedtableCell}>{row.followers}</TableCell>
-        <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={richRef } onChange={richValueChanged} />
+          {formatterInt.format(row.amount)}
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={richPerRef} />
+          {formatterInt.format(row.followers)}
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={savingRef } onChange={richValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={richRef } onChange={richValueChanged} type="Number" sx={{width: '100px'}}/>
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={richPerRef} type="Number" sx={{width: '100px'}}/>
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={savingRef } onChange={richValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={savingPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={richValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={richValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } onChange={richValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
-        <TableCell className={classes.feedtableCell}>{row.normal}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatter.format(row.engagerate * 100)}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
-        </TableCell>
-        <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} type="Number" sx={{width: '100px'}}/>
+        </TableCell>
+        <TableCell className={classes.feedtableCell}>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell align="center" className={classes.feedtableCell}>
           <Button aria-haspopup="true" onClick={handleMenuClick} className="active">...</Button>
@@ -298,7 +303,7 @@ export default function ReportFeedTable({catType, getDatas, updateDatas, classes
                   <TableCell
                     key={headCell.id}
                     padding='normal'
-                    align="center"
+                    align="left"
                     sortDirection={orderBy === headCell.id ? order : false}
                     className={classes.feedtableCell}
                   >

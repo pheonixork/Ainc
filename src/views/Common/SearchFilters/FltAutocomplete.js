@@ -8,9 +8,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {styled} from '@mui/material/styles';
 import RoundInfo from 'components/RoundInfo';
 import Keyword from 'constants/lang';
+import Constants from 'constants/constants';
 import {useTheme} from '@mui/material/styles';
+import {modashService} from 'services';
 
-export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, caption }) {
+export default function FltAutocomplete({ clearFlag, tip, icon, phstr, caption }) {
   const [itemValue, setItemValue] = useState({title:'', id:''});
   const theme = useTheme();
 
@@ -18,6 +20,8 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
     if (clearFlag === true || clearFlag === false)
       setItemValue({title:'', id:''});
   }, [clearFlag]);
+
+  const [options, setOptions] = useState([]);
 
   return (
     <Box className='flex-sub-wrapper'>
@@ -32,7 +36,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
       </Box>
       <Autocomplete
         size="small"
-        options={values}
+        options={options}
         disableClearable
         getOptionLabel={(option) => option.title}
         renderOption={(props, option, { selected }) => (
@@ -41,7 +45,7 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
               alignItems: 'center',
               justifyContent: 'space-between',
               fontSize: '14px',
-              padding: '0px'}}
+              padding: '0px 5px 0px 5px'}}
             >
             {option.title}
             <Checkbox
@@ -52,16 +56,13 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
           </li>
         )}
         value={itemValue}
+        filterOptions={(options, state) => options}
         onChange={(event, newValue) => {
           setItemValue(newValue);
         }}
         sx={{
           backgroundColor:`${(itemValue && itemValue.title !== '') ? theme.palette.clrVariables.cyanVeryLight : theme.palette.clrVariables.grayWhite}`
         }}
-        // inputValue={itemValue}
-        // onInputChange={(event, newInputValue) => {
-        //   setItemValue(newInputValue);
-        // }}
         renderInput={(params) => (
           <TextField 
             {...params} 
@@ -72,6 +73,16 @@ export default function FltAutocomplete({ clearFlag, tip, icon, values, phstr, c
             }}
             variant="outlined"
             placeholder={phstr}
+            onChange={async (e) => {
+              return modashService.getLocations(Constants.snsInstagram, e.target.value)
+                .then((response) => {
+                  let data = response.data;
+                  if (data.error !== false) 
+                    return;
+
+                  setOptions(data.locations);
+                });
+            }}
             inputProps={{
               ...params.inputProps,
               style: {
@@ -90,6 +101,5 @@ FltAutocomplete.propTypes = {
   tip: PropTypes.string.isRequired,
   phstr: PropTypes.string.isRequired,
   icon: PropTypes.bool.isRequired,
-  values: PropTypes.array.isRequired,
   caption: PropTypes.string
 };

@@ -49,13 +49,14 @@ const Main = ({ children }) => {
       <AppBar
         position={'fixed'}
         sx={{
-          backgroundColor: theme.palette.mode === 'light' ? '#d6daff' : '#3b4972',
+          backgroundColor: 'white', //theme.palette.mode === 'light' ? '#d6daff' : '#3b4972',
+          boxShadow: 'none !important'
         }}
         elevation={1}
       >
-        <Container paddingY={{ xs: 1, sm: 1.5 }}>
+        <Box paddingY={{ xs: 1, sm: 1.5 }}>
           <Topbar onSidebarOpen={handleSidebarOpen} pages={pages} />
-        </Container>
+        </Box>
       </AppBar>
       <Sidebar
         onClose={handleSidebarClose}
@@ -69,10 +70,9 @@ const Main = ({ children }) => {
         <Divider />
       </main>
       <Box
-        backgroundColor={'#00053d'}
-        padding={'0px 0px 40px'}
+        backgroundColor={'#F7F8FA'}
       >
-        <Container paddingY={4} >
+        <Container paddingY={8} >
           <Footer />
         </Container>
       </Box>

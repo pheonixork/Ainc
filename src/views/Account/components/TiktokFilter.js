@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useTheme} from '@mui/material/styles';
-import {FltAutocomplete, FltSingleSelect, FltSingleSelectObject, FltMultiSelect, FltTextField, FltRangeSelect} from '../../Common/SearchFilters';
+import {FltInfluencerView, FltAudienceAges, FltAudienceGender, FltAudienceInterests, FltAudienceLanguage, FltAudienceLocation, FltInfluencerBio, FltInfluencerContract, FltInfluencerEngage, FltInfluencerFollowers, FltInfluencerGender, FltInfluencerHash, FltInfluencerInterest, FltInfluencerKeyword, FltInfluencerLanguage, FltInfluencerLocation, FltInfluencerPost} from '../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
@@ -18,12 +18,46 @@ const ages = ['13-17', '18-24', '25-34', '35-44', '45+'];
 
 const engages = ['>1%', '>2% (average)', '>3%', '>4%', '>5%', '>6%', '>7%', '>8%', '>9%', '>10%'];
 
-export default function TiktokFilter({interests, languages, locations}) {
+export default function TiktokFilter({interests, languages, searchFromServer}) {
   const [clearFlag, setClearFlag] = useState(false);
   const theme = useTheme();
 
   const clearFilterClicked = (e) => {
     setClearFlag(!clearFlag);
+  }
+
+  const [audienceFilter, setAudienceFilter] = useState({
+    age:[], 
+    gender: null, 
+    language: null, 
+    location:[]
+  });
+  const [influencerFilter, setInfluencerFilter] = useState({
+    bio: '',
+    engagementRate: null,
+    followers: {},
+    gender: null,
+    hasContactDetails: null,
+    language: null,
+    location: [],
+    relevance: [],
+    views: {},
+  });
+
+  const startSearch = (e) => {
+    searchFromServer({audience: audienceFilter, influencer: influencerFilter});
+  }
+
+  const setAudience = (field, value) => {
+    setAudienceFilter({...audienceFilter, [field]:value});
+  }
+
+  const setInfluencer = (field, value) => {
+    setInfluencerFilter({...influencerFilter, [field]:value});
+  }
+
+  const setKeyword = (value) => {
+    setInfluencerFilter({...influencerFilter, 'relevance':['@'+value]});
   }
 
   return (
@@ -39,15 +73,16 @@ export default function TiktokFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
-            <FltAutocomplete 
+            <FltInfluencerLocation 
               clearFlag={clearFlag}
               tip={Keyword.caption.influencerlocation}
               phstr='インフルエンサ―の地域'
               icon={false} 
-              values={locations} />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltRangeSelect
+            <FltInfluencerFollowers
               clearFlag={clearFlag}
               tip={Keyword.caption.subscriber}
               icon={false}
@@ -55,10 +90,11 @@ export default function TiktokFilter({interests, languages, locations}) {
               fromStyle={{width:'8rem'}}
               toValues={[...followers, '1000000+']}
               toStyle={{width:'8rem', marginLeft:'10px'}}
-              />
+              setValues={setInfluencer}
+             />
           </Box>
           <Box>
-            <FltRangeSelect
+            <FltInfluencerView
               clearFlag={clearFlag}
               tip={Keyword.caption.averageview}
               icon={false}
@@ -66,55 +102,76 @@ export default function TiktokFilter({interests, languages, locations}) {
               fromStyle={{width:'8rem'}}
               toValues={[...followers, '1000000+']}
               toStyle={{width:'8rem', marginLeft:'10px'}}
-              />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box style={{width:'8rem'}}>
-            <FltSingleSelect 
+            <FltInfluencerGender 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={false} 
-              values={['Male', 'Female']}
+              values={['MALE', 'FEMALE']}
+              setValues={setInfluencer}
             />
           </Box>
           <Box sx={{minWidth:'150px', flex:1}}>
-            <FltSingleSelectObject 
+            <FltInfluencerLanguage 
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
-              style={{width: '100% !important'}}/>
+              style={{width: '100% !important'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{minWidth: '7.7108433735rem!important', maxWidth: '11.4285714286rem!important'}}>
-            <FltSingleSelect 
+            <FltInfluencerPost 
               clearFlag={clearFlag}
               tip={Keyword.caption.post}
               icon={false} 
               values={['30 days', '3 Months', '6 Months']}
-              />
+            />
           </Box>
           <Box sx={{width:'11.4285714286rem!important'}}>
-            <FltSingleSelect 
+            <FltInfluencerEngage 
               clearFlag={clearFlag}
               tip={Keyword.caption.engagement}
               icon={true} 
               caption={Keyword.caption.engagement_tip}
-              values={engages}/>
+              values={engages}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{minWidth: '7.7108433735rem!important', maxWidth: '11.4285714286rem!important'}}>
-            <FltSingleSelect 
+            <FltInfluencerContract 
               clearFlag={clearFlag}
               tip={Keyword.caption.contractinfo}
               icon={false} 
               values={['Email available']}
-              />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{flex:1, minWidth:'150px !important'}}>
-            <FltTextField clearFlag={clearFlag} tip='Bio' icon={true} phstr='Any' caption={Keyword.caption.bio_tip}/>
+            <FltInfluencerBio 
+              clearFlag={clearFlag} 
+              tip='Bio' 
+              icon={true} 
+              phstr='Any' 
+              caption={Keyword.caption.bio_tip}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{width:'300px'}}>
-            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.keyword} icon={true} phstr='Any' caption={Keyword.caption.keyword_tip}/>
+            <FltInfluencerKeyword 
+              clearFlag={clearFlag} 
+              tip={Keyword.caption.keyword} 
+              icon={true} 
+              phstr='Any' 
+              caption={Keyword.caption.keyword_tip}
+              setValues={setInfluencer}
+            />
           </Box>
         </Box>
       </Box>
@@ -129,41 +186,47 @@ export default function TiktokFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
-            <FltAutocomplete 
+            <FltAudienceLocation 
               clearFlag={clearFlag}
               tip={Keyword.caption.audiencelocation}
               phstr='フォロワーの地域' 
               icon={true} 
-              caption={Keyword.caption.other_tip}
-              values={locations} />
+              caption={Keyword.caption.other_tip} 
+              setValues={setAudience}
+            />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltAudienceGender 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={true} 
               caption={Keyword.caption.other_tip}
-              values={['Male', 'Female']}
-              style={{width:'8rem'}}/>
+              values={['MALE', 'FEMALE']}
+              style={{width:'8rem'}}
+              setValues={setAudience}
+            />
           </Box>
           <Box sx={{width:'8rem'}}>
-            <FltMultiSelect 
+            <FltAudienceAges 
               clearFlag={clearFlag}
               tip={Keyword.caption.age}
               icon={true}
               caption={Keyword.caption.other_tip}
               values={ages}
+              setValues={setAudience}
             />
           </Box>
           <Box sx={{minWidth:'246px'}}>
-            <FltSingleSelectObject 
+            <FltAudienceLanguage 
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
-              style={{width: '100% !important'}}/>
+              style={{width: '100% !important'}}
+              setValues={setAudience}
+            />
           </Box>
         </Box>
       </Box>
@@ -183,6 +246,7 @@ export default function TiktokFilter({interests, languages, locations}) {
               fontSize:'14px',
               backgroundColor: theme.palette.clrVariables.grayWhite,
             }}}
+            onChange={e=>setKeyword(e.target.value)}
           />
         </Box>
         <Box sx={{display:'flex', width:'100%', justifyContent:'flex-end', marginTop: '15px'}}>
@@ -196,6 +260,7 @@ export default function TiktokFilter({interests, languages, locations}) {
             className="active"
             variant={'outlined'}
             sx={{marginLeft:'15px'}}
+            onClick={startSearch}
           >
             {Keyword.caption.search}
           </Button>

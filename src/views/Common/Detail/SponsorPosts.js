@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import RelativeImage from 'components/RelativeImage';
+import {evaluateValue} from 'constants/constants';
 
 const Chart = dynamic(
   () => import('react-apexcharts'),
@@ -25,20 +26,11 @@ const useStyles = makeStyles({
     textOverflow: 'ellipsis',
     '-webkitBoxOrient': 'vertical',
     '-webkitLineClamp': 4,
-    height: '69px'
   },
 });
 
 const SponsorPosts = ({data}) => {
   const classes = useStyles();
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   return (
     <Box className={classes.sponsorposts}>
@@ -48,7 +40,7 @@ const SponsorPosts = ({data}) => {
 
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr 1fr'}}>
         {_.map(data, (itm, idx) => (
-          <Box key={idx} className='box-wrapper-shadow grid-item nopadding'>
+          <Box key={idx} className='box-wrapper-shadow grid-item nopadding' sx={{width:'200px'}}>
             <Box className='subtitle1 mgl5 mgt5'>{`${moment(itm.created).format('YYYY年M月D日')}`}</Box>
             <Box 
               component='a'

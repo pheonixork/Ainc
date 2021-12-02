@@ -7,6 +7,7 @@ import RoundInfo from 'components/RoundInfo';
 import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import {styled} from '@mui/material/styles';
+import {evaluateValue} from 'constants/constants';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -19,16 +20,8 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const AudienceDetails = ({data, hashtags}) => {
+const AudienceDetails = ({data, lookalikes, hashtags}) => {
   const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   const getMaleOrFemale = (isMale) => {
     if (!data.genders || data.genders.length !== 2)
@@ -54,7 +47,7 @@ const AudienceDetails = ({data, hashtags}) => {
           <path d="M5.25 5.5C6.6975 5.5 7.875 4.26643 7.875 2.75C7.875 1.23357 6.6975 0 5.25 0C3.8025 0 2.625 1.23357 2.625 2.75C2.625 4.26643 3.8025 5.5 5.25 5.5ZM5.25 1.57143C5.8725 1.57143 6.375 2.09786 6.375 2.75C6.375 3.40214 5.8725 3.92857 5.25 3.92857C4.6275 3.92857 4.125 3.40214 4.125 2.75C4.125 2.09786 4.6275 1.57143 5.25 1.57143ZM5.25 6.875C3.495 6.875 0 7.79429 0 9.625V10.2143C0 10.6464 0.3375 11 0.75 11H9.75C10.1625 11 10.5 10.6464 10.5 10.2143V9.625C10.5 7.79429 7.005 6.875 5.25 6.875ZM1.755 9.42857C2.385 8.97286 3.9075 8.44643 5.25 8.44643C6.5925 8.44643 8.115 8.97286 8.745 9.42857H1.755ZM10.53 6.92214C11.4 7.58214 12 8.46214 12 9.625V11H14.25C14.6625 11 15 10.6464 15 10.2143V9.625C15 8.03786 12.375 7.13429 10.53 6.92214ZM9.75 5.5C11.1975 5.5 12.375 4.26643 12.375 2.75C12.375 1.23357 11.1975 0 9.75 0C9.345 0 8.97 0.102143 8.625 0.275C9.0975 0.974286 9.375 1.83071 9.375 2.75C9.375 3.66929 9.0975 4.52571 8.625 5.225C8.97 5.39786 9.345 5.5 9.75 5.5Z" fill="#000"></path>
         </svg>
         <span>フォロワー分析</span>
-        <RoundInfo sx={{marginLeft:'.5rem'}} caption={'もっと詳しく知りたい場合は「フルレポート」をご覧ください'} />
+        <RoundInfo sx={{marginLeft:'.5rem'}} caption={'もっと詳しく知りたい場合は「フルレポート」をご覧ください。'} />
       </Box>
       <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr 1fr'}}>
         <Box>
@@ -94,10 +87,11 @@ const AudienceDetails = ({data, hashtags}) => {
         <Box className='box-wrapper-shadow grid-item'>
           <Box sx={{display: 'flex'}}>
             <Box className='subtitle1'>国</Box>  
-            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーがどこの国や都市にいるのか'} />
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーがどこの国や都市にいるのか。'} />
           </Box>
           <Box sx={{marginTop:'30px'}} />
           {_.map(data.geoCountries, (country, idx) => (
+            idx < 3 &&
             <Box key={idx}>
               <Box sx={{display: 'flex', justifyContent:'space-between'}}>
                 <span>{country.name}</span>
@@ -114,7 +108,7 @@ const AudienceDetails = ({data, hashtags}) => {
           {_.map(data.geoCities, (city, idx) => (
             idx < 3 && 
             <Box key={idx} sx={{display: 'flex'}}>
-              <span>{`${idx + 1}. ${idx.name}`}</span>
+              <span>{`${idx + 1}. ${city.name}`}</span>
             </Box>
           ))}
         </Box>
@@ -123,7 +117,7 @@ const AudienceDetails = ({data, hashtags}) => {
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>年代別男女比</Box>  
-          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'インフルエンサーがリーチできるフォロワーの年代別男女比'} />
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'インフルエンサーがリーチできるフォロワーの年代別男女比。'} />
         </Box>
         <Box sx={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
           {_.map(data.gendersPerAge, (itm, idx) => (
@@ -143,81 +137,82 @@ const AudienceDetails = ({data, hashtags}) => {
           ))}
         </Box>
       </Box>
+      {
+        <Box className='wrapper-box box-wrapper-shadow'>
+          <Box sx={{display: 'flex'}}>
+            <Box className='subtitle1'>人気の#と@</Box>  
+            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'投稿に頻繁に使用されている#と@。'} />
+          </Box>
+          <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
+            {_.map(hashtags, (itm, idx) => (
+              idx < 9 &&
+              <Box key={idx} className='genre-span'>#{`${itm.tag}`}</Box>  
+            ))}
+          </Box>  
+        </Box>
+      }
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>ハッシュタグエンゲージメント</Box>  
-          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'どのハッシュタグをつけた際の投稿がフォロワーからリアクションされているか'} />
+          <RoundInfo sx={{marginLeft:'.5rem'}} caption={'どのハッシュタグをつけた際の投稿がフォロワーからリアクションされているか。'} />
         </Box>
         <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-          {_.map(hashtags, (itm, idx) => (
+          {_.map(_.orderBy(hashtags, (['weight']), ['asc']), (itm, idx) => (
+            idx < 9 &&
             <Box key={idx} className='genre-span'>#{`${itm.tag}`}</Box>  
           ))}
         </Box>  
       </Box>
-      {/*
-        <Box className='wrapper-box box-wrapper-shadow'>
-          <Box sx={{display: 'flex'}}>
-            <Box className='subtitle1'>人気の#と@</Box>  
-            <RoundInfo sx={{marginLeft:'.5rem'}} caption={'投稿に頻繁に使用されている#と@'} />
-          </Box>
-          <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-            {_.map(data.brandAffinity, (itm, idx) => (
-              <Box 
-                key={idx}
-                className='genre-span'
-              >
-                {`#${itm.name}`}
-              </Box>  
-            ))}
-          </Box>
-        </Box>
-      */}
-      {/*
+      {lookalikes && lookalikes.length > 0 && 
         <Box className='wrapper-box box-wrapper-shadow'>
           <Box sx={{display: 'flex'}}>
             <Box className='subtitle1'>類似アカウント</Box>  
             <RoundInfo sx={{marginLeft:'.5rem'}} caption={'キーワードトピックから類似アカウントを表示しています。'} />
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-              <Box
-                className='mgr5'
-                component={LazyLoadImage}
-                effect="blur"
-                src={'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2V5KPwPXcA2WyNRhPMoCHKMdtKG3eSEc5JQ8TgTu0NynllFlelISOb%2Blsdn%2FFsiegkW4xzvOq4WKYeHoY1KFSvw%3D%3D'}
-                width={'18px'}
-                height={'18px'}
-                sx={{borderRadius:'50%', marginTop:'.5rem'}}
-              />
-              <Box 
-                className="influencer-header-name"
-                component="a"
-                href="https://www.instagram.com/alxsndro12"
-              >
-                @alxsndro12
+          {_.map(lookalikes, (itm, idx) => (
+            idx < 7 && 
+            <Box key={idx}>
+              <Box sx={{display: 'flex', alignItems: 'center'}}>
+                <Box
+                  className='mgr5'
+                  component={LazyLoadImage}
+                  effect="blur"
+                  src={itm.profile.picture}
+                  width={'18px'}
+                  height={'18px'}
+                  sx={{borderRadius:'50%', marginTop:'.5rem'}}
+                />
+                <Box 
+                  className="influencer-header-name text-ellipse text-width-150"
+                  component="a"
+                  href={itm.profile.url}
+                >
+                  @{itm.profile.username}
+                </Box>
               </Box>
+              {/* <Box sx={{display: 'flex', alignItems: 'center'}}>
+                <Button variant={'outlined'} className='alike-btn'>
+                  <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
+                    <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
+                  </svg>
+                </Button>
+                <Button variant={'outlined'} className='alike-btn' sx={{marginLeft:'.5rem'}}>
+                  <svg fill="none" height="16" width="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 11h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34A6.505 6.505 0 00.05 7.32c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L12.5 11zm-6 0C4.01 11 2 8.99 2 6.5S4.01 2 6.5 2 11 4.01 11 6.5 8.99 11 6.5 11z"></path>
+                  </svg>
+                </Button>
+              </Box> */}
             </Box>
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-              <Button variant={'outlined'} className='alike-btn'>
-                <svg fill="none" height="16" width="16" xmlns="http://www.w3.org/2000/svg" >
-                  <path d="M12.67 12l1.33.67V2c0-.73-.6-1.33-1.33-1.33H5.99c-.73 0-1.32.6-1.32 1.33h6.66c.74 0 1.34.6 1.34 1.33V12zM10 3.33H3.33C2.6 3.33 2 3.93 2 4.67v10.66l4.67-2 4.66 2V4.67c0-.74-.6-1.34-1.33-1.34z"></path>
-                </svg>
-              </Button>
-              <Button variant={'outlined'} className='alike-btn' sx={{marginLeft:'.5rem'}}>
-                <svg fill="none" height="16" width="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12.5 11h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34A6.505 6.505 0 00.05 7.32c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L12.5 11zm-6 0C4.01 11 2 8.99 2 6.5S4.01 2 6.5 2 11 4.01 11 6.5 8.99 11 6.5 11z"></path>
-                </svg>
-              </Button>
-            </Box>
-          </Box>
+          ))}
         </Box>
-      */}
+      }
       <Box className='wrapper-box box-wrapper-shadow'>
         <Box sx={{display: 'flex'}}>
           <Box className='subtitle1'>興味</Box>  
           <RoundInfo sx={{marginLeft:'.5rem'}} caption={'フォロワーがどんな投稿に興味をもちやすいか、独自のアルゴリズムで計測。'} />
         </Box>
         {_.map(data.interests, (itm, idx) => (
+          idx < 5 && 
           <Box 
             key={idx}
             className='interest-span'

@@ -17,6 +17,10 @@ const influencerSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  infName: {
+    type: String,
+    required: true,
+  },
   avatar: {
     type: String,
     default: "",
@@ -53,6 +57,10 @@ const influencerSchema = mongoose.Schema({
     default: 0,
   },
   engage: {
+    type: Number,
+    default: 0,
+  },
+  engagerate: {
     type: Number,
     default: 0,
   },

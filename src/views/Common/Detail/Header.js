@@ -8,6 +8,7 @@ import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import {styled} from '@mui/material/styles';
 import Constants from 'constants/constants';
+import {evaluateValue} from 'constants/constants';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -43,16 +44,7 @@ const useStyles = makeStyles({
 
 const Header = ({data, stats, type}) => {
   const classes = useStyles();
-
   const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   return (
     <Box sx={{marginTop:'3rem', width: '100%'}}>
@@ -94,7 +86,7 @@ const Header = ({data, stats, type}) => {
           </svg>
           <Box className='subtitle'>{stats ? evaluateValue(stats.avgLikes.value) : 0}</Box>
           <span>平均いいね</span>
-          <RoundInfo caption='直近30投稿の平均いいね' sx={{marginLeft: '.5rem'}} />
+          <RoundInfo caption='直近30投稿の平均いいね。' sx={{marginLeft: '.5rem'}} />
         </Box>
         <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="14" viewBox="0 0 22 14" width="22" xmlns="http://www.w3.org/2000/svg">
@@ -102,7 +94,7 @@ const Header = ({data, stats, type}) => {
           </svg>
           <Box className='subtitle'>{evaluateValue(data.followers)}</Box>
           <span>フォロワー</span>
-          <RoundInfo caption='合計フォロワー数' sx={{marginLeft: '.5rem'}} />
+          <RoundInfo caption='合計フォロワー数。' sx={{marginLeft: '.5rem'}} />
         </Box>
         <Box className={`box-wrapper-shadow grid-item ${classes.showFront}`} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <svg fill="none" height="11" width="24" viewBox="0 0 24 11" xmlns="http://www.w3.org/2000/svg">

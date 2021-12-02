@@ -1,24 +1,23 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Box, Dialog, DialogContent} from '@mui/material';
-import Header from './Detail/Header';
-import PopularPosts from './Detail/PopularPosts';
-import AudienceData from './Detail/AudienceData';
-import AudienceLikes from './Detail/AudienceLikes';
-import Notable from './Detail/Notable';
-import HashTag from './Detail/HashTag';
-import SponsorPosts from './Detail/SponsorPosts';
-import {modashService} from 'services';
+import {Button, Box, Dialog, DialogContent} from '@mui/material';
 import toast from 'react-hot-toast';
+import {useTheme} from '@mui/material/styles';
 import {useMainContext} from 'context/MainContext';
 import InfluencerDetailLoading from './Detail/InfluencerDetailLoading';
+import InfluencerDetailInstagram from './Detail/InfluencerDetailInstagram';
+import InfluencerDetailYoutube from './Detail/InfluencerDetailYoutube';
+import InfluencerDetailTiktok from './Detail/InfluencerDetailTiktok';
+import Constants from 'constants/constants';
+import {modashService} from 'services';
 
 export default function InfluencerDetail({open, handleClose}) {
-  const {influSelectedId, profileType} = useMainContext();
+  const {selectedInfluencer} = useMainContext();
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
+  const theme = useTheme();
   const [enthinity, setEnthinity] = useState([]);
   const [language, setLanguage] = useState([]);
   const [ages, setAges] = useState([]);
@@ -33,7 +32,7 @@ export default function InfluencerDetail({open, handleClose}) {
       return;
 
     setLoading(true);
-    return modashService.getProfileReport(influSelectedId, profileType)
+    return modashService.getProfileReport(selectedInfluencer.id, selectedInfluencer.username, selectedInfluencer.type)
       .then((response) => {
         if (response.status !== 'ok' || response.data.error !== false) {
           setLoading(false);
@@ -80,7 +79,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.name ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -100,7 +99,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.code ?? 'Other', malelikers: itm.male, femalelikers: itm.female, malefollowers: 0, femalefollowers: 0})
+            temp.push({code: itm.code ?? 'Other', malelikers: 0, femalelikers: 0, malefollowers: itm.male, femalefollowers: itm.female})
           } else {
             temp.push({code: itm.code ?? 'Other', malelikers: itm.male, femalelikers: itm.female, malefollowers: matchData.male, femalefollowers: matchData.female})
           }
@@ -119,7 +118,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.code ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.code ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.code ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -138,7 +137,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.name ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -157,7 +156,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.name ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -176,7 +175,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.name ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -195,7 +194,7 @@ export default function InfluencerDetail({open, handleClose}) {
           }
 
           if (matchData === undefined) {
-            temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: 0})
+            temp.push({code: itm.name ?? 'Other', likers: 0, followers: itm.weight})
           } else {
             temp.push({code: itm.name ?? 'Other', likers: itm.weight, followers: matchData.weight})
           }
@@ -210,7 +209,7 @@ export default function InfluencerDetail({open, handleClose}) {
       });
 
     
-  }, [open, influSelectedId]);
+  }, [open, selectedInfluencer]);
 
   return (
     <Dialog
@@ -227,42 +226,60 @@ export default function InfluencerDetail({open, handleClose}) {
           <InfluencerDetailLoading /> : 
           data !== null && 
             <Box>
-              <Header data={data.profile} stats={data.stats} type={profileType} />
-              <PopularPosts 
-                data={data.popularPosts ?? []} 
-                statHistory={data.statHistory ?? []} 
-                recentPosts={data.recentPosts ?? []} 
-                hashtags={data.hashtags ?? []}
-                brandAffinity={data.brandAffinity ?? []}
-                interests={data.interests ?? []}
-              />
-              <AudienceData 
-                data={data.audience}
-              />
-              {data.audienceLikers && 
-                <AudienceLikes data={data.audienceLikers} />
+              <Button 
+                sx={{
+                  position: 'fixed',
+                  top: '1rem',
+                  right: '2rem',
+                  backgroundColor: theme.palette.primary.main,
+                  color: 'white'
+                }}
+                variant={'outlined'}
+              >
+                ダウンロード
+              </Button>
+              {selectedInfluencer.type === Constants.snsInstagram && 
+                <InfluencerDetailInstagram 
+                  data={data} 
+                  selectedInfluencer={selectedInfluencer}
+                  enthinity={enthinity}
+                  language={language}
+                  ages={ages}
+                  agesrange={agesrange}
+                  countries={countries}
+                  cities={cities}
+                  brand={brand}
+                  interest={interest}
+                />
               }
-              <Notable 
-                followers={data.audience ? data.audience.notableUsers : []}
-                likers={data.audienceLikers ? data.audienceLikers.notableUsers : []}
-              />
-              <HashTag 
-                followers={data.profile.followers}
-                avgs={data.stats ? data.stats.avgLikes.value : 0}
-                data={data.hashtags} 
-                mentions={data.mentions} 
-                genderlikers={data.audienceLikers ? data.audienceLikers.genders : []}
-                genderfollowers={data.audience ? data.audience.genders : []}
-                enthinity={enthinity}
-                language={language}
-                agesrange={agesrange}
-                ages={ages}
-                countries={countries}
-                cities={cities}
-                brand={brand}
-                interest={interest}
-              />
-              <SponsorPosts data={data.sponsoredPosts} />
+              {selectedInfluencer.type === Constants.snsYoutube && 
+                <InfluencerDetailYoutube 
+                  data={data} 
+                  selectedInfluencer={selectedInfluencer}
+                  enthinity={enthinity}
+                  language={language}
+                  ages={ages}
+                  agesrange={agesrange}
+                  countries={countries}
+                  cities={cities}
+                  brand={brand}
+                  interest={interest}
+                />
+              }
+              {selectedInfluencer.type === Constants.snsTiktok && 
+                <InfluencerDetailTiktok 
+                  data={data} 
+                  selectedInfluencer={selectedInfluencer}
+                  enthinity={enthinity}
+                  language={language}
+                  ages={ages}
+                  agesrange={agesrange}
+                  countries={countries}
+                  cities={cities}
+                  brand={brand}
+                  interest={interest}
+                />
+              }
             </Box>
         }
       </DialogContent>

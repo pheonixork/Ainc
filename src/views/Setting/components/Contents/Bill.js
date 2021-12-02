@@ -93,7 +93,7 @@ const Bill = ({user, ...rest}) => {
     userService.updateUser(obj)
       .then((response) => {
         if (response.status === 'ok') {
-          toast.success('保存しました');
+          toast.success('更新しました。');
           showEditDlg(false);
         }
         else

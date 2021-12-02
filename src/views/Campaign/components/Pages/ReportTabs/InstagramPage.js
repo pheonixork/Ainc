@@ -83,7 +83,7 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
       return campaignService.addNewReport(selCampId, memId, rtype)
         .then((ret) => {
           if (ret.status !== 'ok') {
-            toast.error('状態保存に失敗しました。');
+            toast.error('状態更新に失敗しました。');
             return;
           }
     
@@ -105,17 +105,17 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
       });
 
       if (sameMembers === 1) {
-        toast.error('削除できません');
+        toast.error('削除できません。');
         return;
       }
 
       return campaignService.updateReport(selCampId, memId, 0)
         .then((ret) => {
           if (ret.status !== 'ok') {
-            toast.error('状態保存に失敗しました。');
+            toast.error('状態更新に失敗しました。');
             return;
           }
-          toast.success('保存しました。');
+          toast.success('更新しました。');
     
           if (rtype === 1) {
             let tFeeds = _.filter(feeds, itm => itm._id !== memId);
@@ -132,7 +132,7 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
           setUpdatedMembers([...tUpdates]);
         })
         .catch(error => {
-          toast.error(error.toString());
+          toast.error('削除できません。');
         });
     }
 
@@ -140,10 +140,10 @@ const InstagramPage = ({selCampId, isLoading, data, catType}) => {
       return campaignService.updateReport(selCampId, memId, rtype, detail)
         .then((ret) => {
           if (ret.status !== 'ok') {
-            toast.error('状態保存に失敗しました。');
+            toast.error('状態更新に失敗しました。');
             return;
           }
-          toast.success('保存しました。');
+          toast.success('更新しました。');
 
           let tUpdates = _.map(updatedMembers, itm => {
             if (itm._id !== memId)

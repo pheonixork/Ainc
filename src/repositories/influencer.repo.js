@@ -28,6 +28,7 @@ async function getUsersCampaings(userId, accountId) {
         _id: 0,
         infId: 1, 
         type: 1,
+        avatar: 1,
         name: 1,
         email: 1,
         link: 1,
@@ -58,6 +59,7 @@ async function getUsersCampaings(userId, accountId) {
       $project: {
         cid: "$campaigns",
         infId: 1,
+        avatar: 1,
         type: 1,
         name: 1,
         email: 1,
@@ -102,6 +104,8 @@ async function getInfluencers(userId, catType='') {
       $project: {
         _id: 1,
         infId: 1,
+        avatar: 1,
+        infName: 1,
         name: 1,
         email: 1,
         link: 1,
@@ -109,6 +113,7 @@ async function getInfluencers(userId, catType='') {
         star: 1,
         followers: 1,
         engage: 1,
+        engagerate: 1,
         cdate: '$createdAt'
       }
     }
@@ -173,11 +178,13 @@ async function saveInfluencer(userId, infId, info, catType, categories) {
       oldInflu =  await Influencers.create({
         userId: toObjectId(userId),
         infId: infId,
-        name: info.profile.fullname,
-        link: info.profile.url,
-        followers: info.profile.followers,
-        engage: info.profile.engagement,
-        avatar: info.profile.picture,
+        name: info.fullname,
+        infName: info.username,
+        link: info.url,
+        followers: info.followers,
+        engage: info.engagements,
+        engagerate: info.engagementRate,
+        avatar: info.picture,
         type: catType,
         campaigns: _.map(categories, itm => {
           return toObjectId(itm);
@@ -193,11 +200,14 @@ async function saveInfluencer(userId, infId, info, catType, categories) {
           members: {
             accountId: oldInflu._id, 
             infId: infId, 
+            infName: oldInflu.infName,
             name: oldInflu.name,
             link: oldInflu.link,
             followers: oldInflu.followers,
             engage: oldInflu.engage,
-            avatar: oldInflu.avatar
+            engagerate: oldInflu.engagerate,
+            avatar: oldInflu.avatar,
+            type: oldInflu.type,
           }}
         }
       );

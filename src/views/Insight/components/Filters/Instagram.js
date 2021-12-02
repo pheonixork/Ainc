@@ -76,7 +76,7 @@ export default function Instagram({...rest}) {
             <Box 
               sx={{display: 'flex', flexShrink: 0}}>
               <Box>
-                <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From' />
+                <FltTextField clearFlag={clearFlag} tip='リーチ%' icon={false} phstr='From'/>
               </Box>
               <Box>
                 <FltTextField clearFlag={clearFlag} tip='保存%' icon={false} phstr='To' />

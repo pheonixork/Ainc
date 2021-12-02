@@ -8,6 +8,7 @@ import Container from 'layouts/Fixed/components/Container';
 import Lang from 'constants/lang';
 import Constants from 'constants/constants';
 import {campaignService} from 'services';
+import toast from 'react-hot-toast';
 
 const New = () => {
   const router = useRouter();
@@ -35,11 +36,11 @@ const New = () => {
           const returnUrl = `/campaign/detail/${ret.id}`;
           router.push(returnUrl);
         } else {
-          setError(ret.msg);
+          toast.error(ret.msg);
         }
       })
       .catch(error => {
-          setError(error);
+        toast.error(error.toString());
       });
   }
 

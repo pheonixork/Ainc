@@ -19,4 +19,15 @@ const keywords = {
   }
 };
 
+export const evaluateValue = (val) => {
+  if (val > 1000 * 1000 * 1000)
+    return (val / (1000 * 1000 * 1000)).toFixed(1) + 'B'
+  else if (val > 1000 * 1000)
+    return (val / (1000 * 1000)).toFixed(1) + 'M'
+  else if (val > 1000)
+    return (val / 1000).toFixed(1) + 'K'
+
+  return val
+}
+
 export default keywords;

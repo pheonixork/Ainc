@@ -2,6 +2,7 @@ import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
+import {evaluateValue} from 'constants/constants';
 
 const useStyles = makeStyles({
   audiencelikes: {
@@ -29,18 +30,9 @@ const useStyles = makeStyles({
   }
 });
 
-const Notable = ({followers, likers}) => {
+const Notable = ({followers, likers, lookalikes}) => {
   const classes = useStyles();
-
   const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   return (
     <Box>
@@ -54,7 +46,12 @@ const Notable = ({followers, likers}) => {
           <span>Engagements</span>
           <span>Followers</span>
         </Box>
-        {_.map(followers, (itm, idx) => (
+        {!followers || followers.length === 0 ? 
+          <Box sx={{whiteSpace:'pre-wrap', textAlign: 'center', color:'#888'}}>
+            {'現在、データの表示に問題があります。\r\n数日中に改善されますので、いましばらくお待ちください。'}
+          </Box>
+          :
+          _.map(followers, (itm, idx) => (
           idx < 22 &&
           <Box key={idx} className={classes.listitem}>
             <Box className={classes.itemphoto}>
@@ -84,7 +81,12 @@ const Notable = ({followers, likers}) => {
           <span>Engagements</span>
           <span>Followers</span>
         </Box>
-        {_.map(likers, (itm, idx) => (
+        {!likers || likers.length === 0 ? 
+          <Box sx={{whiteSpace:'pre-wrap', textAlign: 'center', color:'#888'}}>
+            {'現在、データの表示に問題があります。\r\n数日中に改善されますので、いましばらくお待ちください。'}
+          </Box>
+          :
+          _.map(likers, (itm, idx) => (
           idx < 22 &&
           <Box key={idx} className={classes.listitem}>
             <Box className={classes.itemphoto}>
@@ -101,6 +103,41 @@ const Notable = ({followers, likers}) => {
             </Box>
             <span className='subtitle1'>{evaluateValue(itm.engagements)}</span>
             <span className='subtitle1'>{evaluateValue(itm.followers)}</span>
+          </Box>
+        ))}
+      </Box>
+      <Box className={classes.audiencelikes}>
+        <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
+          <svg height="16" width="18" fill="none" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg"><path d="M10.2143 15.5319C9.53055 16.1575 8.47795 16.1575 7.79422 15.5229L7.69526 15.4322C2.97207 11.1255 -0.113742 8.30573 0.00321271 4.78783C0.057192 3.24649 0.839891 1.76861 2.1084 0.8982C4.48349 -0.733813 7.41636 0.0277934 8.99975 1.89554C10.5831 0.0277934 13.516 -0.74288 15.8911 0.8982C17.1596 1.76861 17.9423 3.24649 17.9963 4.78783C18.1222 8.30573 15.0274 11.1255 10.3043 15.4503L10.2143 15.5319Z" fill="#000"></path></svg>
+          <span style={{fontWeight:'600', marginLeft: '.5rem'}}>類似アカウント</span>
+        </Box>
+        <Box className={classes.listitem}>
+          <span>Influencers</span>
+          <span>Engagements</span>
+          <span>Followers</span>
+        </Box>
+        {!lookalikes || lookalikes.length === 0 ? 
+          <Box sx={{whiteSpace:'pre-wrap', textAlign: 'center', color:'#888'}}>
+            {'現在、データの表示に問題があります。\r\n数日中に改善されますので、いましばらくお待ちください。'}
+          </Box>
+          :
+          _.map(lookalikes, (itm, idx) => (
+          idx < 22 &&
+          <Box key={idx} className={classes.listitem}>
+            <Box className={classes.itemphoto}>
+              <Box
+                className={classes.showFront}
+                component={LazyLoadImage}
+                effect="blur"
+                src={itm.profile.picture}
+                sx={{width:'45px', height:'45px', borderRadius:'50%'}}
+              />
+              <a href={itm.profile.url} target="_blank" style={{marginLeft:'1rem'}}>
+                <span>@{itm.profile.username}</span>
+              </a>
+            </Box>
+            <span className='subtitle1'>{evaluateValue(itm.profile.engagements)}</span>
+            <span className='subtitle1'>{evaluateValue(itm.profile.followers)}</span>
           </Box>
         ))}
       </Box>

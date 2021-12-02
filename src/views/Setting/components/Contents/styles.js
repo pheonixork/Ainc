@@ -190,20 +190,25 @@ const styles = theme => ({
     marginBottom: '1.5rem',
     fontWeight: '400',
     textAlign: 'center',
-    fontSize: '.9rem'
+    fontSize: '.8rem'
   },
   upgradeplanmoney: {
     fontWeight: '700',
-    fontSize: '28px',
+    fontSize: '24px',
     lineHeight: '50px',
     textAlign: 'center'
+  },
+  upgradelabel: {
+    fontWeight: '500 !important',
+    fontSize: '12px !important'
   },
   upgradeplanperiod: {
     fontSize: '.9rem'
   },
   upgradeplandivide: {
-    height: '2rem',
-    fontSize: '14px'
+    marginTop: '.5rem',
+    fontSize: '.8rem',
+    textAlign: 'center',
   },
   userdetailwrapper: {
     display: 'grid',

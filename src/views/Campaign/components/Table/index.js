@@ -1,6 +1,7 @@
 export { default as CustomTableHead } from './CustomTableHead';
 export { default as CampaignListTable } from './CampaignListTable';
 export { default as ListPageStatic } from './ListPageStatic';
+export { default as ListPagePDF } from './ListPagePDF';
 export { default as ListPageTable } from './ListPageTable';
 export { default as ListPageTableHead } from './ListPageTableHead';
 export { default as ListPageTableRow } from './ListPageTableRow';

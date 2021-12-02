@@ -58,7 +58,7 @@ export default function App({ Component, pageProps }) {
 
   const authCheck = (url) => {
     // redirect to login page if accessing a private page and not logged in 
-    const publicPaths = ['/signin-cover', '/password-reset-cover', '/signup-cover', '/register', '/blog', '/features', '/pricing'];
+    const publicPaths = ['/signin-cover', '/password-reset-cover', '/signup-cover', '/register'];
     const path = url.split('?')[0];
 
     if (path === '/') {
@@ -78,7 +78,7 @@ export default function App({ Component, pageProps }) {
       setAuthorized(true);
     }
   }
-    
+
   return (
     <React.Fragment>
       <Head>
@@ -87,6 +87,17 @@ export default function App({ Component, pageProps }) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <title>Ainc | Find, analyze and monitor influencers like the best</title>
+
+        {userService.userValue && 
+          <script>
+            {`window.intercomSettings = {app_id: "vtgey0iz", name: "${userService.userValue.username}", email: "${userService.userValue.email}", created_at: "${userService.userValue.createdTime}"};`}
+          </script>
+        }
+        {userService.userValue && 
+          <script>
+            {`(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/vtgey0iz';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();`}
+          </script>
+        }
       </Head>
       <Page>
         {authorized && <Component {...pageProps} />}

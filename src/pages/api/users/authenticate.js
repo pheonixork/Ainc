@@ -1,5 +1,6 @@
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
+import moment from 'moment';
 import getConfig from 'next/config';
 import dbConnect from 'middlewares/mongodb-handler';
 import Lang from 'constants/lang';
@@ -45,6 +46,8 @@ export default withSession(async (req, res) => {
     // set login history
     await UserRepo.updateLoginAt(userInfo._id, loginAt);
 
+    const utcCreated = moment.utc(moment(userInfo.createdAt)).format('YYYY-MM-DD HH:mm:ss');
+
     // return basic user details and token
     return res.status(200).json({
       id: userInfo._id.toString(),
@@ -52,6 +55,8 @@ export default withSession(async (req, res) => {
       isCampaign: true,
       role: userInfo.perms,
       username: userInfo.name,
+      email: userInfo.email,
+      createdTime: moment(utcCreated).format("x"),
       token
     });
   }

@@ -85,6 +85,8 @@ const feedHeadCells = [
 ];
 
 const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -185,7 +187,7 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
   return (
     <>
       <TableRow>
-        <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
@@ -209,30 +211,30 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
-        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{row.amount}</TableCell>
-        <TableCell className={classes.feedtableCell}>{row.registers}</TableCell>
-        <TableCell className={classes.feedtableCell}>{row.recycle}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{formatterInt.format(row.amount)}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatterInt.format(row.registers)}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatterInt.format(row.recycle)}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={okValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={oksRef } onChange={okValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
-        <TableCell className={classes.feedtableCell}>{row.normal}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatter.format(row.engagerate * 100)}</TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={prPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shareRef } onChange={shareValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shareRef } onChange={shareValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={sharePerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={roasRef} />
@@ -263,6 +265,7 @@ const ReportTiktokRow = ({row, catType, updateDatas, classes}) => {
 }
 
 export default function ReportTiktokTable({getDatas, catType, updateDatas, classes, ...rest}) {
+
   const [data, setData] = useState([]);
   
   useEffect(() => {
@@ -298,7 +301,7 @@ export default function ReportTiktokTable({getDatas, catType, updateDatas, class
                   <TableCell
                     key={headCell.id}
                     padding='normal'
-                    align="center"
+                    align="left"
                     sortDirection={orderBy === headCell.id ? order : false}
                     className={classes.feedtableCell}
                   >

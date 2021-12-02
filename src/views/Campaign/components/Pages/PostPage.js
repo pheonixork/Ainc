@@ -52,7 +52,7 @@ const PostPage = ({selCampId, catType}) => {
         toast.error('状態保存に失敗しました。');
         return;
       }
-      toast.success('保存しました。');
+      toast.success('更新しました。');
 
       updatedMembers[idx].amount = amount;
       setUpdatedMembers([...updatedMembers]);
@@ -69,7 +69,7 @@ const PostPage = ({selCampId, catType}) => {
         toast.error('状態保存に失敗しました。');
         return;
       }
-      toast.success('保存しました。');
+      toast.success('更新しました。');
 
       updatedMembers[idx].pstatus = pstatus;
       setUpdatedMembers([...updatedMembers]);

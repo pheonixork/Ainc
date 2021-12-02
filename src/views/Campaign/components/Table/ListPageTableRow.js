@@ -16,9 +16,11 @@ const statusValues = [
 ];
 
 export default function ListPageTableRow({row, index, catType, handleSaveMember}) {
-  const [showDlg, setShow] = useState(false);
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
+  
+  const [anchorEl, setAnchorEl] = useState(null);
   const closeDlg = () => {
-    setShow(false);
+    setAnchorEl(null);
   }
 
   const [selAccountId, setAccountId] = useState('');
@@ -29,10 +31,10 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
 
   const [data, setData] = useState(row);
 
-  const {setInfluencerCollapsable, setInfluencerId, influSelectedId} = useMainContext();
-  const handleSelectChanged = (index) => {
-    setInfluencerCollapsable(false);
-    setInfluencerId(index);
+  const {setInfluencerCollapsable, setSelectedInfluencer, selectedInfluencer} = useMainContext();
+  const handleSelectChanged = (e) => {
+    setInfluencerCollapsable(false); 
+    setSelectedInfluencer({id:row.infId, username:row.infName, type:row.type});
   };
 
   const changeStutus = (val) => {
@@ -42,23 +44,23 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
   return (
     <>
       <TableRow
-        className={`${influSelectedId === index ? 'influencer-detail-active' : ''}`}
+        className={`${selectedInfluencer && selectedInfluencer.id === row.infId ? 'influencer-detail-active' : ''}`}
         hover
-        onClick={() => handleSelectChanged(index)}
+        onClick={handleSelectChanged}
         tabIndex={-1}
         key={index}
       >
         <TableCell align="center" sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <RelativeImage
             isRound
-            imgSrc={'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D'}
+            imgSrc={row.avatar}
             sx={{width: '3.125rem !important', height: '3.125rem !important', margin: '.5rem'}}
           />
           <Rating value={data.star} readOnly />
         </TableCell>
         <TableCell align="left">{data.name}</TableCell>
-        <TableCell align="left">{data.followers}</TableCell>
-        <TableCell align="left">{data.engage}</TableCell>
+        <TableCell align="left">{formatterInt.format(data.followers)}</TableCell>
+        <TableCell align="left">{formatterInt.format(data.engage)}</TableCell>
         <TableCell align="center">
           <StatusSelect 
             initValue={data.status}
@@ -83,21 +85,20 @@ export default function ListPageTableRow({row, index, catType, handleSaveMember}
               <Button
                 variant={'outlined'}
                 style={{ padding: '0 20px' }}
-                onClick={(e) => {e.stopPropagation(), setShow(true)}}
+                onClick={(e) => {e.stopPropagation(), setAnchorEl(e.currentTarget)}}
               >
-                {Lang.btn.save}
+                {Lang.btn.register}
               </Button>
-              {showDlg === true && 
-                <SaveDlg 
-                  infId={data.infId}
-                  catType={catType}
-                  closeDlg={closeDlg} 
-                />
-              }
             </Box>
           </Box>
         </TableCell>
       </TableRow>
+      <SaveDlg 
+        anchorEl={anchorEl}
+        closeDlg={closeDlg} 
+        infId={data.infId}
+        catType={catType}
+      />
       <CP 
         accountId={selAccountId} 
         setCollapse={closeCP}

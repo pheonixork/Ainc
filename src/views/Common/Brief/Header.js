@@ -78,6 +78,24 @@ const Header = ({data, type, handleOpen}) => {
         variant={'outlined'}>
         フルレポートを表示
       </Button>
+      <Box 
+        className='mgt20' 
+        sx={{
+          display: 'flex', 
+          justifyContent: 'space-between',
+          width: '100%',
+          paddingLeft: '1rem',
+          paddingRight: '1rem'
+        }}
+      >
+        <span>
+          更新日：
+        </span>
+        <Button 
+          variant={'outlined'}>
+          更新
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -18,9 +18,9 @@ async function handler(req, res) {
   }
 
   async function getLocations() {
-    const {type} = req.body;
+    const {type, keyword} = req.body;
 
-    return apiWrapper.get(`${baseUrl}/${type}/locations`
+    return apiWrapper.get(`${baseUrl}/${type}/locations?query=${keyword}&limit=20`
     ).then(response => {
       return res.status(200).json({
         status: 'ok',

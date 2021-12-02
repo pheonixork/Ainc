@@ -77,6 +77,7 @@ const storyHeadCells = [
 ];
 
 const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -185,7 +186,7 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
   return (
     <>
       <TableRow>
-        <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
@@ -209,31 +210,31 @@ const ReportStoryRow = ({catType, row, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
-        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{row.amount}</TableCell>
-        <TableCell className={classes.feedtableCell}>{row.followers}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{formatterInt.format(row.amount)}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatterInt.format(row.followers)}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={inpRef } onChange={inpValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={inpRef } onChange={inpValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={inpPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={clickRef } onChange={clickValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={clickRef } onChange={clickValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={clickPerRef}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={stampRef } onChange={stampValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={stampRef } onChange={stampValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={stampPerRef}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={stampPerRef} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={roasRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell align="center" className={classes.feedtableCell}>
           <Button aria-haspopup="true" onClick={handleMenuClick} className="active">...</Button>
@@ -296,7 +297,7 @@ export default function ReportStoryTable({catType, getDatas, updateDatas, classe
                   <TableCell
                     key={headCell.id}
                     padding='normal'
-                    align="center"
+                    align="left"
                     sortDirection={orderBy === headCell.id ? order : false}
                     className={classes.feedtableCell}
                   >

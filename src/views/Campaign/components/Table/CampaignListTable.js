@@ -29,37 +29,37 @@ const headCells = [
     label: 'SNS',
   },
   {
-    id: 'price',
+    id: 'amount',
     numeric: true,
     label: '金額',
   },
   {
-    id: 'members',
+    id: 'mems',
     numeric: true,
     label: '人数',
   },
   {
-    id: 'createdDate',
+    id: 'cdate',
     numeric: true,
     label: '作成日',
   },
   {
-    id: 'endDate',
+    id: 'edate',
     numeric: true,
     label: '終了日',
   },
   {
-    id: 'numberOfReach',
+    id: 'rich',
     numeric: true,
     label: 'リーチ数',
   },
   {
-    id: 'percentOfReach',
+    id: 'richper',
     numeric: true,
     label: 'リーチ%',
   },
   {
-    id: 'earnings',
+    id: 'sell',
     numeric: true,
     label: '売上',
   },
@@ -76,8 +76,8 @@ const headCells = [
 ];
 
 export default function CampaignListTable({data, handleSelectChanged}) {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('');
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('cdate');
   const [selected, setSelected] = useState('');
   const [visible, setVisible] = useState([]);
 

@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useTheme} from '@mui/material/styles';
 import {FltAutocomplete, FltSingleSelect, FltSingleSelectObject, FltMultiSelect, FltTextField, FltRangeSelect} from '../../Common/SearchFilters';
+import {FltInfluencerView, FltAudienceAges, FltAudienceGender, FltAudienceInterests, FltAudienceLanguage, FltAudienceLocation, FltInfluencerBio, FltInfluencerContract, FltInfluencerEngage, FltInfluencerFollowers, FltInfluencerGender, FltInfluencerHash, FltInfluencerInterest, FltInfluencerKeyword, FltInfluencerLanguage, FltInfluencerLocation, FltInfluencerPost} from '../../Common/SearchFilters';
 import Keyword from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
@@ -18,11 +19,45 @@ const ages = ['13-17', '18-24', '25-34', '35-44', '45+'];
 
 const engages = ['>1%', '>2% (average)', '>3%', '>4%', '>5%', '>6%', '>7%', '>8%', '>9%', '>10%'];
 
-export default function YoutubeFilter({interests, languages, locations}) {
+export default function YoutubeFilter({interests, languages, searchFromServer}) {
   const [clearFlag, setClearFlag] = useState(false);
   const theme = useTheme();
   const clearFilterClicked = (e) => {
     setClearFlag(!clearFlag);
+  }
+
+  const [audienceFilter, setAudienceFilter] = useState({
+    age:[], 
+    gender: null, 
+    language: null, 
+    location:[]
+  });
+  const [influencerFilter, setInfluencerFilter] = useState({
+    engagementRate: null,
+    followers: {},
+    gender: null,
+    hasContactDetails: null,
+    interests: [],
+    language: null,
+    location: [],
+    relevance: [],
+    views: {},
+  });
+
+  const startSearch = (e) => {
+    searchFromServer({audience: audienceFilter, influencer: influencerFilter});
+  }
+
+  const setAudience = (field, value) => {
+    setAudienceFilter({...audienceFilter, [field]:value});
+  }
+
+  const setInfluencer = (field, value) => {
+    setInfluencerFilter({...influencerFilter, [field]:value});
+  }
+
+  const setKeyword = (value) => {
+    setInfluencerFilter({...influencerFilter, 'relevance':['@'+value]});
   }
 
   return (
@@ -38,15 +73,16 @@ export default function YoutubeFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
-            <FltAutocomplete 
+            <FltInfluencerLocation 
               clearFlag={clearFlag}
               tip={Keyword.caption.influencerlocation}
               phstr='インフルエンサ―の地域'
               icon={false} 
-              values={locations} />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltRangeSelect
+            <FltInfluencerFollowers
               clearFlag={clearFlag}
               tip={Keyword.caption.subscriber}
               icon={false}
@@ -54,10 +90,11 @@ export default function YoutubeFilter({interests, languages, locations}) {
               fromStyle={{width:'8rem'}}
               toValues={[...followers, '1000000+']}
               toStyle={{width:'8rem', marginLeft:'10px'}}
-              />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltRangeSelect
+            <FltInfluencerView
               clearFlag={clearFlag}
               tip={Keyword.caption.averageview}
               icon={false}
@@ -65,54 +102,70 @@ export default function YoutubeFilter({interests, languages, locations}) {
               fromStyle={{width:'8rem'}}
               toValues={[...followers, '1000000+']}
               toStyle={{width:'8rem', marginLeft:'10px'}}
-              />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltInfluencerGender 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={false} 
-              values={['Male', 'Female']}
-              style={{width:'8rem'}}/>
+              values={['MALE', 'FEMALE']}
+              style={{width:'8rem'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{minWidth:'350px', flex:1}}>
-            <FltSingleSelectObject 
+            <FltInfluencerLanguage
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
-              style={{width: '100% !important'}}/>
+              style={{width: '100% !important'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box >
-            <FltSingleSelect 
+            <FltInfluencerPost 
               clearFlag={clearFlag}
               tip={Keyword.caption.post}
               icon={false} 
               values={['30 days', '3 Months', '6 Months']}
-              style={{width:'12rem'}}/>
+              style={{width:'12rem'}}
+            />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltInfluencerEngage 
               clearFlag={clearFlag}
               tip={Keyword.caption.engagement}
               icon={true} 
               values={engages}
               style={{width:'12rem'}}
               caption={Keyword.caption.engagement_tip}
+              setValues={setInfluencer}
             />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltInfluencerContract 
               clearFlag={clearFlag}
               tip={Keyword.caption.contractinfo}
               icon={false} 
               values={['Email available']}
-              style={{width:'13rem'}}/>
+              style={{width:'13rem'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{width:'300px'}}>
-            <FltTextField clearFlag={clearFlag} tip={Keyword.caption.keyword} icon={true} phstr='Any' caption={Keyword.caption.keyword_tip}/>
+            <FltInfluencerKeyword 
+              clearFlag={clearFlag} 
+              tip={Keyword.caption.keyword} 
+              icon={true} 
+              phstr='Any' 
+              caption={Keyword.caption.keyword_tip}
+              setValues={setInfluencer}
+            />
           </Box>
         </Box>
       </Box>
@@ -127,40 +180,45 @@ export default function YoutubeFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'250px !important'}}>
-            <FltAutocomplete 
+            <FltAudienceLocation 
               clearFlag={clearFlag}
               tip={Keyword.caption.audiencelocation}
               phstr='フォロワーの地域' 
               icon={true} 
-              caption={Keyword.caption.other_tip}
-              values={locations} />
+              caption={Keyword.caption.other_tip} 
+              setValues={setAudience}
+            />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltAudienceGender 
               clearFlag={clearFlag}
               tip={Keyword.caption.gender}
               icon={true} 
-              values={['Male', 'Female']}
+              values={['MALE', 'FEMALE']}
               caption={Keyword.caption.other_tip}
-              style={{width:'8rem'}}/>
+              style={{width:'8rem'}}
+              setValues={setAudience}
+            />
           </Box>
           <Box sx={{width:'8rem'}}>
-            <FltMultiSelect 
+            <FltAudienceAges 
               clearFlag={clearFlag}
               tip={Keyword.caption.age}
               icon={true}
               values={ages}
               caption={Keyword.caption.other_tip}
+              setValues={setAudience}
             />
           </Box>
           <Box sx={{minWidth:'246px'}}>
-            <FltSingleSelectObject 
+            <FltAudienceLanguage 
               clearFlag={clearFlag}
               tip={Keyword.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
+              setValues={setAudience}
             />
           </Box>
         </Box>
@@ -181,6 +239,7 @@ export default function YoutubeFilter({interests, languages, locations}) {
               fontSize:'14px',
               backgroundColor: theme.palette.clrVariables.grayWhite,
             }}}
+            onChange={e=>setKeyword(e.target.value)}
           />
         </Box>
         <Box sx={{display:'flex', width:'100%', justifyContent:'flex-end', marginTop: '15px'}}>
@@ -194,6 +253,7 @@ export default function YoutubeFilter({interests, languages, locations}) {
             className="active"
             variant={'outlined'}
             sx={{marginLeft:'15px'}}
+            onClick={startSearch}
           >
             {Keyword.caption.search}
           </Button>

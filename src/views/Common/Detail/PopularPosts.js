@@ -11,6 +11,7 @@ import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import {styled} from '@mui/material/styles';
 import RelativeImage from 'components/RelativeImage';
+import {evaluateValue} from 'constants/constants';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -42,13 +43,11 @@ const useStyles = makeStyles({
     textOverflow: 'ellipsis',
     '-webkitBoxOrient': 'vertical',
     '-webkitLineClamp': 4,
-    height: '69px'
   },
 
   lookname: {
     fontSize: '14px',
     fontWeight: 600,
-    lineHeight: '0.7'
   },
 
   lookshortname: {
@@ -62,17 +61,9 @@ const useStyles = makeStyles({
   }
 });
 
-const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, interests}) => {
+const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, interests, lookalikes}) => {
   const classes = useStyles();
   const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   const chartOptions1 = {
     chart: {
@@ -383,7 +374,7 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
             フォロワー推移
             <ArrowDropDownIcon fontSize="small" style={{color:'rgb(255,0,0)'}}/>
             <span style={{color:'#ff0000'}}>0.53% </span>&nbsp;
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のフォロワー増減の推移' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のフォロワー増減の推移。' />
           </Box>
           <Box>
             <Chart
@@ -397,7 +388,7 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex'}}>
             フォロー推移
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のフォロー増減の推移' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のフォロー増減の推移。' />
           </Box>
           <Box>
             <Chart
@@ -410,13 +401,12 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
         </Box>
       </Box>
 
-      {/*<Box className='wrapper-grid' sx={{gridTemplateColumns: '2fr 1fr', marginTop:'.5rem'}}>*/}
-      <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr', marginTop:'.5rem'}}>
+      <Box className='wrapper-grid' sx={{gridTemplateColumns: '2fr 1fr', marginTop:'.5rem'}}>
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex', justifyContent: 'space-between'}}>
             <Box sx={{display:'flex', justifyContent:'center'}}>
               エンゲージメント推移
-              <RoundInfo sx={{marginLeft: '.5rem'}} caption='直近投稿のエンゲージメントの推移' />
+              <RoundInfo sx={{marginLeft: '.5rem'}} caption='直近投稿のエンゲージメントの推移。' />
             </Box>
             <Box sx={{display: 'flex', alignItems: 'center'}}>
               <svg height="12" width="12" fill="none" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg" className='mgr10'>
@@ -438,47 +428,47 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
             />
           </Box>
         </Box>
-        {/*
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex', alignItems: 'flex-end'}}>
             類似アカウント  
             <RoundInfo sx={{marginLeft: '.5rem'}} caption='キーワードトピックから類似アカウントを表示しています。' />
           </Box>
-            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+          {_.map(lookalikes, (itm, idx) => (
+            idx < 5 && 
+            <Box key={idx} sx={{display: 'flex', justifyContent: 'space-between'}}>
               <Box sx={{display: 'flex', alignItems: 'center'}}>
                 <Box
                   className='mgr5'
                   component={LazyLoadImage}
                   effect="blur"
-                  src={'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2V5KPwPXcA2WyNRhPMoCHKMdtKG3eSEc5JQ8TgTu0NynllFlelISOb%2Blsdn%2FFsiegkW4xzvOq4WKYeHoY1KFSvw%3D%3D'}
+                  src={itm.profile.picture}
                   width={'45px'}
                   height={'45px'}
                   sx={{borderRadius:'50%', marginTop:'.5rem'}}
                 />
                 <Box>
-                <Box className={classes.lookname}>Alex Android</Box>
-                  <Box 
-                    className={classes.lookshortname}
-                    component="a"
-                    href="https://www.instagram.com/alxsndro12"
-                  >
-                    @alxsndro12
-                  </Box>
+                <Box className={classes.lookname}>{itm.profile.fullname}</Box>
+                <Box 
+                  className={classes.lookshortname}
+                  component="a"
+                  href={itm.profile.url}
+                >
+                  @{itm.profile.username}
+                </Box>
                 </Box>
               </Box>
             </Box>  
-          </Box>
-        */}
+          ))}
+        </Box>
       </Box>
     
-      {/*<Box className='wrapper-grid' sx={{gridTemplateColumns: '2fr 1fr', marginTop:'.5rem'}}>*/}
-      <Box className='wrapper-grid' sx={{gridTemplateColumns: '1fr', marginTop:'.5rem'}}>
+      <Box className='wrapper-grid' sx={{gridTemplateColumns: '2fr 1fr', marginTop:'.5rem'}}>
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex', justifyContent: 'normal', alignItems: 'flex-end'}}>
             いいね推移
             <ArrowDropDownIcon fontSize="small"  style={{color:'rgb(255,0,0)'}} />
             <span style={{color:'#ff0000'}}>0.53% </span>&nbsp;
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のいいね増減の推移' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='過去半年のいいね増減の推移。' />
           </Box>
           <Box>
             <Chart
@@ -489,33 +479,31 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
             />
           </Box>
         </Box>
-        {/*
-          <Box className='box-wrapper-shadow grid-item leftalign'>
-            <Box className='subtitle1' sx={{display: 'flex'}}>
-              人気の#と@
-              <RoundInfo sx={{marginLeft: '.5rem'}} caption='投稿に頻繁に使用されている' />
-            </Box>
-            <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-              <Box className={`genre-span ${classes.fontsize12}`}>#finaollafine</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#vamoscomtudo</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#forzajvue</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#c7eyewear</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#clearman</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#portugual</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#nikefootball</Box>
-              <Box className={`genre-span ${classes.fontsize12}`}>#gerginoago</Box>
-            </Box>
+        <Box className='box-wrapper-shadow grid-item leftalign'>
+          <Box className='subtitle1' sx={{display: 'flex'}}>
+            人気の#と@
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='投稿に頻繁に使用されている。' />
           </Box>
-        */}
+          <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
+            {_.map(hashtags, (itm, idx) => (
+              idx < 12 && 
+              <Box className={`genre-span ${classes.fontsize12}`}>#{itm.tag}</Box>
+            ))}
+          </Box>
+        </Box>
       </Box>
 
       <Box className='box-wrapper-shadow grid-item leftalign'>
         <Box className='subtitle1' sx={{display: 'flex'}}>
           ハッシュタグエンゲージメント
         </Box>
-        <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-          {_.map(hashtags, itm => (
-            <Box className={`genre-span ${classes.fontsize12}`}>#{itm.tag}</Box>
+        <Box sx={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+          {_.map(_.orderBy(hashtags, (['weight']), ['asc']), (itm, idx) => (
+            idx < 12 &&
+            <Box key={idx} sx={{display: 'grid', gridTemplateColumns: '2fr 1fr', alignItems: 'center'}}>
+              <Box className={`genre-span ${classes.fontsize12} text-ellipse text-width-120`}>#{itm.tag}</Box>
+              <span>{`${formatter.format(itm.weight * 100)}%`}</span>              
+            </Box>
           ))}
         </Box>
       </Box>
@@ -535,8 +523,8 @@ const PopularPosts = ({data, statHistory, recentPosts, hashtags, brandAffinity, 
             興味
             <RoundInfo sx={{marginLeft: '.5rem'}} caption='どんな投稿に興味をもちやすいか、独自のアルゴリズムで計測。' />
           </Box>
-          {_.map(interests, itm => (
-            <Box className='interest-span'>{itm.name}</Box>
+          {_.map(interests, (itm, idx) => (
+            <Box key={idx} className='interest-span'>{itm.name}</Box>
           ))}
         </Box>
       </Box>

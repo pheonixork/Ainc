@@ -1,9 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, {useState, useEffect, useCallback} from 'react';
 import {Box, } from '@mui/material';
-import {ListPageStatic, ListPageTable} from '../Table'
+import {ListPageStatic, ListPageTable, ListPagePDF} from '../Table'
 import {campaignService} from 'services';
 import toast from 'react-hot-toast';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const ListPage = ({selCampId, catType}) => {
   
@@ -48,7 +50,7 @@ const ListPage = ({selCampId, catType}) => {
         toast.error('状態保存に失敗しました。');
         return;
       }
-      toast.success('保存しました。');
+      toast.success('更新しました。');
 
       updatedMembers[idx].status = status;
       setUpdatedMembers([...updatedMembers]);
@@ -58,14 +60,35 @@ const ListPage = ({selCampId, catType}) => {
     });
   }
 
+  const save2PDF = () => {
+    const input = document.getElementById('listpage_pdf');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        pdf.save("リストアップ情報.pdf");
+      });
+  }
+
   return (
     <Box className='list-page'>
-      <ListPageStatic isloading={data.name.length < 1} updatedInfos={getStaticInfos} />
+      <ListPageStatic 
+        isloading={data.name.length < 1} 
+        updatedInfos={getStaticInfos} 
+        downloadPDF={save2PDF}
+      />
       <ListPageTable 
         catType={catType}
         getMembers={getMembers} 
         handleSaveMember={saveMemberStatus}
       />
+      <Box sx={{position: 'fixed', left: '5000px'}} id="listpage_pdf">
+        <ListPagePDF
+          updatedInfos={getStaticInfos} 
+        />
+      </Box>
     </Box>
   );
 };

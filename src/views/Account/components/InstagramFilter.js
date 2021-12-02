@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useTheme} from '@mui/material/styles';
-import {FltAutocomplete, FltSingleSelect, FltSingleSelectObject, FltMultiSelect, FltMultiSelectObject, FltTextField, FltRangeSelect} from '../../Common/SearchFilters';
+import {FltAudienceAges, FltAudienceGender, FltAudienceInterests, FltAudienceLanguage, FltAudienceLocation, FltInfluencerBio, FltInfluencerContract, FltInfluencerEngage, FltInfluencerFollowers, FltInfluencerGender, FltInfluencerHash, FltInfluencerInterest, FltInfluencerKeyword, FltInfluencerLanguage, FltInfluencerLocation, FltInfluencerPost} from '../../Common/SearchFilters';
 import Lang from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
@@ -14,16 +14,55 @@ import Constants from 'constants/constants';
 
 const followers = [1000, 5000, 10000, 15000, 25000, 50000, 100000, 250000, 500000, 1000000];
 
-const ages = ['13-17', '18-24', '25-34', '35-44', '45+'];
+const ages = ['13-17', '18-24', '25-34', '35-44', '45-64'];
 
-const engages = ['>1%', '>2% (average)', '>3%', '>4%', '>5%', '>6%', '>7%', '>8%', '>9%', '>10%'];
+const engages = Array.from({length: 10}, (_, i) => {
+  return {value: (i + 1) * 0.01, text: `≥${(i+1)}%`}
+});
 
-export default function InstagramFilter({interests, languages, locations}) {
+export default function InstagramFilter({interests, languages, searchFromServer}) {
   const [clearFlag, setClearFlag] = useState(false);
   const theme = useTheme();
 
   const clearFilterClicked = (e) => {
     setClearFlag(!clearFlag);
+  }
+
+  const [audienceFilter, setAudienceFilter] = useState({
+    age:[], 
+    gender: null, 
+    interests:[], 
+    language: null, 
+    location:[]
+  });
+  const [influencerFilter, setInfluencerFilter] = useState({
+    bio: '',
+    engagementRate: null,
+    followers: {},
+    gender: null,
+    hasContactDetails: null,
+    hasYouTube: false,
+    interests: [],
+    language: null,
+    lastposted: null,
+    location: [],
+    relevance: []
+  });
+
+  const startSearch = (e) => {
+    searchFromServer({audience: audienceFilter, influencer: influencerFilter});
+  }
+
+  const setAudience = (field, value) => {
+    setAudienceFilter({...audienceFilter, [field]:value});
+  }
+
+  const setInfluencer = (field, value) => {
+    setInfluencerFilter({...influencerFilter, [field]:value});
+  }
+
+  const setKeyword = (value) => {
+    setInfluencerFilter({...influencerFilter, 'relevance':['@'+value]});
   }
 
   return (
@@ -38,15 +77,16 @@ export default function InstagramFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'calc(200px + 0.5rem) !important'}}>
-            <FltAutocomplete 
+            <FltInfluencerLocation 
               clearFlag={clearFlag}
               tip={Lang.caption.influencerlocation}
               phstr='インフルエンサ―の地域'
               icon={false} 
-              values={locations} />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltRangeSelect
+            <FltInfluencerFollowers
               clearFlag={clearFlag}
               tip={Lang.caption.followers}
               icon={false}
@@ -54,87 +94,100 @@ export default function InstagramFilter({interests, languages, locations}) {
               fromStyle={{width:'8rem'}}
               toValues={[...followers, '1000000+']}
               toStyle={{width:'8rem', marginLeft:'10px'}}
-              />
+              setValues={setInfluencer}
+            />  
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltInfluencerGender
               clearFlag={clearFlag}
               tip={Lang.caption.gender}
               icon={false} 
-              values={['Male', 'Female']}
-              style={{width:'8rem'}}/>
+              values={['MALE', 'FEMALE']}
+              style={{width:'8rem'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{minWidth: '11.0108433735rem!important', maxWidth: '12.4285714286rem!important'}}>
-            <FltMultiSelectObject 
+            <FltInfluencerInterest
               clearFlag={clearFlag}
               tip={Lang.caption.interestcare}
               icon={false}
               values={interests}
               itmKey='id'
               itmValue='name'
+              setValues={setInfluencer}
             />
           </Box>
           <Box sx={{minWidth:'150px', flex:1}}>
-            <FltSingleSelectObject 
+            <FltInfluencerLanguage
               clearFlag={clearFlag}
               tip={Lang.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
-              />
+              setValues={setInfluencer}
+            />
           </Box>
           <Box sx={{minWidth:'11.4285714286rem !important'}}>
-            <FltSingleSelect 
+            <FltInfluencerPost
               clearFlag={clearFlag}
               tip={Lang.caption.post}
               icon={false} 
               values={['30 days', '3 Months', '6 Months']}
-              style={{width:'12rem'}}/>
+              style={{width:'12rem'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box>
-            <FltSingleSelect 
+            <FltInfluencerEngage
               clearFlag={clearFlag}
               tip={Lang.caption.engagement}
               icon={true} 
               values={engages}
               caption={Lang.caption.engagement_tip}
-              style={{width:'12rem'}}/>
+              style={{width:'12rem'}}
+              setValues={setInfluencer}
+            />
           </Box>
           <Box style={{width:'17rem'}}>
-            <FltTextField 
+            <FltInfluencerHash
               clearFlag={clearFlag} 
               tip={Lang.caption.hashtag} 
               icon={true} 
               phstr='#hashtag' 
-              caption={Lang.caption.other_tip}
+              caption={Lang.caption.hashtag_tip}
+              setValues={setInfluencer}
             />
           </Box>
           <Box sx={{flex:1, minWidth:'120px !important'}}>
-            <FltTextField 
+            <FltInfluencerBio 
               clearFlag={clearFlag} 
               tip='Bio' 
               icon={true} 
               phstr='discription' 
               caption={Lang.caption.bio_tip}
+              setValues={setInfluencer}
             />
           </Box>
           <Box sx={{minWidth:'220px'}}>
-            <FltTextField 
+            <FltInfluencerKeyword
               clearFlag={clearFlag} 
               tip={Lang.caption.keyword} 
               icon={true} 
               phstr='keyword' 
               caption={Lang.caption.keyword_tip}
+              setValues={setInfluencer}
             />
           </Box>
           <Box sx={{width:'12rem'}}>
-            <FltSingleSelect 
+            <FltInfluencerContract
               clearFlag={clearFlag}
               tip={Lang.caption.contractinfo}
               icon={false} 
               values={['Email available']}
-              />
+              setValues={setInfluencer}
+            />
           </Box>
         </Box>
       </Box>
@@ -148,31 +201,33 @@ export default function InstagramFilter({interests, languages, locations}) {
         <Box 
           sx={{display: 'flex', flexShrink: 0, flexWrap: 'wrap'}}>
           <Box sx={{flex: 1, flexGrow: 1, alignItems: 'stretch', minWidth:'calc(200px + 0.5rem) !important'}}>
-            <FltAutocomplete 
+            <FltAudienceLocation 
               clearFlag={clearFlag}
               tip={Lang.caption.audiencelocation}
               phstr='フォロワーの地域' 
               icon={true} 
-              values={locations} 
               caption={Lang.caption.other_tip}
+              setValues={setAudience}
             />
           </Box>
           <Box sx={{width:'8rem'}}>
-            <FltSingleSelect 
+            <FltAudienceGender 
               clearFlag={clearFlag}
               tip={Lang.caption.gender}
               icon={true} 
-              values={['Male', 'Female']}
+              values={['MALE', 'FEMALE']}
               caption={Lang.caption.other_tip}
+              setValues={setAudience}
             />
           </Box>
-          <Box sx={{width: '8rem'}}>
-            <FltMultiSelect 
+          <Box sx={{width: '10rem'}}>
+            <FltAudienceAges 
               clearFlag={clearFlag}
               tip={Lang.caption.age}
               icon={true}
               values={ages}
               caption={Lang.caption.other_tip}
+              setValues={setAudience}
             />
           </Box>
           <Box sx={{
@@ -180,7 +235,7 @@ export default function InstagramFilter({interests, languages, locations}) {
             minWidth: '7.7108433735rem !important',
             maxWidth: '11.7108433735rem !important',
           }}>
-            <FltMultiSelectObject 
+            <FltAudienceInterests 
               clearFlag={clearFlag}
               tip={Lang.caption.interest}
               icon={true}
@@ -188,16 +243,18 @@ export default function InstagramFilter({interests, languages, locations}) {
               itmKey='id'
               itmValue='name'
               caption={Lang.caption.other_tip}
+              setValues={setAudience}
             />
           </Box>
           <Box sx={{minWidth:'246px'}}>
-            <FltSingleSelectObject 
+            <FltAudienceLanguage 
               clearFlag={clearFlag}
               tip={Lang.caption.language}
               icon={false} 
               values={languages}
               itmKey='code'
               itmValue='name'
+              setValues={setAudience}
             />
           </Box>
         </Box>
@@ -218,6 +275,7 @@ export default function InstagramFilter({interests, languages, locations}) {
               fontSize:'14px',
               backgroundColor: theme.palette.clrVariables.grayWhite,
             }}}
+            onChange={e=>setKeyword(e.target.value)}
           />
         </Box>
         <Box sx={{display:'flex', width:'100%', justifyContent:'flex-end', marginTop: '15px'}}>
@@ -231,6 +289,7 @@ export default function InstagramFilter({interests, languages, locations}) {
             className="active"
             variant={'outlined'}
             sx={{marginLeft:'15px'}}
+            onClick={startSearch}
           >
             {Lang.caption.search}
           </Button>

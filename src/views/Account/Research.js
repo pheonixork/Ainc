@@ -12,7 +12,6 @@ import {Instagram, Youtube, Tiktok} from './components';
 import Keyword from 'constants/lang';
 import Constants from 'constants/constants';
 import {modashService} from 'services';
-import {testService} from 'services';
 import toast from 'react-hot-toast';
 
 const matchingInterest = {
@@ -79,23 +78,6 @@ const Research = () => {
       });
   }, []);
 
-  const [locations, setLocations] = useState([]);
-  useEffect(() => {
-    if (locations.length > 0)
-      return;
-
-    return modashService.getLocations(Constants.snsInstagram)
-      .then((response) => {
-        let data = response.data;
-        if (data.error !== false) 
-          return;
-
-        setLocations(data.locations);
-      }).catch(msg => {
-        toast.error(msg);
-      });
-  }, []);
-
   return (
     <Fixed>
       <Container className='research content-wrapper'>
@@ -122,21 +104,18 @@ const Research = () => {
           <Instagram 
             interests={interests}
             languages={languages}
-            locations={locations}
             selected={selType === Constants.snsInstagram} 
             display={`${selType === Constants.snsInstagram ? 'block' : 'none'}`} 
           />
           <Youtube 
             interests={interests}
             languages={languages}
-            locations={locations}
             selected={selType === Constants.snsYoutube} 
             display={`${selType === 'youtube' ? 'block' : 'none'}`} 
           />
           <Tiktok 
             interests={interests}
             languages={languages}
-            locations={locations}
             selected={selType === Constants.snsTiktok} 
             display={`${selType === 'tiktok' ? 'block' : 'none'}`} 
           />

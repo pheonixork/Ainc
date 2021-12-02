@@ -8,8 +8,10 @@ import {useMainContext} from 'context/MainContext';
 import RelativeImage from 'components/RelativeImage';
 import Keyword from 'constants/lang';
 import {CP} from 'views/Common/CP';
+import {evaluateValue} from 'constants/constants';
 
 export default function AccountItem({itm}) {
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const [data, setData] = useState(itm);
   const [selId, setAccountId] = useState('');
   const closeCP = (val) => {
@@ -22,33 +24,24 @@ export default function AccountItem({itm}) {
     setAccountId(data._id);
   }
 
-  const {setInfluencerCollapsable, setInfluencerId, influSelectedId} = useMainContext();
+  const {setInfluencerCollapsable, setSelectedInfluencer, selectedInfluencer} = useMainContext();
   const itemRowClicked = (e) => {
     if (selId !== '')
       return;
       
     setInfluencerCollapsable(false); 
-    setInfluencerId(data.infId);
-  }
-
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
+    setSelectedInfluencer({id:itm.infId, username:itm.infName, type:itm.type})
   }
 
   return (
     <Box 
-      className={clsx('research-content-item', 'research-content-insight-grid', 'box-wrapper-shadow', `${influSelectedId === data.infId ? 'influencer-detail-active' : ''}`)}
+      className={clsx('research-content-item', 'research-content-insight-grid', 'box-wrapper-shadow', `${selectedInfluencer && selectedInfluencer.id === data.infId ? 'influencer-detail-active' : ''}`)}
       onClick={itemRowClicked}
       >
       <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
         <RelativeImage
           isRound
-          imgSrc={'https://imgigp.modash.io/v2?c%2BZ6gMi8pzyyj3IdIuQSsDBpwchEsdg%2FtvYkoZ9FuoSksebKiT33KgD4wwHFlDXbI4DIfy8EnTAkufas3yX0d%2F62Fe0Qy1s3lad6xs2O2KwQUh8XIW8DgtgL%2FnGC4CBRRwx0Ay5NRmelqAx1tpPJDg%3D%3D'}
+          imgSrc={itm.avatar}
           sx={{width: '3.125rem !important', height: '3.125rem !important', margin: '.5rem 1rem 0'}}
         />
         {/* <Box
@@ -82,7 +75,7 @@ export default function AccountItem({itm}) {
       </Box>
       <Box className='followers'>
         <Box className='first'>
-          {evaluateValue(data.engage)}<span>{`(0%)`}</span>
+          {evaluateValue(data.engage)}<span>{`(${formatter.format(data.engagerate * 100)}%)`}</span>
         </Box>
         <Box  className='second'>{Keyword.caption.engagement}</Box>
       </Box>

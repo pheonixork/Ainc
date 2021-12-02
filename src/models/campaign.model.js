@@ -29,6 +29,10 @@ const campaignSchema = mongoose.Schema({
       type: String,
       required: true,
     },
+    infName: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true,
@@ -79,6 +83,10 @@ const campaignSchema = mongoose.Schema({
     engage: {
       type: Number,
       default: 0,
+    },
+    engagerate: {
+      type: Number,
+      default: 0
     },
     inp: {
       type: Number,

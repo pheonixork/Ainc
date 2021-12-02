@@ -97,7 +97,7 @@ const UsageCustom = ({getDatas, classes}) => {
       updatemode
       )
       .then((response) => {
-        toast.success('保存しました');
+        toast.success('更新しました。');
       });
   }
 

@@ -4,21 +4,24 @@ import React, {useEffect, useState} from 'react';
 import toast from 'react-hot-toast';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import {Skeleton, Box, Button, Checkbox, Typography} from '@mui/material';
+import {Popover, Skeleton, Box, Button, Checkbox, Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import {accountService} from 'services';
 import Lang from 'constants/lang';
 
-export default function SaveDlg({infId, info, catType, closeDlg}) {
+export default function SaveDlg({anchorEl, closeDlg, infId, info, catType}) {
   const [chkStatus, changeStatus] = useState({});
   const [campaigns, setChampaigns] = useState([]);
   const [isLoading, changeLoading] = useState(true);
 
   useEffect(() => {
-    if (!infId)
+    if (!anchorEl || !infId) {
+      changeLoading(false);
       return;
+    }
 
+    changeLoading(true);
     accountService.getCampaigns(infId, catType)
     .then((response) => {
       changeLoading(false);
@@ -45,7 +48,7 @@ export default function SaveDlg({infId, info, catType, closeDlg}) {
       changeStatus({});
       setChampaigns([]);
     });
-  }, [infId]);
+  }, [anchorEl, infId]);
 
   const saveAccount = (status) => {
     let categories = [];
@@ -92,58 +95,75 @@ export default function SaveDlg({infId, info, catType, closeDlg}) {
   }
 
   return (
-    <section 
-      className="saveDlg"
+    <Popover
+      className="savedlg_wrapper"
+      id='simple-cover'
+      open={anchorEl !== null}
+      anchorEl={anchorEl}
+      onClose={closeDlg}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
       onClick={e=>e.stopPropagation()}
-      >
-      <Box className="up-triangle"></Box>
-      <Box className="saveDlgToolbar">
-        <Typography variant="h6">キャンペーンリストに保存する</Typography>
-        <Box className="saveDlgButtons">
-          {/* {isLoading ? (
-            <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
-          ) : (
-            <SaveIcon fontSize="medium" className="closeIcon" onClick={e=>saveAccount()} />
-          )} */}
+    >
+      <section 
+        className="saveDlg"
+        onClick={e=>e.stopPropagation()}
+        >
+        <Box className="up-triangle"></Box>
+        <Box className="saveDlgToolbar">
+          <Typography variant="h6">キャンペーンリストに登録する</Typography>
+          <Box className="saveDlgButtons">
+            {/* {isLoading ? (
+              <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
+            ) : (
+              <SaveIcon fontSize="medium" className="closeIcon" onClick={e=>saveAccount()} />
+            )} */}
+            {isLoading ? (
+              <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
+            ) : (
+              <CloseIcon fontSize="medium" className="closeIcon" onClick={e=>closeDlg()} />
+            )}
+          </Box>
+        </Box>
+        {isLoading ? (
+          <Skeleton width={'100%'} height={100} sx={{transform:'unset'}}/>
+        ) : (
+          <ul className="contents">
+            {_.map(chkStatus, (val, campId) => (
+              <li key={campId}>
+                {getCampInfo(campId)}
+                <Checkbox
+                  name={campId}
+                  checked={val}
+                  onChange={handleChange}
+                  color="success"
+                  sx={{ '& .MuiSvgIcon-root': { fontSize: 24 }}}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        <Box className="add-to-list">
           {isLoading ? (
-            <Skeleton width={30} height={30} sx={{transform:'unset'}}/>
+            <Skeleton width={'100%'} height={50} sx={{transform:'unset'}}/>
           ) : (
-            <CloseIcon fontSize="medium" className="closeIcon" onClick={e=>closeDlg()} />
+            <NextLink href={'/campaign/new'} passHref>
+              <Button className="create-list">
+                <svg fill="none" height="32" width="32" xmlns="http://www.w3.org/2000/svg" className="create-list-plus">
+                  <path fill="#114B5F" d="M16 2.67a13.34 13.34 0 1 0 .01 26.67A13.34 13.34 0 0 0 16 2.67zm5.33 14.66h-4v4c0 .74-.6 1.34-1.33 1.34-.73 0-1.33-.6-1.33-1.34v-4h-4c-.74 0-1.34-.6-1.34-1.33 0-.73.6-1.33 1.34-1.33h4v-4c0-.74.6-1.34 1.33-1.34.73 0 1.33.6 1.33 1.34v4h4c.74 0 1.34.6 1.34 1.33 0 .73-.6 1.33-1.34 1.33z"></path>
+                </svg>
+                <span>新しいキャンペーン作成</span>
+              </Button>
+            </NextLink>
           )}
         </Box>
-      </Box>
-      {isLoading ? (
-        <Skeleton width={'100%'} height={100} sx={{transform:'unset'}}/>
-      ) : (
-        <ul className="contents">
-          {_.map(chkStatus, (val, campId) => (
-            <li key={campId}>
-              {getCampInfo(campId)}
-              <Checkbox
-                name={campId}
-                checked={val}
-                onChange={handleChange}
-                color="success"
-                sx={{ '& .MuiSvgIcon-root': { fontSize: 24 }}}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
-      <Box className="add-to-list">
-        {isLoading ? (
-          <Skeleton width={'100%'} height={50} sx={{transform:'unset'}}/>
-        ) : (
-          <NextLink href={'/campaign/new'} passHref>
-            <Button className="create-list">
-              <svg fill="none" height="32" width="32" xmlns="http://www.w3.org/2000/svg" className="create-list-plus">
-                <path fill="#114B5F" d="M16 2.67a13.34 13.34 0 1 0 .01 26.67A13.34 13.34 0 0 0 16 2.67zm5.33 14.66h-4v4c0 .74-.6 1.34-1.33 1.34-.73 0-1.33-.6-1.33-1.34v-4h-4c-.74 0-1.34-.6-1.34-1.33 0-.73.6-1.33 1.34-1.33h4v-4c0-.74.6-1.34 1.33-1.34.73 0 1.33.6 1.33 1.34v4h4c.74 0 1.34.6 1.34 1.33 0 .73-.6 1.33-1.34 1.33z"></path>
-              </svg>
-              <span>新しいキャンペーン作成</span>
-            </Button>
-          </NextLink>
-        )}
-      </Box>
-    </section>
+      </section>
+    </Popover>
   );
 };

@@ -24,8 +24,8 @@ function getProfileOverview(userId, type) {
   return fetchWrapper.post(`${baseUrl}/overview`, {type, userId});
 }
 
-function getProfileReport(userId, type) {
-  return fetchWrapper.post(`${baseUrl}/report`, {type, userId});
+function getProfileReport(userId, userName, type) {
+  return fetchWrapper.post(`${baseUrl}/report`, {type, userId, userName});
 }
 
 function getInterests(type) {
@@ -36,6 +36,6 @@ function getLanguages(type) {
   return fetchWrapper.post(`${baseUrl}/languages`, {type});   
 }
 
-function getLocations(type) {
-  return fetchWrapper.post(`${baseUrl}/locations`, {type});   
+function getLocations(type, keyword) {
+  return fetchWrapper.post(`${baseUrl}/locations`, {type, keyword});   
 }

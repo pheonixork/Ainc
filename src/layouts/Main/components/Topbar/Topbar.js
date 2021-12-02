@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 import { NavItem } from './components';
 
@@ -32,7 +33,7 @@ const Topbar = ({ onSidebarOpen, pages }) => {
       width={1}
     >
       <NextLink href="/" replace >
-        <a>
+        <a style={{marginLeft: '2rem'}}>
           <Box
             display={'flex'} 
             component={'img'}
@@ -43,55 +44,67 @@ const Topbar = ({ onSidebarOpen, pages }) => {
         </a>
       </NextLink>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
-        <Box>
+        <Box marginLeft={5}>
           <NextLink href="/" replace >
-            <a className={clsx(classes.nodecoration, 'menuItem')} >Blog</a>
+            <a className={clsx(classes.nodecoration, 'menuItem')} >メーカー様向け</a>
           </NextLink>
         </Box>
         <Box marginLeft={5}>
-          <NavItem
-            title={'Features'}
-            id={'features'}
-            items={features}
-          />
+          <NextLink href="/" replace >
+            <a className={clsx(classes.nodecoration, 'menuItem')} >代理店様向け</a>
+          </NextLink>
         </Box>
         <Box marginLeft={5}>
           <NextLink href="/" replace >
-            <a className={clsx(classes.nodecoration, 'menuItem')} >Pricing</a>
+            <a className={clsx(classes.nodecoration, 'menuItem')} >お問い合わせ</a>
           </NextLink>
         </Box>
-
         <Box marginLeft={5}>
           <NextLink href="/signin-cover" replace >
-            <a className={clsx(classes.nodecoration, 'menuItem')} >LOG IN</a>
+            <Box 
+              style={{
+                backgroundColor: 'black',
+                width: '140px',
+                height: '40px',
+                borderRadius: '20px',
+                marginRight: '2rem',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <a 
+                style={{
+                  fontWeight: 700,
+                  color: 'white',
+                  textDecoration: 'none',
+                }}
+              >
+                ログイン
+              </a>
+              <ArrowCircleDownIcon fontSize="large" style={{marginLeft: '.5rem', transform: 'rotate(-90deg)'}} />
+            </Box>
           </NextLink>
         </Box>
-        <Box marginLeft={5}>
+      </Box>
+      {/*
+        <Box sx={{ display: { xs: 'flex', md: 'none' } }} alignItems={'center'}>
           <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            fullWidth={true}
+            onClick={() => onSidebarOpen()}
+            aria-label="Menu"
+            variant={'outlined'}
+            sx={{
+              borderRadius: 2,
+              minWidth: 'auto',
+              padding: 1,
+              borderColor: alpha(theme.palette.divider, 0.2),
+            }}
           >
-            TRY FOR FREE
+            <MenuIcon />
           </Button>
         </Box>
-      </Box>
-      <Box sx={{ display: { xs: 'flex', md: 'none' } }} alignItems={'center'}>
-        <Button
-          onClick={() => onSidebarOpen()}
-          aria-label="Menu"
-          variant={'outlined'}
-          sx={{
-            borderRadius: 2,
-            minWidth: 'auto',
-            padding: 1,
-            borderColor: alpha(theme.palette.divider, 0.2),
-          }}
-        >
-          <MenuIcon />
-        </Button>
-      </Box>
+      */}
     </Box>
   );
 };

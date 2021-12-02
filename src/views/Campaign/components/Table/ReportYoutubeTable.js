@@ -97,6 +97,8 @@ const feedHeadCells = [
 ];
 
 const ReportYoutubeRow = ({row, catType, updateDatas, classes}) => {
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
+  const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpened = Boolean(anchorEl);
 
@@ -212,7 +214,7 @@ const ReportYoutubeRow = ({row, catType, updateDatas, classes}) => {
   return (
     <>
       <TableRow>
-        <TableCell className={classes.feedtableCell}>{row.name}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>{row.name}</TableCell>
         <TableCell className={classes.feedtableCell} sx={{minWidth: '120px'}}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
@@ -236,39 +238,39 @@ const ReportYoutubeRow = ({row, catType, updateDatas, classes}) => {
         <TableCell className={classes.feedtableCell} sx={{minWidth: '150px'}}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputRef={shoppingRef } />
         </TableCell>
-        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{row.amount}</TableCell>
-        <TableCell className={classes.feedtableCell}>{row.registers}</TableCell>
-        <TableCell className={classes.feedtableCell}>{row.recycle}</TableCell>
+        <TableCell className={classes.feedtableCell} sx={{minWidth: '100px'}}>{formatterInt.format(row.amount)}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatterInt.format(row.registers)}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatterInt.format(row.recycle)}</TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={prsRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={goodRef } onChange={goodValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={goodRef } onChange={goodValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={badRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={badRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={commentRef } type="Number" sx={{width: '100px'}}/>
         </TableCell>
-        <TableCell className={classes.feedtableCell}>{row.normal}</TableCell>
+        <TableCell className={classes.feedtableCell}>{formatter.format(row.engagerate * 100)}</TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{disabled: true}} inputRef={prPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={clickRef } onChange={clickValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={clickRef } onChange={clickValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={clickPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={cvRef } onChange={cvValueChanged} />
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={cvRef } onChange={cvValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={cvPerRef} />
         </TableCell>
         <TableCell className={classes.feedtableCell}>
-          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged}/>
+          <TextField className={classes.feedtableTextField} variant="outlined" inputRef={sellRef } onChange={amountValueChanged} type="Number" sx={{width: '100px'}}/>
         </TableCell>
         <TableCell className={classes.feedtableCell}>
           <TextField className={classes.feedtableTextField} variant="outlined" inputProps={{readOnly: true}} inputRef={roasRef} />
@@ -335,7 +337,7 @@ export default function ReportYoutubeTable({catType, getDatas, updateDatas, clas
                   <TableCell
                     key={headCell.id}
                     padding='normal'
-                    align="center"
+                    align="left"
                     sortDirection={orderBy === headCell.id ? order : false}
                     className={classes.feedtableCell}
                   >

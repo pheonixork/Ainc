@@ -10,10 +10,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import {userService} from 'services';
 import Constants from 'constants/constants';
 const {publicRuntimeConfig} = getConfig();
+import LogoImage from 'components/LogoImage';
 
 const validationSchema = yup.object({
   email: yup
@@ -60,120 +61,135 @@ const Form = () => {
 
   return (
     <Box>
-      <Box marginBottom={4}>
-        <Typography
-          sx={{
-            textTransform: 'uppercase',
-            fontWeight: 'medium',
-          }}
-          gutterBottom
-          color={'text.secondary'}
-        >
-          Login
-        </Typography>
+      <Box marginBottom={4} marginTop={4}>
         <Typography
           variant="h4"
           sx={{
             fontWeight: 700,
           }}
         >
-          Welcome back
-        </Typography>
-        <Typography color="text.secondary">
-          Login to manage your account.
+          ログイン
         </Typography>
       </Box>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
-              Enter your email
-            </Typography>
-            <TextField
-              label="Email *"
-              variant="outlined"
-              name={'email'}
-              fullWidth
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Box
-              display="flex"
-              flexDirection={{ xs: 'column', sm: 'row' }}
-              alignItems={{ xs: 'stretched', sm: 'center' }}
-              justifyContent={'space-between'}
-              width={1}
-              marginBottom={2}
-            >
-              <Box marginBottom={{ xs: 1, sm: 0 }}>
-                <Typography variant={'subtitle2'}>
-                  Enter your password
-                </Typography>
-              </Box>
-              {/* <Typography variant={'subtitle2'}>
-                <Link
-                  component={'a'}
-                  color={'primary'}
-                  href={'/password-reset-cover'}
-                  underline={'none'}
+      <Box
+        display={'flex'}
+        flexDirection={{ xs: 'column', md: 'row' }}
+        position={'relative'}
+      >
+        <Box
+          width={1}
+          display={'flex'}
+          alignItems={'flex-start'}
+        >
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={4}>
+              <Grid item xs={10}>
+                <TextField
+                  placeholder="メールアドレス"
+                  variant="outlined"
+                  name={'email'}
+                  fullWidth
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+              </Grid>
+              <Grid item xs={10}>
+                <TextField
+                  placeholder="パスワード"
+                  variant="outlined"
+                  name={'password'}
+                  type={'password'}
+                  fullWidth
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={formik.touched.password && Boolean(formik.errors.password)}
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+                <Typography 
+                  variant={'subtitle2'}
+                  style={{textAlign: 'right', fontSize: '16px', marginTop: '.5rem', fontWeight: 600}}
                 >
-                  Forgot your password?
-                </Link>
-              </Typography> */}
-            </Box>
-            <TextField
-              label="Password *"
-              variant="outlined"
-              name={'password'}
-              type={'password'}
-              fullWidth
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-          </Grid>
-          {errors.message && 
-          <Grid item xs={12}>
-            <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
-              {errors.message}
-            </Typography>
-          </Grid>
-          }
-          <Grid item container xs={12}>
-            <Box
-              display="flex"
-              flexDirection={{ xs: 'column', sm: 'row' }}
-              alignItems={{ xs: 'stretched', sm: 'center' }}
-              justifyContent={'space-between'}
-              width={1}
-              maxWidth={600}
-              margin={'0 auto'}
-            >
-              <Box marginBottom={{ xs: 1, sm: 0 }}>
+                  <Link
+                    component={'a'}
+                    color={'primary'}
+                    href={'/password-reset-cover'}
+                    underline={'none'}
+                  >
+                    パスワードを忘れた方
+                  </Link>
+                </Typography>
+              </Grid>
+              {errors.message && 
+              <Grid item xs={10}>
+                <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                  {errors.message}
+                </Typography>
+              </Grid>
+              }
+              <Grid item container xs={10} sx={{display: 'flex', justifyContent:'center'}}>
+                <Button 
+                  sx={{
+                    backgroundColor: 'black',
+                    height: '60px',
+                    borderRadius: '30px !important',
+                    marginRight: '2rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: '20px !important',
+                    width: '90%',
+                    '&:hover': {
+                      backgroundColor: 'black !important'
+                    }
+                  }}
+                  type={'submit'}
+                >
+                  ログイン
+                  <ArrowCircleDownIcon fontSize="large" style={{marginLeft: '2rem', transform: 'rotate(-90deg)'}} />
+                </Button>
+              </Grid>
+              <Grid item container xs={10} 
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
                 <Typography variant={'subtitle2'}>
-                  Don't have an account yet?{' '}
                   <Link
                     component={'a'}
                     color={'primary'}
                     href={'/signup-cover'}
                     underline={'none'}
+                    style={{fontWeight: 600, display: 'flex', textAlign: 'center'}}
                   >
-                    Sign up here.
+                    新規登録の方はお問い合わせより<br/>
+                    ご連絡をください
                   </Link>
                 </Typography>
-              </Box>
-              <Button size={'large'} variant={'contained'} type={'submit'}>
-                Login
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </form>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+        <Box
+          width={1}
+          marginTop={-7}
+          sx={{display: 'flex', justifyContent: 'center'}}
+        >
+          <Box
+            sx={{height: 450}}
+          >
+            <LogoImage
+              sx={{height:'400px !important'}}
+              imgSrc={'/images/logo/logo_back.svg'}
+            />
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };

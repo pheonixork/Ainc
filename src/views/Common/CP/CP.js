@@ -17,11 +17,11 @@ const CP = ({accountId, setCollapse}) => {
   const [data, setData] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
   const [showDlg, setDlgState] = useState(false);
-  const [showSaveDlg, setSaveDlgStatus] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const memoInput = useRef();
 
   const closeSaveDialog = () => {
-    setSaveDlgStatus(false);
+    setAnchorEl(null);
   }
 
   const closeAlertDialog = (status) => {
@@ -32,6 +32,11 @@ const CP = ({accountId, setCollapse}) => {
   }
 
   const setRightSidebarClose = () => {
+    if (!data) {
+      setCollapse(0);      
+      return;
+    }
+
     if (data.star !== ratingValue || (data.memo && data.memo !== memoInput.current.value.trim())) {
       setDlgState(true);
       return;
@@ -47,10 +52,10 @@ const CP = ({accountId, setCollapse}) => {
           toast.error(response.msg);
           return;
         }
-        toast.success('更新しました');
+        toast.success('保存しました。');
         setData({...data, star: ratingValue, memo: memoInput.current.value.trim()});
       }).catch(err => {
-        toast.error('アカウント情報更新に失敗しました');
+        toast.error('アカウント情報保存に失敗しました。');
       });
   }
 
@@ -85,6 +90,7 @@ const CP = ({accountId, setCollapse}) => {
           memo: results[0].memo,
           infId: results[0].infId,
           type: results[0].type,
+          avatar: results[0].avatar,
         });
         setRatingValue(results[0].star);
       }).catch(err => {
@@ -100,30 +106,25 @@ const CP = ({accountId, setCollapse}) => {
         >
           <CloseIcon fontSize="small" />
         </Button>
-        <Box sx={{display: 'flex'}}>
-          <Button 
-            className='active' 
-            onClick={e=>updateData()} 
-            sx={{marginRight: '.5rem'}}
-          >
-            <span>{Lang.btn.update}</span>
-          </Button>
-          <Box className='relative-action'>
+        {data !== null && 
+          <Box sx={{display: 'flex'}}>
             <Button 
-              className='save' 
-              onClick={e=>setSaveDlgStatus(true)}
+              className='active' 
+              onClick={e=>updateData()} 
+              sx={{marginRight: '.5rem'}}
             >
               <span>{Lang.btn.save}</span>
             </Button>
-            {showSaveDlg === true && 
-              <SaveDlg 
-                infId={data.infId} 
-                catType={data.type}
-                closeDlg={closeSaveDialog} 
-              />
-            }
-          </Box>
-        </Box>
+            <Box className='relative-action'>
+              <Button 
+                className='save' 
+                onClick={e=>setAnchorEl(e.currentTarget)}
+              >
+                <span>{Lang.btn.register}</span>
+              </Button>
+            </Box>
+          </Box>  
+        }
       </Box>
       {data === null ? 
         <WaitingLoader /> : 
@@ -131,7 +132,7 @@ const CP = ({accountId, setCollapse}) => {
           <Box className="profile-container">
             <RelativeImage
               isRound
-              imgSrc={'https://imgigp.modash.io/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDY9ylLT5c6L8M5YYtkm82Y2DDgAk%2BlFE0f8CghKo5%2FCKHnrwHpFJsVwOsLT2HHY58qvvB2REevWri5e5dDWGq%2BUrC4M4BvvnB6Aeuo02N6AJw%3D%3D'}
+              imgSrc={data.avatar}
               sx={{width: '150px !important', height: '150px !important', margin: '1rem'}}
             />
             <Typography className="name">{data.name}</Typography>
@@ -181,7 +182,7 @@ const CP = ({accountId, setCollapse}) => {
                 {campaigns.length > 0 ? (
                   campaigns.map((row, index) => {
                       return (
-                        <NextLink href={`/campaign/detail/${row.cid}`} passHref>
+                        <NextLink key={index} href={`/campaign/detail/${row.cid}`} passHref>
                           <TableRow
                             hover
                             // onClick={() => handleClick(row.cid)}
@@ -235,6 +236,12 @@ const CP = ({accountId, setCollapse}) => {
             </Table>
           </TableContainer>
           </Box>
+          <SaveDlg 
+            anchorEl={anchorEl}
+            closeDlg={closeSaveDialog} 
+            infId={data ? data.infId : ''}
+            catType={data ? data.type : ''}
+          />
         </Box>
       }
       <AlertDlg 

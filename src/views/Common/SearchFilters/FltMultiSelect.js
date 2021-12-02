@@ -18,8 +18,13 @@ const MenuProps = {
   },
 };
 
+const weights = Array.from({length: 19}, (_, i) => {
+  return {value: (i + 1) * 0.05, text: `≥${(i + 1)*5}%`}
+});
+
 export default function FltMultiSelect({ clearFlag, tip, icon, values, caption, ...rest }) {
   const [itemValue, setItemValue] = useState([]);
+  const [filterValue, setFilterValue] = useState([]);
   const theme = useTheme();
 
   useEffect(()=>{
@@ -28,14 +33,34 @@ export default function FltMultiSelect({ clearFlag, tip, icon, values, caption, 
   }, [clearFlag]);
 
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setItemValue(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    const {target: { value }} = event;
+
+    const newItemValue = typeof value === 'string' ? value.split(',') : value;
+    let newFilterValue = [];
+
+    _.map(newItemValue, itm => {
+      const fndIdx = _.findIndex(filterValue, fltItm => fltItm.id === itm);
+      if (fndIdx === -1)
+        newFilterValue.push({id: itm, weight: 6 * 0.05});
+      else
+        newFilterValue.push({id: itm, weight: filterValue[fndIdx].weight});
+    })
+
+    setFilterValue(newFilterValue);
+    setItemValue(newItemValue);
   };
+
+  const removeFilter = (itm) => {
+    const newItems = _.filter(itemValue, arrayItm => arrayItm !== itm.id);
+    setItemValue(newItems);
+    const newFilters = _.filter(filterValue, arrayItm => arrayItm.id !== itm.id);
+    setFilterValue(newFilters);
+  }
+
+  const changeWeightValues = (idx, value) => {
+    filterValue[idx].weight = value;
+    setFilterValue([...filterValue]);
+  }
 
   return (
     <Box className='flex-sub-wrapper'>
@@ -78,6 +103,53 @@ export default function FltMultiSelect({ clearFlag, tip, icon, values, caption, 
           </MenuItem>
         ))}
       </Select>
+      {filterValue.length > 0 && _.map(filterValue, (itm, idx) => (
+        <Box key={idx} 
+          sx={{
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            marginTop: '.3rem',
+            marginBottom: '.3rem'
+          }}
+        >
+          <img 
+            src={'/images/svgs/smallclose.svg'} 
+            style={{width: '6px', height: '6px', cursor: 'pointer'}}
+            onClick={e=>removeFilter(itm)}
+          />
+          <span className="text-width-40 text-ellipse">{itm.id}</span>
+          <Select
+            size="small"
+            value={itm.weight}
+            MenuProps={MenuProps}
+            onChange={e=>changeWeightValues(idx, e.target.value)}
+            sx={{
+              fontSize:'14px',
+              '& > .MuiSelect-select': {
+                backgroundColor: `${theme.palette.clrVariables.cyanVeryLight}`
+              },
+              '& > svg': {
+                backgroundColor: 'inherit'
+              },
+              '& fieldset': {
+                borderColor:`${theme.palette.clrVariables.cyanLight}`
+              },
+              width: '6rem'
+            }}
+          >
+            {_.map(weights, weight=> (
+              <MenuItem
+                key={weight.value}
+                value={weight.value}
+                sx={{fontSize:'14px'}}
+              >
+                {weight.text}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+      ))}
     </Box>
   );
 };

@@ -106,6 +106,17 @@ const CreateComponent = () => {
           }}
         >
           {labels.map((itm, idx) => (
+            itm === '初期パスワード' ? 
+            <TextField 
+              key={idx}
+              type="password"
+              className={classes.underMargin}
+              name={keys[idx]}
+              label={itm} 
+              variant="outlined" 
+              inputRef={refObjects[idx]}
+              onKeyDown={e=>e.keyCode === 13 ? focusOtherInput(idx) : ''}
+            /> : 
             <TextField 
               key={idx}
               className={classes.underMargin}

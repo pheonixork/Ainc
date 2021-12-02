@@ -75,7 +75,7 @@ const YoutubePage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('保存しました。');
+          toast.success('更新しました。');
     
           setRows(_.filter(rows, itm => itm._id !== memId))
           setUpdatedMembers(_.filter(updatedMembers, itm => itm._id !== memId));
@@ -92,7 +92,7 @@ const YoutubePage = ({selCampId, isLoading, data, catType}) => {
             toast.error('状態保存に失敗しました。');
             return;
           }
-          toast.success('保存しました。');
+          toast.success('更新しました。');
 
           let tUpdates = _.map(updatedMembers, itm => {
             if (itm._id !== memId)

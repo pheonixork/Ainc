@@ -43,7 +43,7 @@ export default function DiscoveryTable({isMonth, enterprise, advanced, performan
                     <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(advanced, amountFields[idx])) : _.get(advanced, amountFields[idx])}`}</TableCell>
                     <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(performance, amountFields[idx])) : _.get(performance, amountFields[idx])}`}</TableCell>
                     <TableCell style={{width: '150px'}}>{`${amountFields[idx] === 'monthval' || amountFields[idx] === 'yearval' ? formatter.format(_.get(essentials, amountFields[idx])) : _.get(essentials, amountFields[idx])}`}</TableCell>
-                    <TableCell style={{width: '200px'}}>{_.get(trial, amountFields[idx])}</TableCell>
+                    <TableCell style={{width: '200px'}}>{_.get(trial, amountFields[idx])??0}</TableCell>
                   </TableRow>
                 ))}
                 {_.map(checkLabels, (itm, idx) => (

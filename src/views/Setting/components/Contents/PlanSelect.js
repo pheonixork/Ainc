@@ -76,7 +76,7 @@ export default function PlanSelect({enterprise, advanced, performance, essential
                 whiteSpace: 'pre-wrap'
               }}
             >
-              {'大規模な検索プランもご用意できます\r\n気軽にお問合せください'}
+              {'大規模な検索プランも\r\n用意できます\r\n気軽にお問合せください'}
             </Typography>
             <Box className={classes.upgradeplanbutton}>
               <Button
@@ -91,14 +91,20 @@ export default function PlanSelect({enterprise, advanced, performance, essential
           <Box className={clsx(classes.upgradeplanitem)}>
             <Typography className={clsx(classes.upgradeplantitle, classes.upgradeadvanced)}>Advanced</Typography>
             <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
-              {'大型ブランド・\r\n代理店向け'}
+              {'ブランドの急速な進化を\r\n(DB機能搭載・代理店向け)'}
             </Typography>
             <Box>
               <Box className={classes.upgradeplanmoney}>
-                {!isMonth && (formatter.format(advanced.monthval ?? 0))}
-                {isMonth && (formatter.format(advanced.yearval ?? 0))}
+                <span>
+                  {formatter.format(advanced.monthval ?? 0)}
+                  <span className={classes.upgradelabel}>/月</span>
+                </span> 
               </Box>
-              <Box className={classes.upgradeplandivide} />
+              {isMonth && 
+                <Box className={classes.upgradeplandivide}>
+                  {`年間で${formatter.format(advanced.monthval ? advanced.monthval * 12 : 0)}の請求になります`}
+                </Box>
+              }
             </Box>
             <Box className={classes.upgradeplanbutton}>
               <Button
@@ -113,14 +119,20 @@ export default function PlanSelect({enterprise, advanced, performance, essential
           <Box className={clsx(classes.upgradeplanitem)}>
             <Typography className={clsx(classes.upgradeplantitle, classes.upgradeperformance)}>Performance</Typography>
             <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
-              {'ブランド・代理店向け'}
+              {'ブランドの確かな成長を\r\n(DB機能搭載・ブランド向け)'}
             </Typography>
             <Box>
               <Box className={classes.upgradeplanmoney}>
-                {!isMonth && (formatter.format(performance.monthval ?? 0))}
-                {isMonth && (formatter.format(performance.yearval ?? 0))}
+                <span>
+                  {formatter.format(performance.monthval ?? 0)}
+                  <span className={classes.upgradelabel}>/月</span>
+                </span>
               </Box>
-              <Box className={classes.upgradeplandivide} />
+              {isMonth && 
+                <Box className={classes.upgradeplandivide}>
+                  {`年間で${formatter.format(performance.monthval ? performance.monthval * 12 : 0)}の請求になります`}
+                </Box>
+              }
             </Box>
             <Box className={classes.upgradeplanbutton}>
               <Button
@@ -135,14 +147,20 @@ export default function PlanSelect({enterprise, advanced, performance, essential
           <Box className={clsx(classes.upgradeplanitem, 'upgradeselected')}>
             <Typography className={clsx(classes.upgradeplantitle, classes.upgradeessentials)}>Essentials</Typography>
             <Typography className={classes.upgradeplandetail} style={{whiteSpace: 'pre-wrap'}}>
-              {'ブランド向け'}
+              {'マーケティングに必須\r\n(個人向け)'}
             </Typography>
             <Box>
               <Box className={classes.upgradeplanmoney}>
-                {!isMonth && (formatter.format(essentials.monthval ?? 0))}
-                {isMonth && (formatter.format(essentials.yearval ?? 0))}
+                <span>
+                  {formatter.format(essentials.monthval ?? 0)}
+                  <span className={classes.upgradelabel}>/月</span>
+                </span>
               </Box>
-              <Box className={classes.upgradeplandivide} />
+              {isMonth && 
+                <Box className={classes.upgradeplandivide}>
+                  {`年間で${formatter.format(essentials.monthval ? essentials.monthval * 12 : 0)}の請求になります`}
+                </Box>
+              }
             </Box>
             <Box className={classes.upgradeplanbutton}>
               <Button
@@ -160,10 +178,11 @@ export default function PlanSelect({enterprise, advanced, performance, essential
               className={classes.upgradeplandetail}
               style={{
                 marginTop: '5.2rem',
-                marginBottom: 0
+                marginBottom: 0,
+                whiteSpace: 'pre-wrap'
               }}
             >
-              Your first 14 days on a limited trial plan
+              {'最初の14日間限定の\r\nフリートライアルプラン'}
             </Typography>
             <Box className={classes.upgradeplanbutton}>
               <Button

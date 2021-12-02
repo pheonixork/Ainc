@@ -18,16 +18,37 @@ async function handler(req, res) {
   }
 
   async function getReport() {
-    const {type, userId} = req.body;
+    const {type, userId, userName} = req.body;
 
-    return apiWrapper.get(`${baseUrl}/${type}/profile/${userId}/report`
-    ).then(response => {
-      return res.status(200).json({
-        status: 'ok',
-        data: response
-      });  
+    let result = await apiWrapper.get(`${baseUrl}/${type}/profile/${userId}/report`)
+    .then(response => {
+      return response;
     }).catch(e=>{
-      return res.status(200).json({status: 'no'});  
+      return null;
     });  
+    if (result === null || result.error !== false)
+      return res.status(200).json({status: 'no'});        
+
+    let lookalikes = await apiWrapper.post(`${baseUrl}/${type}/search`, {
+      sort: {},
+      page: 0,
+      filter: {
+        influencer: {
+          "relevance": ['@' + userName],
+        }
+      },
+    }).then(response => {
+      return response;
+    }).catch(e=>{
+      return null;
+    });  
+    if (lookalikes !== null && lookalikes.error === false) {
+      result.profile.lookalikes = lookalikes.lookalikes;
+    }
+
+    return res.status(200).json({
+        status: 'ok',
+        data: result
+      });  
   }
 }

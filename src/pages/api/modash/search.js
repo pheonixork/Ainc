@@ -22,7 +22,7 @@ async function handler(req, res) {
     return apiWrapper.post(`${baseUrl}/${type}/search`, {
       sort: sort,
       page: page,
-      filter: {},
+      filter: filter,
     }).then(response => {
       return res.status(200).json({
         status: 'ok',

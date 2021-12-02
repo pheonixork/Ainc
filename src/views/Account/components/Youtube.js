@@ -13,9 +13,10 @@ import Keyword from 'constants/lang';
 import {modashService} from 'services';
 import toast from 'react-hot-toast';
 
-export default function Youtube({selected, interests, languages, locations, ...rest}) {
+export default function Youtube({selected, interests, languages, ...rest}) {
   const [isLoading, setLoading] = useState(false);
   const [curpage, setPageNum] = useState(0);
+  const [totals, setTotals] = useState(0);
 
   const [sortOrder, setSortOrder] = useState('followers');
   const [sortDirection, setSortDirection] = useState('desc');
@@ -37,22 +38,25 @@ export default function Youtube({selected, interests, languages, locations, ...r
       return;
 
     if (accounts.length === 0) {
-      loadFromServer(0, sortOrder, setSortDirection);
+      loadFromServer(0, sortOrder, sortDirection);
     }
   }, [selected]);
 
-  const loadFromServer = (pageNum, sortField, sortDir) => {
+  const loadFromServer = (pageNum, sortField, sortDir, filters={}) => {
     setLoading(true);
     setPageNum(pageNum);
 
     return modashService.getAccounts(
       Constants.snsYoutube,
       pageNum, 
-      {field: sortField, direction: sortDir},
-      ''
+      sortField === null ? {} : {field: sortField, direction: sortDir},
+      filters
     ).then((response) => {
-      if (response.status !== 'ok' || response.data.error !== false)
+      if (response.status !== 'ok' || response.data.error !== false) {
+        setLoading(false);
+        toast.error('検察できません。');
         return;
+      }
         
       const data = response.data;
       
@@ -60,6 +64,7 @@ export default function Youtube({selected, interests, languages, locations, ...r
         setAccounts([...data.lookalikes]);
       else
         setAccounts([...accounts, ...data.lookalikes]);
+      setTotals(data.total);
       setLoading(false);
     }).catch(msg => {
       setLoading(false);
@@ -67,16 +72,26 @@ export default function Youtube({selected, interests, languages, locations, ...r
     });
   }
 
+  const loadFromServerWithFilter = (filters) => {
+    setLoading(true);
+    setPageNum(0);
+    setAccounts([]);
+    loadFromServer(0, null, null, filters);
+  }
+
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
+
   return (
     <Box {...rest}>
-      <YoutubeFilter interests={interests}
-            languages={languages}
-            locations={locations}
-            />
+      <YoutubeFilter 
+        interests={interests}
+        languages={languages}
+        searchFromServer={loadFromServerWithFilter}
+      />
       <Box marginTop={2} data-aos={'fade-up'}>
         <Box className='research-content' sx={{marginTop: '32px !important'}}>
           <Box className='research-content-header research-content-account-grid'>
-            <div>{accounts.length} アカウント</div>
+            <div>{formatterInt.format(totals)} アカウント</div>
             <div style={{display: 'flex', cursor: 'pointer'}} onClick={e=>changeSort('followers')}>
               {Keyword.caption.followers}
               {sortOrder === 'followers' && (
@@ -96,7 +111,7 @@ export default function Youtube({selected, interests, languages, locations, ...r
               }
             </div>
             <div></div>
-            <div style={{textAlign:'end'}}>リストへ保存</div>
+            <div style={{textAlign:'end'}}>リストへ登録</div>
           </Box>
           {_.map(accounts, (itm) => (
             <SearchItem 

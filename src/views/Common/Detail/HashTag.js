@@ -46,14 +46,30 @@ const HashTag = ({followers, avgs, data, mentions,
     <Box>
       <Box className={classes.audiencelikes}>
         <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
-          <span style={{fontWeight:'600'}}>人気ハッシュタグ</span>
+          <span style={{fontWeight:'600'}}>ハッシュタグエンゲージメント</span>
+        </Box>
+        <Box className={clsx(classes.listitem, classes.listheader)}>
+          <span>Hashtag</span>
+          <span>Percent</span>
+        </Box>
+        {_.map(_.orderBy(data, (['weight']), ['asc']), (itm, idx) => (
+          idx < 20 &&
+          <Box key={idx} className={classes.listitem}>
+            <span className='subtitle1'>#{itm.tag}</span>
+            <span className='subtitle1'>{`${formatter.format(itm.weight * 100)}%`}</span>
+          </Box>
+        ))}
+      </Box>
+      <Box className={classes.audiencelikes}>
+        <Box sx={{fontSize: '16px', fontWeight:'600', marginBottom:'.5rem'}}>
+          <span style={{fontWeight:'600'}}>Popular Hashtag</span>
         </Box>
         <Box className={clsx(classes.listitem, classes.listheader)}>
           <span>Hashtag</span>
           <span>Percent</span>
         </Box>
         {_.map(data, (itm, idx) => (
-          idx < 5 &&
+          idx < 20 &&
           <Box key={idx} className={classes.listitem}>
             <span className='subtitle1'>#{itm.tag}</span>
             <span className='subtitle1'>{`${formatter.format(itm.weight * 100)}%`}</span>
@@ -125,7 +141,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -142,7 +158,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -159,7 +175,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.malelikers)}/${formatter.format(itm.malelikers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.malefollowers === 0 ? '-' : formatterInt.format(followers * itm.malefollowers)}/${itm.malefollowers === 0 ? '-' : formatter.format(itm.malefollowers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.malefollowers)}/${formatter.format(itm.malefollowers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -176,7 +192,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.femalelikers)}/${formatter.format(itm.femalelikers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.femalefollowers === 0 ? '-' : formatterInt.format(followers * itm.femalefollowers)}/${itm.femalefollowers === 0 ? '-' : formatter.format(itm.femalefollowers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.femalefollowers)}/${formatter.format(itm.femalefollowers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -193,7 +209,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -210,7 +226,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -227,7 +243,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>
@@ -244,7 +260,7 @@ const HashTag = ({followers, avgs, data, mentions,
           <Box key={idx} className={classes.griditem}>
             <span className='subtitle1'>{itm.code}</span>
             <span className='subtitle1'>{`${formatterInt.format(avgs * itm.likers)}/${formatter.format(itm.likers * 100)}%`}</span>
-            <span className='subtitle1'>{`${itm.followers === 0 ? '-' : formatterInt.format(followers * itm.followers)}/${itm.followers === 0 ? '-' : formatter.format(itm.followers * 100)}%`}</span>
+            <span className='subtitle1'>{`${formatterInt.format(followers * itm.followers)}/${formatter.format(itm.followers * 100)}%`}</span>
           </Box>
         ))}
       </Box>

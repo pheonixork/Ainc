@@ -74,14 +74,16 @@ const SearchContent = ({accounts}) => {
           <Box></Box>
         </Box>
         {accounts.length < 1 ? (
-          <Typography>検察結果がありません</Typography>
+          <Typography style={{textAlign: 'center'}}>検察結果がありません</Typography>
         ) : (
         _.map(_.orderBy(accounts, ([sortOrder]), [sortDirection]), itm => (
           <AccountItem itm={itm} key={itm._id}/>
         )))}
-        <Box className='load-more'>
-          <Button className='active'>{Lang.caption.nextpage}</Button>
-        </Box>
+        {/*
+          <Box className='load-more'>
+            <Button className='active'>{Lang.caption.nextpage}</Button>
+          </Box>
+        */}
       </Box>
     </Box>
   );

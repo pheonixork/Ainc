@@ -6,19 +6,11 @@ import Button from '@mui/material/Button';
 import { useMainContext } from 'context/MainContext';
 import Keyword from 'constants/lang';
 import RelativeImage from 'components/RelativeImage';
+import {evaluateValue} from 'constants/constants';
 
 export default function SearchItem({itm, idx}) {
   const [showDlg, setShow] = useState(false);
-  const { setInfluencerCollapsable, setInfluencerId } = useMainContext();
-
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
+  const { setInfluencerCollapsable, setSelectedInfluencer } = useMainContext();
 
   const closeDlg = () => {
     setShow(false);
@@ -27,7 +19,7 @@ export default function SearchItem({itm, idx}) {
   return (
     <Box 
       className='research-content-item research-content-account-grid box-wrapper-shadow'
-      onClick={e=>{setInfluencerCollapsable(false); setInfluencerId(idx);}}
+      onClick={e=>{setInfluencerCollapsable(false); setSelectedInfluencer(idx);}}
       >
       <Box className='profile'>
         <RelativeImage

@@ -43,7 +43,8 @@ const pages = {
     // },
     {
       title: Lang.nav.question,
-      href: '/question',
+      target: '_blank',
+      href: 'https://intercom.help/astream/en/',
       icon: '/images/svgs/question.svg'
     },
     {

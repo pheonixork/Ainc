@@ -6,6 +6,7 @@ import RoundInfo from 'components/RoundInfo';
 import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import {styled} from '@mui/material/styles';
+import {evaluateValue} from 'constants/constants';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -30,16 +31,7 @@ const useStyles = makeStyles({
 
 const AudienceData = ({data}) => {
   const classes = useStyles();
-
   const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
-  const evaluateValue = (val) => {
-    if (val > 1000 * 1000)
-      return (val / (1000 * 1000)).toFixed(1) + 'M'
-    else if (val > 1000)
-      return (val / 1000).toFixed(1) + 'K'
-
-    return val
-  }
 
   const getMaleOrFemale = (isMale) => {
     if (!data.genders || data.genders.length !== 2)
@@ -98,7 +90,7 @@ const AudienceData = ({data}) => {
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex'}}>
             国
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='フォロワーがどこの国にいるのか' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='フォロワーがどこの国にいるのか。' />
           </Box>
           {_.map(data.geoCountries, (itm, idx) => (
             idx < 3 && 
@@ -116,7 +108,7 @@ const AudienceData = ({data}) => {
         <Box className='box-wrapper-shadow grid-item leftalign'>
           <Box className='subtitle1' sx={{display: 'flex'}}>
             都市
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='フォロワーがどこの都市にいるのか' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='フォロワーがどこの都市にいるのか。' />
           </Box>
           {_.map(data.geoCities, (itm, idx) => (
             idx < 3 && 
@@ -138,7 +130,7 @@ const AudienceData = ({data}) => {
           <Box>
             <Box className='subtitle1' sx={{display: 'flex'}}>
               男女比
-              <RoundInfo sx={{marginLeft: '.5rem'}} caption='インフルエンサーがリーチできるフォロワーの男女比' />
+              <RoundInfo sx={{marginLeft: '.5rem'}} caption='インフルエンサーがリーチできるフォロワーの男女比。' />
             </Box>
             <svg viewBox="0 0 160 160" style={{width:'90px', height:'90px'}}>
               <g>
@@ -163,7 +155,7 @@ const AudienceData = ({data}) => {
         <Box className='box-wrapper-shadow grid-item'>
           <Box className='subtitle1' sx={{display: 'flex'}}>
             年代別男女比
-            <RoundInfo sx={{marginLeft: '.5rem'}} caption='インフルエンサーがリーチできるフォロワーの年代別男女比' />
+            <RoundInfo sx={{marginLeft: '.5rem'}} caption='インフルエンサーがリーチできるフォロワーの年代別男女比。' />
           </Box>
           <Box sx={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
             {_.map(data.gendersPerAge, (itm, idx) => (

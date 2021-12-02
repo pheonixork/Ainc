@@ -22,6 +22,7 @@ const PurpleSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function InstagramStatic({isLoading, getDatas, classes}) {
+  const formatterInt = new Intl.NumberFormat('en-US', {maximumFractionDigits: 0});
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [staticType, setStaticType] = useState(true);
@@ -44,7 +45,7 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
       return;
     }
 
-    setAlertCaption('手動に切り替えると、\r\nレポート数値の自動反映が現時点でストップします。\r\n本当によろしいでしょうか？');
+    setAlertCaption('手動に切り替えると、\r\nレポート数値の自動反映が止まります。\r\n本当によろしいでしょうか？');
     showAlertDlg(true);
   }
   // const [info, setInfos] = useState({
@@ -93,16 +94,16 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
           amount += parseInt(tmp.find(s => s.accountId === id).amount);
         });
 
-      amountRef.current.value = amount;
-      sellRef.current.value = sells;
+      amountRef.current.value = formatterInt.format(amount);
+      sellRef.current.value = formatterInt.format(sells);
       roasRef.current.value = amount > 0 && sells > 0 ? (sells / amount * 100).toFixed(1) : 0;
-      memsRef.current.value = distinctMems.length;
-      recycleRef.current.value = recycle;
-      recycleVal.current.value = recyclevalue;
-      normalRef.current.value = normal;
-      clickRef.current.value = click;
+      memsRef.current.value = formatterInt.format(distinctMems.length);
+      recycleRef.current.value = formatterInt.format(recycle);
+      recycleVal.current.value = formatterInt.format(recyclevalue);
+      normalRef.current.value = formatterInt.format(normal);
+      clickRef.current.value = formatterInt.format(click);
       clickPerRef.current.value = mems > 0 ? (clickPer / mems).toFixed(1) : 0;
-      cvRef.current.value = cv;
+      cvRef.current.value = formatterInt.format(cv);
       cvPerRef.current.value = mems > 0 ? (cvPer / mems).toFixed(1) : 0;
     }
   }, [staticType, getDatas]);
@@ -116,11 +117,16 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
       }}
     >
       <Button 
-        className="active"
-        variant="contained"
-        sx={{position: 'absolute', right: 20, top: 20}}
+        sx={{
+          position: 'absolute', 
+          right: 20, 
+          top: 20,
+          color: 'black !important',
+          borderRadius: '20px !important',
+          border: '1px solid #1377EB'
+        }}
       >
-        ダウンロード
+        PDF
       </Button>
       <Box sx={{
         display: 'flex', position: 'absolute', right: 20, top: 50, alignItems: 'center', marginTop: '10px'}}
@@ -260,6 +266,7 @@ export default function InstagramStatic({isLoading, getDatas, classes}) {
       </Box>
       <AlertDlg 
         title={'注意'} 
+        okcaption={'手動に切り替える'}
         caption={alertcaption}
         dlgState={showAlert}
         closeDlg={closeAlertDlg}
