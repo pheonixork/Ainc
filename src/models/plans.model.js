@@ -27,10 +27,10 @@ const planSchema = mongoose.Schema({
   csv: {
     type: Number,
   },
-  isinsight: {
+  saves: {
     type: Number,
   },
-  iscampaign: {
+  isinsight: {
     type: Number,
   },
   isaccount: {

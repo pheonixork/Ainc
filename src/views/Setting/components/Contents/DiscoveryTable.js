@@ -3,10 +3,10 @@ import React, {useEffect, useState} from 'react';
 import {Paper, Box, Table, TableContainer, TableHead, TableBody, TableCell, TableRow} from '@mui/material';
 import RoundInfo from 'components/RoundInfo';
 
-const amountFields = ['monthval', 'yearval', 'pages', 'profies', 'reports', 'csv'];
-const amountLabels = ['金額/月', '金額/年', 'ページ検察', 'プロフィール表示', 'フルレポート', 'CSV'];
-const checkFields = ['isinsight', 'iscampaign', 'isaccount'];
-const checkLabels =  ['インサイトリスト', 'キャンペーンリスト', 'キーアカウント調査'];
+const amountFields = ['monthval', 'yearval', 'pages', 'profies', 'reports', 'csv', 'saves'];
+const amountLabels = ['金額/月', '金額/年', 'ページ検索', 'プロフィール表示', 'フルレポート', 'CSV', 'キャンペーン登録'];
+const checkFields = ['isinsight', 'isaccount'];
+const checkLabels =  ['インサイトリスト', 'キーアカウント調査'];
 
 export default function DiscoveryTable({isMonth, enterprise, advanced, performance, essentials, trial}) {
   const formatter = new Intl.NumberFormat('ja-JP', {

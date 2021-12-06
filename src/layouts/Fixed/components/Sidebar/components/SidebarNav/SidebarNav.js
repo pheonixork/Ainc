@@ -133,17 +133,14 @@ const SidebarNav = ({pages, variant, collapsed, onClose, setCollapse}) => {
                 </NextLink>
               </Box>
             } 
-            {
-              userService.userValue.isCampaign && 
-              <Box>
-                <NextLink href={'/campaign/list'} passHref replace>
-                  <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/campaign/list'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
-                    <Box component={'img'} src={'/images/svgs/payment.svg'} height={24} width={24} marginRight={1.5} />
-                    {(variant !== 'permanent' || !collapsed) && Lang.nav.campaignlist}
-                  </Button>
-                </NextLink>
-              </Box>
-            } 
+            <Box>
+              <NextLink href={'/campaign/list'} passHref replace>
+                <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/campaign/list'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>
+                  <Box component={'img'} src={'/images/svgs/payment.svg'} height={24} width={24} marginRight={1.5} />
+                  {(variant !== 'permanent' || !collapsed) && Lang.nav.campaignlist}
+                </Button>
+              </NextLink>
+            </Box>
             <Box>
               <NextLink href={'/keyaccount'} passHref replace>
                 <Button component={'a'} fullWidth className={`nav-itm nav-itm-wrapper ${'/keyaccount'.startsWith('/' + activeLink) ? 'nav-item-current' : ''}`}>

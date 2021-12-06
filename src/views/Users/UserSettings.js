@@ -14,10 +14,10 @@ import styles from './styles';
 import Lang from 'constants/lang';
 
 
-const amountFields = ['monthval', 'yearval', 'isfree', 'pages', 'profies', 'reports', 'csv'];
-const amountLabels = ['金額/月', '金額/年', 'Free設定', 'ページ検察', 'プロフィール表示', 'フルレポート', 'CSV'];
-const checkFields = ['isinsight', 'iscampaign', 'isaccount'];
-const checkLabels =  ['インサイトリスト', 'キャンペーンリスト', 'キーアカウント調査'];
+const amountFields = ['monthval', 'yearval', 'isfree', 'pages', 'profies', 'reports', 'csv', 'saves'];
+const amountLabels = ['金額/月', '金額/年', 'Free設定', 'ページ検索', 'プロフィール表示', 'フルレポート', 'CSV', 'キャンペーン登録'];
+const checkFields = ['isinsight', 'isaccount'];
+const checkLabels =  ['インサイトリスト', 'キーアカウント調査'];
 
 const UserSettings = () => {
   const [enterprise, setEnterprise] = useState({});

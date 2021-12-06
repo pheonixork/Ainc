@@ -16,7 +16,7 @@ export default function RecommendTable() {
           >
             <TableHead>
               <TableRow sx={{borderBottom: '3px solid #000'}}>
-                <TableCell padding='normal' style={{width: '300px'}}>Recommended for...</TableCell>
+                <TableCell padding='normal' style={{width: '300px'}}>こんな方におすすめです</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -26,16 +26,16 @@ export default function RecommendTable() {
                 <TableCell style={{width: '300px'}}>
                 </TableCell>
                 <TableCell style={{width: '150px', verticalAlign: 'top'}}>
-                  <span>{'If you need more than the standard plans offer or want to talk to the sales team to get more information,book a call'}</span>
+                  <span>{'標準プラン以上の内容をご希望の場合、もしくは詳細についてお聞きになりたい場合は、お気軽にご連絡をください。'}</span>
                 </TableCell>
                 <TableCell style={{width: '150px', verticalAlign: 'top'}}>
-                  <span>{'This plan is best for teams who have scaled influencer marketing and are using Modash to optimize existing processes.'}</span>
+                  <span>{'このプランはインフルエンサーマーケティングを複数人のチームで実施している場合に最適です。'}</span>
                 </TableCell>
                 <TableCell style={{width: '150px', verticalAlign: 'top'}}>
-                  <span>{'This plan is your best bet for scaling up. Perfect if you have one person dedicated to influencer marketing.'}</span>
+                  <span>{'このプランはインフルエンサーマーケティングに特化した担当者が一人以上いる場合に最適です。'}</span>
                 </TableCell>
                 <TableCell style={{width: '150px', verticalAlign: 'top'}}>
-                  <span>{'Best if you have some experience working with influencers and now want to increase your efforts.'}</span>
+                  <span>{'このプランはこれから本格的にインフルエンサーマーケティングを行いたい方に最適です。'}</span>
                 </TableCell>
                 <TableCell style={{width: '200px', verticalAlign: 'top'}}>
                   <span>{'Just checking out the platform.'}</span>

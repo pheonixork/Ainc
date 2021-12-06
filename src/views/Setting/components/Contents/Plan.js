@@ -31,10 +31,10 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
   return (
     <Box className="planWrapper" {...rest}>
       <Box className={clsx(classes.contentWrapper, classes.bigShadow)}>
-        <Typography className={classes.boldFont} variant={'h5'}>My Plan: Advanced Monthly</Typography>
+        <Typography className={classes.boldFont} variant={'h5'}>マイプラン: Advanced Monthly</Typography>
         <Box className={classes.planSubtitle}>
           <Typography>
-            Your plan will automatically renew on <span style={{fontWeight:'900'}}>27 Oct 2021</span> and you'll be <span style={{fontWeight:'900'}}>charged 498 USD + Vat (if applied).</span>
+            お客様のプランは<span style={{fontWeight:'900'}}>〇年〇月〇日</span>に自動更新され、<span style={{fontWeight:'900'}}>〇〇円</span>が請求されます。
           </Typography>
           <Button
             className={'active'}
@@ -46,11 +46,11 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
           </Button>
         </Box>
         <Box className={clsx(classes.contentWrapper, classes.smallShadow)}>
-          <Typography className={clsx(classes.boldFont, classes.mb30)}>Plan usage</Typography>
+          <Typography className={clsx(classes.boldFont, classes.mb30)}>利用可能量</Typography>
           <Box>
             <Box className={clsx(classes.planGrid, classes.mb20)}>
               <Box className={classes.planDetail}>
-                <span>Search pages </span>
+                <span>ページ検索</span>
                 {/* <RoundInfo marginLeft={1} /> */}
               </Box>
               {isLoading ? (
@@ -71,7 +71,7 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
             </Box>
             <Box className={clsx(classes.planGrid, classes.mb20)}>
               <Box className={classes.planDetail}>
-                <span>Profile summaries </span>
+                <span>プロフィール表示</span>
                 {/* <RoundInfo marginLeft={1} /> */}
               </Box>
               {isLoading ? (
@@ -92,7 +92,7 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
             </Box>
             <Box className={clsx(classes.planGrid, classes.mb20)}>
               <Box className={classes.planDetail}>
-                <span>Full reports </span>
+                <span>フルレポート</span>
                 {/* <RoundInfo marginLeft={1} /> */}
               </Box>
               {isLoading ? (
@@ -113,7 +113,7 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
             </Box>
             <Box className={clsx(classes.planGrid, classes.mb20)}>
               <Box className={classes.planDetail}>
-                <span>Profiles in CSV export </span>
+                <span>CSV</span>
                 {/* <RoundInfo marginLeft={1} /> */}
               </Box>
               {isLoading ? (
@@ -127,6 +127,27 @@ const Plan = ({user, switchToUpgrade, ...rest}) => {
                     <Box 
                       className={classes.planUsage}
                       sx={{width: `${usage.csvplan > 0 ? usage.csvuse / usage.csvplan * 100 : 100}%`}}
+                    />
+                  </Box>
+                </>
+              )}
+            </Box>
+            <Box className={clsx(classes.planGrid, classes.mb20)}>
+              <Box className={classes.planDetail}>
+                <span>キャンペーン登録</span>
+                {/* <RoundInfo marginLeft={1} /> */}
+              </Box>
+              {isLoading ? (
+                <Skeleton width={'100%'} height={20} sx={{transform:'unset'}}/>
+              ) : (
+                <>
+                  <Typography className={classes.planUsageText}>{`${usage.savesuse} of ${usage.savesplan}`}</Typography>
+                  <Box 
+                    className={classes.planUsageWrapper}
+                  >
+                    <Box 
+                      className={classes.planUsage}
+                      sx={{width: `${usage.savesplan > 0 ? usage.savesuse / usage.savesplan * 100 : 100}%`}}
                     />
                   </Box>
                 </>

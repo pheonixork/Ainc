@@ -20,7 +20,8 @@ async function handler(req, res) {
 
     let usage = {
       pagesplan: 0, pagesuse: 0, profiesplan: 0, profiesuse: 0,
-      reportsplan: 0, reportsuse: 0, csvplan: 0, csvuse: 0
+      reportsplan: 0, reportsuse: 0, csvplan: 0, csvuse: 0,
+      savesplan: 0, savesuse: 0,
     };
   
     temp = await UsageRepo.getPlanUsage(userId, paystart);
@@ -29,7 +30,8 @@ async function handler(req, res) {
           pagesplan: temp.pagesplan, pagesuse: temp.pagesuse,
           profiesplan: temp.profiesplan, profiesuse: temp.profiesuse,
           reportsplan: temp.reportsplan, reportsuse: temp.reportsuse,
-          csvplan: temp.csvplan, csvuse: temp.csvuse
+          csvplan: temp.csvplan, csvuse: temp.csvuse,
+          savesplan: temp.savesplan??0, savesuse: temp.savesuse??0,
         };
     }
 

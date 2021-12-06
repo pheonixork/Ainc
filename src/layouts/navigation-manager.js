@@ -17,7 +17,6 @@ const pages = {
       title: Lang.nav.campaignlist,
       href: '/campaign/list',
       icon: '/images/svgs/payment.svg',
-      isCampaign: true,
     },
     {
       title: Lang.nav.keyaccount,
@@ -68,7 +67,12 @@ const pages = {
       title: Lang.nav.user.setting,
       href: '/users/plansetting',
       icon: '/images/svgs/usersettings.svg'
-    }
+    },
+    {
+      title: Lang.nav.user.load,
+      href: '/users/influencers',
+      icon: '/images/svgs/search-magnifier.svg'
+    },
   ]
 };
 

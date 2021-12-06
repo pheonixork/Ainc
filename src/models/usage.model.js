@@ -64,6 +64,12 @@ const usageSchema = mongoose.Schema({
     csvuse: {
       type: Number
     },
+    savesplan: {
+      type: Number
+    },
+    savesuse: {
+      type: Number
+    },
     updatemode: {
       type: Boolean
     }

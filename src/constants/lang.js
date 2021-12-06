@@ -19,6 +19,7 @@ const keywords = {
       create: '新規作成',
       list: 'ユーザーリスト',
       setting: 'プラン設定',
+      load: 'インフルエンサー取得'
     }
   },
   caption: {

@@ -52,7 +52,6 @@ export default withSession(async (req, res) => {
     return res.status(200).json({
       id: userInfo._id.toString(),
       isInsight: true,
-      isCampaign: true,
       role: userInfo.perms,
       username: userInfo.name,
       email: userInfo.email,

@@ -16,11 +16,11 @@ export default function BillListTable({data}) {
           >
             <TableHead>
               <TableRow>
-                <TableCell padding='normal' style={{width: '250px'}}>Invoice Number</TableCell>
-                <TableCell padding='normal' style={{width: '200px'}}>Billing date</TableCell>
-                <TableCell padding='normal' style={{width: '120px'}}>Amount</TableCell>
-                <TableCell padding='normal' style={{width: '100px'}}>Status</TableCell>
-                <TableCell padding='normal' style={{width: '200px'}}>Receipt</TableCell>
+                <TableCell padding='normal' style={{width: '250px'}}>請求書番号</TableCell>
+                <TableCell padding='normal' style={{width: '200px'}}>請求日</TableCell>
+                <TableCell padding='normal' style={{width: '120px'}}>金額</TableCell>
+                <TableCell padding='normal' style={{width: '100px'}}>ステータス</TableCell>
+                <TableCell padding='normal' style={{width: '200px'}}>支払済み</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -38,7 +38,7 @@ export default function BillListTable({data}) {
                       href="#"
                       component={'a'}
                     >
-                      Download receipt
+                      ダウンロード
                     </NextLink>
                   </TableCell>
                 </TableRow>

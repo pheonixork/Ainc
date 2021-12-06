@@ -21,7 +21,7 @@ const UsageInfo = ({getDatas, getUsages, classes}) => {
         <Typography className={classes.userdetailwrappertitle} sx={{fontSize: '16px !important'}}>Plan usage</Typography>
         <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
-            <Typography>Search pages</Typography>
+            <Typography>ページ検索</Typography>
             <RoundInfo marginLeft={1}/>
           </Box>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
@@ -33,7 +33,7 @@ const UsageInfo = ({getDatas, getUsages, classes}) => {
         </Box>
         <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
-            <Typography>Profile summaries</Typography>
+            <Typography>プロフィール表示</Typography>
             <RoundInfo marginLeft={1}/>
           </Box>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
@@ -45,7 +45,7 @@ const UsageInfo = ({getDatas, getUsages, classes}) => {
         </Box>
         <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
-            <Typography>Full reports</Typography>
+            <Typography>フルレポート</Typography>
             <RoundInfo marginLeft={1}/>
           </Box>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
@@ -57,13 +57,25 @@ const UsageInfo = ({getDatas, getUsages, classes}) => {
         </Box>
         <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
-            <Typography>Profiles in CSV exports</Typography>
+            <Typography>CSV</Typography>
             <RoundInfo marginLeft={1}/>
           </Box>
           <Box className={clsx(classes.displayflex, classes.aligncenter)}>
             <Typography>{`${usage.csvuse} of ${usage.csvplan}`}</Typography>
             <Box className={classes.barcandle}>
               <Box className={classes.barcandleprogress} sx={{width: `${usage.csvplan > 0 ? usage.csvuse / usage.csvplan * 100 : 100}%`}}></Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box className={clsx(classes.displayflex, classes.justifybetween)} sx={{margin: '20px 10px'}}>
+          <Box className={clsx(classes.displayflex, classes.aligncenter)}>
+            <Typography>キャンペーン登録</Typography>
+            <RoundInfo marginLeft={1}/>
+          </Box>
+          <Box className={clsx(classes.displayflex, classes.aligncenter)}>
+            <Typography>{`${usage.savesuse} of ${usage.savesplan}`}</Typography>
+            <Box className={classes.barcandle}>
+              <Box className={classes.barcandleprogress} sx={{width: `${usage.savesplan > 0 ? usage.savesuse / usage.savesplan * 100 : 100}%`}}></Box>
             </Box>
           </Box>
         </Box>

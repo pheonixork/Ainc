@@ -21,14 +21,16 @@ import 'scss/manager.scss'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
+  const [isShowIntecom, setShowIntercom] = useState(false);
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    //console.log(router.asPath);
     if (router.asPath === '/') {
       setAuthorized(true);
+      setShowIntercom(false);
       return;
     } else if (router.asPath === '/logout') {
+      setShowIntercom(false);
       userService.logout();
     }
 
@@ -36,7 +38,7 @@ export default function App({ Component, pageProps }) {
     authCheck(router.asPath);
 
     //set authorized to false to hide page content while changing routes
-    const hideContent = () => setAuthorized(false);
+    const hideContent = () => {setAuthorized(false); setShowIntercom(false);}
     router.events.on('routeChangeStart', hideContent);
 
     //run auth check on route change
@@ -58,8 +60,15 @@ export default function App({ Component, pageProps }) {
 
   const authCheck = (url) => {
     // redirect to login page if accessing a private page and not logged in 
+    const afterURLS = ['/account', '/insight', '/campaign', '/keyaccount', '/academy', '/setting'];
     const publicPaths = ['/signin-cover', '/password-reset-cover', '/signup-cover', '/register'];
     const path = url.split('?')[0];
+
+    const isLogined = _.findIndex(afterURLS, itm => path.startsWith(itm) === true);
+    if (isLogined === -1 || path === '/')
+      setShowIntercom(false);
+    else
+      setShowIntercom(true);
 
     if (path === '/') {
       setAuthorized(true);
@@ -88,12 +97,12 @@ export default function App({ Component, pageProps }) {
         />
         <title>Ainc | Find, analyze and monitor influencers like the best</title>
 
-        {userService.userValue && 
+        {isShowIntecom && 
           <script>
             {`window.intercomSettings = {app_id: "vtgey0iz", name: "${userService.userValue.username}", email: "${userService.userValue.email}", created_at: "${userService.userValue.createdTime}"};`}
           </script>
         }
-        {userService.userValue && 
+        {isShowIntecom && 
           <script>
             {`(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/vtgey0iz';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();`}
           </script>

@@ -49,7 +49,7 @@ export default function PlanSelect({enterprise, advanced, performance, essential
     return makeStyles(styles, {defaultTheme: theme});
   }, [theme]);
   const classes = useStyles();
-  const [isMonth, setMonth] = useState(false);
+  const [isAnnualy, setMonth] = useState(false);
   const formatter = new Intl.NumberFormat('ja-JP', {
     style: 'currency',
     currency: 'JPY',
@@ -58,12 +58,12 @@ export default function PlanSelect({enterprise, advanced, performance, essential
     <Box>
       <Box>
         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Typography>Monthly</Typography>
+          <Typography>月額</Typography>
           <Android12Switch 
-            checked={isMonth}
+            checked={isAnnualy}
             onChange={e=>setMonth(e.target.checked)}
           />
-          <Typography>Annually (save 10%)</Typography>
+          <Typography>年額(20%OFF)</Typography>
         </Box>
         <Box className={clsx(classes.upgradeselect, classes.mt30, classes.mb40)}>
           <Box className={clsx(classes.upgradeplanitem)}>
@@ -96,13 +96,13 @@ export default function PlanSelect({enterprise, advanced, performance, essential
             <Box>
               <Box className={classes.upgradeplanmoney}>
                 <span>
-                  {formatter.format(advanced.monthval ?? 0)}
+                  {formatter.format(!isAnnualy ? (advanced.monthval ?? 0) : (advanced.monthval ? advanced.monthval * 0.8 : 0))}
                   <span className={classes.upgradelabel}>/月</span>
                 </span> 
               </Box>
-              {isMonth && 
+              {isAnnualy && 
                 <Box className={classes.upgradeplandivide}>
-                  {`年間で${formatter.format(advanced.monthval ? advanced.monthval * 12 : 0)}の請求になります`}
+                  {`年間で${formatter.format(advanced.monthval ? (Math.floor(advanced.monthval * 0.8)) * 12 : 0)}の請求になります`}
                 </Box>
               }
             </Box>
@@ -124,13 +124,13 @@ export default function PlanSelect({enterprise, advanced, performance, essential
             <Box>
               <Box className={classes.upgradeplanmoney}>
                 <span>
-                  {formatter.format(performance.monthval ?? 0)}
+                  {formatter.format(!isAnnualy ? (performance.monthval ?? 0) : (performance.monthval ? performance.monthval * 0.8 : 0))}
                   <span className={classes.upgradelabel}>/月</span>
                 </span>
               </Box>
-              {isMonth && 
+              {isAnnualy && 
                 <Box className={classes.upgradeplandivide}>
-                  {`年間で${formatter.format(performance.monthval ? performance.monthval * 12 : 0)}の請求になります`}
+                  {`年間で${formatter.format(performance.monthval ? (Math.floor(performance.monthval * 0.8)) * 12 : 0)}の請求になります`}
                 </Box>
               }
             </Box>
@@ -152,13 +152,13 @@ export default function PlanSelect({enterprise, advanced, performance, essential
             <Box>
               <Box className={classes.upgradeplanmoney}>
                 <span>
-                  {formatter.format(essentials.monthval ?? 0)}
+                  {formatter.format(!isAnnualy ? (essentials.monthval ?? 0) : (essentials.monthval ? essentials.monthval * 0.8 : 0))}
                   <span className={classes.upgradelabel}>/月</span>
                 </span>
               </Box>
-              {isMonth && 
+              {isAnnualy && 
                 <Box className={classes.upgradeplandivide}>
-                  {`年間で${formatter.format(essentials.monthval ? essentials.monthval * 12 : 0)}の請求になります`}
+                  {`年間で${formatter.format(essentials.monthval ? (Math.floor(essentials.monthval * 0.8) * 12) : 0)}の請求になります`}
                 </Box>
               }
             </Box>
@@ -202,7 +202,7 @@ export default function PlanSelect({enterprise, advanced, performance, essential
         </Typography>
       </Box>
       <Box className={classes.mt30} data-aos={'fade-up'}>
-        <DiscoveryTable isMonth={isMonth} enterprise={enterprise} advanced={advanced} performance={performance} essentials={essentials} trial={trial}/>
+        <DiscoveryTable isAnnualy={isAnnualy} enterprise={enterprise} advanced={advanced} performance={performance} essentials={essentials} trial={trial}/>
         <RecommendTable />
       </Box>
     </Box>

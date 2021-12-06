@@ -128,6 +128,8 @@ async function createUser(company, url, name, phone, email, password, addr, pays
         reportsuse: 0,
         csvplan: planRecord.csv ?? 0 ,
         csvuse: 0,
+        savesplan: planRecord.saves ?? 0 ,
+        savesuse: 0,
         }],
     });
 

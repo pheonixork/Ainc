@@ -6,3 +6,4 @@ module.exports.Usage = require('./usage.model');
 module.exports.History = require('./history.model');
 module.exports.User = require('./user.model');
 module.exports.LoginHistory = require('./loginhistory.model');
+module.exports.UpdateHistory = require('./updatehistory.model');

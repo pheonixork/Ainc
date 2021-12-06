@@ -48,15 +48,7 @@ const Upgrade = ({...rest}) => {
     <Box className="upgradeWrapper" {...rest}>
       <PlanSelect enterprise={enterprise} advanced={advanced} performance={performance} essentials={essentials} trial={trial} />
       <Box className={clsx(classes.mt50, classes.fontBold)} sx={{textAlign: 'center', color: '#555'}} data-aos={'fade-up'}>
-        <Typography>Trusted by results-driven marketers at growth-focused companies</Typography>
-      </Box>
-      <Box className={classes.mt50} data-aos={'fade-up'}>
-        <Box
-          className={classes.mb30}
-          component={'img'}
-          src={'/images/svgs/billbanner.svg'}
-          marginRight={1.5}
-        />
+        <Typography>結果を重視するマーケターに信頼されています。</Typography>
       </Box>
       <QABrief />
     </Box>

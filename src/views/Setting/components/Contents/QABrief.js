@@ -14,27 +14,26 @@ export default function QABrief() {
   const classes = useStyles();
 
   return (
-    <Box sx={{width: '80%', margin: '10px auto'}} data-aos={'fade-up'}>
-      <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <Typography className={clsx(classes.qaTitle, classes.mb40)}>Frequently asked questions</Typography>
+    <Box sx={{width: '80%', margin: '20px auto'}} data-aos={'fade-up'}>
+      <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '20px !important'}}>
+        <Typography className={clsx(classes.qaTitle, classes.mb40)}>よくある質問</Typography>
       </Box>
       <Box className={'qaSubWrapper'}>
-        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>How do I decide which plan is best for me and my team?</Typography>
-        <Typography className={classes.mb20}>Modash is great for companies ranging from a solo freelancer to a 10,000 employee multinational company and everything in between. With that in mind, how do you choose which plan is best for you?</Typography>
-        <Typography className={classes.mb20}><span className={classes.boldFont}>Essentials plan:</span> This plan is best for companies that have already started with influencer marketing and plan to do more regular projects or ongoing campaigns and want to get a bit more serious about working with influencers.</Typography>
-        <Typography className={classes.mb20}><span className={classes.boldFont}>Performance plan:</span> This plan is best for teams sharing an account in multiple countries, agencies working with or verifying influencers, brands that are heavily focused on influencers or big organisations with global campaigns.</Typography>
-        <Typography className={classes.mb20}><span className={classes.boldFont}>Advanced Plan:</span> This plan is best for teams who have scaled influencer marketing and are using Modash to optimize existing processes.</Typography>
-        <Typography className={classes.mb20}><span className={classes.boldFont}>Enterprise:</span> If you need more, we've got your back. Modash works with several of the top influencer platforms, numerous multinational agencies and more.</Typography>
-        <Typography className={classes.mb40}>Learn more how to choose the plan from <NextLink href="#">here.</NextLink></Typography>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>自分のチームに最適なプランはどれですか？</Typography>
+        <Typography className={classes.mb20}>Astreamは、1人のフリーランサーから1万人の従業員を抱える多国籍企業、そしてその中間の企業まで、さまざまな企業に最適です。それを踏まえた上で、どのプランが最適なのか？</Typography>
+        <Typography className={classes.mb20}><span className={classes.boldFont}>Essentials plan:</span>このプランは、すでにインフルエンサー・マーケティングを始めていて、より定期的なプロジェクトや継続的なキャンペーンを行う予定で、インフルエンサーとの連携をもう少し本格的に行いたいと考えている企業に最適です。</Typography>
+        <Typography className={classes.mb20}><span className={classes.boldFont}>Performance plan:</span>このプランはインフルエンサーとの連携や検証を行っている代理店、インフルエンサーに重点を置いているブランドに最適です。</Typography>
+        <Typography className={classes.mb20}><span className={classes.boldFont}>Advanced Plan:</span>このプランは、インフルエンサーマーケティングの成果を追求したい、複数人以上の大型のチームに最適です。</Typography>
+        <Typography className={classes.mb20}><span className={classes.boldFont}>Enterprise:</span>利用回数の上限はありません。自由自在にインフルエンサーマーケティングを追求したいチームは気軽にご相談ください。また追加機能のご相談も承ります。</Typography>
       </Box>
       <Box className={clsx('qaSubWrapper', classes.mt70)}>
-        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>What is a search?</Typography>
-        <Typography className={classes.mb40}>Modash is a search engine for finding influencers. To use it, you input some information about your target audience and click the “Find influencers” button. When you click the “Find influencers” button, we show you as many influencers as possible that speak to your target audience. When you click the find influencers button, count 1 search towards your monthly searches.</Typography>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>ぺージ検索とは？</Typography>
+        <Typography className={classes.mb40}>Astreamは、インフルエンサーを探すための検索エンジンです。使い方は、ターゲット層の情報を入力して「検索」ボタンをクリックします。「検索」ボタンをクリックすると、ターゲット層にアピールできるインフルエンサーが表示されます。「検索」ボタンをクリックする、もしくはページを「Load」して表示アカウントを増やすと、月間のページ検索数に1回カウントされます。</Typography>
       </Box>
       <Box className={clsx('qaSubWrapper', classes.mt70)}>
-        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>What is a profile summary?</Typography>
-        <Typography className={classes.mb20}>You can view an influencer’s profile summary by clicking on a result from search. When click a search result to view these stats, it is counted as 1 profile summary towards your monthly total.</Typography>
-        <Typography className={classes.mb20}>Profile summary includes details such as:</Typography>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>プロフィール表示とは？</Typography>
+        <Typography className={classes.mb20}>検索結果をクリックすると、インフルエンサーのプロフィールが表示されます。検索結果をクリックして統計情報を表示すると、月間で1プロフィール表示としてカウントされます。</Typography>
+        <Typography className={classes.mb20}>プロフィールの概要は以下の通りです。</Typography>
         <Box className={classes.mb40}>
           <Box className={classes.upgradeprofilesummary}>
             <Box className={classes.upgradeprofilesummarysub}>
@@ -43,7 +42,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Average likes
+              平均いいね
             </Box>
             <Box className={classes.upgradeprofilesummarysub}>
               <Box
@@ -51,25 +50,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Top 3 audience locations by country
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Followers
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Top 3 audience locations by city
+              フォロワーの国
             </Box>
           </Box>
           <Box className={classes.upgradeprofilesummary}>
@@ -79,7 +60,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Engagement rate
+              フォロワー数
             </Box>
             <Box className={classes.upgradeprofilesummarysub}>
               <Box
@@ -87,25 +68,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Audience gender
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Most recent posts
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Audience age
+              フォロワーの都市
             </Box>
           </Box>
           <Box className={classes.upgradeprofilesummary}>
@@ -115,7 +78,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Fake followers
+              エンゲージメント率
             </Box>
             <Box className={classes.upgradeprofilesummarysub}>
               <Box
@@ -123,15 +86,51 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              And more!
+              男女比
+            </Box>
+          </Box>
+          <Box className={classes.upgradeprofilesummary}>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              最近の投稿
+            </Box>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              フォロワーの年齢
+            </Box>
+          </Box>
+          <Box className={classes.upgradeprofilesummary}>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              フォロワーのアクティブ率
+            </Box>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              など
             </Box>
           </Box>
         </Box>
       </Box>
       <Box className={clsx('qaSubWrapper', classes.mt70)}>
-        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>What is a full report?</Typography>
-        <Typography className={classes.mb20}>Similar to profile summary, full report shows audience and influencer data. However, full report shows several pages of more granular information. When you click “View full report” inside of audience summary, we count this as one full report towards your monthly total.</Typography>
-        <Typography className={classes.mb20}>Full report includes details such as:</Typography>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>フルレポートとは？</Typography>
+        <Typography className={classes.mb20}>フルレポートではより詳細なフォロワーとインフルエンサーのデータが数ページに渡って表示されます。プロフィールの中で「フルレポートを表示」をクリックすると、月間で1つのフルレポートとしてカウントされます。</Typography>
+        <Typography className={classes.mb20}>フルレポートには以下のような詳細が追加で表示されます。</Typography>
         <Box className={classes.mb40}>
           <Box className={classes.upgradeprofilesummary}>
             <Box className={classes.upgradeprofilesummarysub}>
@@ -140,7 +139,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Growth rate
+              成長率
             </Box>
             <Box className={classes.upgradeprofilesummarysub}>
               <Box
@@ -148,25 +147,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              All audience locations
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Influencer followers
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              All audience interests
+              ハッシュタグエンゲージメント
             </Box>
           </Box>
           <Box className={classes.upgradeprofilesummary}>
@@ -176,7 +157,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              Engagements over time
+              フォロワーの興味(IGのみ)
             </Box>
             <Box className={classes.upgradeprofilesummarysub}>
               <Box
@@ -184,25 +165,7 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              All audience brand affinity
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              All data included in summary
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              And more!
+              フォロワーの好みのブランド傾向(IGのみ)
             </Box>
           </Box>
           <Box className={classes.upgradeprofilesummary}>
@@ -212,90 +175,49 @@ export default function QABrief() {
                 src={'/images/svgs/tick.svg'}
                 marginRight={1.5}
               />
-              All audience languages
+              エンゲージメントの推移
+            </Box>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              など
+            </Box>
+          </Box>
+          <Box className={classes.upgradeprofilesummary}>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              フォロワーの言語
+            </Box>
+          </Box>
+          <Box className={classes.upgradeprofilesummary}>
+            <Box className={classes.upgradeprofilesummarysub}>
+              <Box
+                component={'img'}
+                src={'/images/svgs/tick.svg'}
+                marginRight={1.5}
+              />
+              プロフィールに含まれるデータの詳細
             </Box>
           </Box>
         </Box>
       </Box>
       <Box className={clsx('qaSubWrapper', classes.mt70)}>
-        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>What is a profile export?</Typography>
-        <Typography className={classes.mb20}>If you choose, you can export influencer and audience details to CSV. CSV exports also contain contact details for influencers. If you are not allowed to process contact details you can opt out of this feature.</Typography>
-        <Typography className={classes.mb20}>Exports are great for optimizing influencer campaigns, importing emails to your favourite outreach tools or sharing info with your team and clients.</Typography>
-        <Typography className={classes.mb20}>Exports contain details like:</Typography>
-        <Box className={classes.mb40}>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Influencer country
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Top 3 audience city
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Username
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Content vertical / audience interests
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-               Influencer contact details
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Engagement rate
-            </Box>
-          </Box>
-          <Box className={classes.upgradeprofilesummary}>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-              Followers
-            </Box>
-            <Box className={classes.upgradeprofilesummarysub}>
-              <Box
-                component={'img'}
-                src={'/images/svgs/tick.svg'}
-                marginRight={1.5}
-              />
-               And more!
-            </Box>
-          </Box>
-        </Box>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>CSVとは？</Typography>
+        <Typography className={classes.mb20}>キャンペーンリストに保存したインフルエンサーやフォロワーの詳細をCSVにエクスポートすることができます。</Typography>
+        <Typography className={classes.mb20}>CSVは、キャンペーン後のインフルエンサ―のデータ解析をしたり、チームやクライアントと情報を共有したりするのに最適です。</Typography>
+        <Typography className={classes.mb20}>CSVで出力した際のアカウントの数が、月間のカウントの数となります。</Typography>
+      </Box>
+      <Box className={clsx('qaSubWrapper', classes.mt70)}>
+        <Typography className={clsx(classes.qaSubTitle, classes.mb20)}>キャンペーン登録とは？</Typography>
+        <Typography className={classes.mb20}>キャンペーン登録は、好みのインフルエンサーを見つけた際に「キャンペーンリストに登録」をすることです。</Typography>
+        <Typography className={classes.mb20}>「登録」のボタンを押して、キャンペーンリストにチェックマークをいれると、月間で1つのキャンペーン登録としてカウントされます。</Typography>
       </Box>
     </Box>
   );

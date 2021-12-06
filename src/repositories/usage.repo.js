@@ -58,7 +58,9 @@ async function getPlanUsage(userId, historyDate) {
         reportsplan: '$history.reportsplan', 
         reportsuse: '$history.reportsuse',
         csvplan: '$history.csvplan', 
-        csvuse: '$history.csvuse'
+        csvuse: '$history.csvuse',
+        savesuse: '$history.savesuse', 
+        savesplan: '$history.savesplan'
       }
     }
   ]);
@@ -102,6 +104,8 @@ async function ChangeUser2Free(userId, startDate, endDate) {
       reportsuse: 0,
       csvplan: planRecord.csv ?? 0 ,
       csvuse: 0,
+      savesplan: planRecord.saves ?? 0 ,
+      savesuse: 0,
       updatemode: false
     }}}
   );
@@ -134,7 +138,7 @@ async function closeCustom({userId, enddate}) {
   await ChangeUser2Free(userId, enddate, moment().add(15, 'days').format('YYYY/MM/DD'));
 }
 
-async function savePlan2Custom({userId, search, profile, report, csv, startdate, enddate, usesearch, useprofile, usereport, usecsv, updatemode}) {
+async function savePlan2Custom({userId, search, profile, report, csv, saves, startdate, enddate, usesearch, useprofile, usereport, usecsv, usesaves, updatemode}) {
   let temp = await Usage.findOne({userId: toObjectId(userId)});
   let lastRecord = temp.history.length > 0 ? temp.history[temp.history.length - 1] : null;
   try {
@@ -153,10 +157,12 @@ async function savePlan2Custom({userId, search, profile, report, csv, startdate,
           'history.$.profiesplan': profile,
           'history.$.reportsplan': report,
           'history.$.csvplan': csv,
+          'history.$.savesplan': saves,
           'history.$.pagesuse': usesearch === '' ? 0 : usesearch,
           'history.$.profiesuse': useprofile  === '' ? 0 : useprofile,
           'history.$.reportsuse': usereport  === '' ? 0 : usereport,
           'history.$.csvuse': usecsv  === '' ? 0 : usecsv,
+          'history.$.savesuse': usesaves  === '' ? 0 : usesaves,
           'history.$.updatemode': updatemode
         }});
 
@@ -186,10 +192,12 @@ async function getPlanFromCustom({userId}) {
       profile: lastRecord.profiesplan,
       report: lastRecord.reportsplan,
       csv: lastRecord.csvplan,
+      saves: lastRecord.savesplan,
       usesearch: lastRecord.pagesuse,
       useprofile: lastRecord.profiesuse,
       usereport: lastRecord.reportsuse,
       usecsv: lastRecord.csvuse,
+      usesaves: lastRecord.savesuse,
       updatemode: lastRecord.updatemode
     }
   } else {
@@ -244,10 +252,12 @@ async function switchPlan2Custom({userId, startdate}) {
         profiesplan: 0,
         reportsplan: 0,
         csvplan: 0,
+        savesplan: 0,
         pagesuse: 0,
         profiesuse: 0,
         reportsuse: 0,
         csvuse: 0,
+        savesuse: 0, 
         updatemode: false
       }}}
     );
